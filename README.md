@@ -6,4 +6,5 @@
 
 # tailwindcss
 
-- npx tailwindcss -i ./src/main/resources/files/input.css -o ./src/main/resources/files/output.css --watch  
+- npx tailwindcss -i ./src/main/resources/files/input.css -o ./build/resources/main/files/output.css --watch  
+- npm run build-css 
