@@ -7,17 +7,17 @@
         <title>Eladio Caritos</title>
         <link href="/static/css/tailwind.css" rel="stylesheet"/>
     </head>
-    <body class="text-red-900">
+    <body class="text-gray-600">
     <div>
         <div>
             <nav>
                 <div>
-                    <h1>
+                    <h1 class="font-bold uppercase p-4 border-b border-gray-100">
                         <a href="/">Food Ninja</a>
                     </h1>
                 </div>
                 <ul>
-                    <li>
+                    <li class="text-gray-900 font-bold">
                         <a href="#">
                             <span>Home</span>
                         </a>
@@ -36,21 +36,21 @@
             </nav>
         </div>
 
-        <main>
+        <main class="px-16 py-6">
             <div>
                 <a href="#">Log in</a>
                 <a href="#">Sign up</a>
             </div>
 
             <header>
-                <h2>Recipes</h2>
-                <h3>For Ninjas</h3>
+                <h2 class="text-gray-700 text-6xl font-semibold">Recipes</h2>
+                <h3 class="txt-2xl font-semibold">For Ninjas</h3>
             </header>
 
             <div>
-                <h4>Latest Recipes</h4>
+                <h4 class="font-bold mt-12 pb-2 border-b border-gray-200">Latest Recipes</h4>
 
-                <div>
+                <div class="mt-8">
                     <!-- cards go here -->
                     <div>
                         <img src="/static/img/stew.jpg" alt="stew">
@@ -61,9 +61,9 @@
                     </div>
                 </div>
 
-                <h4>Most Popular</h4>
+                <h4 class="font-bold mt-12 pb-2 border-b border-gray-200">Most Popular</h4>
 
-                <div>
+                <div class="mt-8">
                     <!-- cards go here -->
                 </div>
             </div>
