@@ -11,12 +11,17 @@
     <div class="grid md:grid-cols-3">
         <div class="md:col-span-1 md:flex md:justify-end">
             <nav class="text-right">
-                <div>
+                <div class="flex justify-between items-center">
                     <h1 class="font-bold uppercase p-4 border-b border-gray-100">
                         <a href="/">Food Ninja</a>
                     </h1>
+                    <div class="px-4 cursor-pointer md:hidden" id="burger">
+                        <svg class="w-6 " data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+                        </svg>
+                    </div>
                 </div>
-                <ul class="text-sm mt-6">
+                <ul class="text-sm mt-6 hidden md:block" id="menu">
                     <li class="text-gray-900 font-bold py-1 ">
                         <a href="#" class="px-4 flex justify-end border-r-4 border-primary">
                             <span>Home</span>
@@ -116,6 +121,7 @@
             <a href="/">Back to the main page</a>
         </main>
     </div>
+    <script src="/static/js/index.js"></script>
     </body>
     </html>
 </#macro>
