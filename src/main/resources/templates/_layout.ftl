@@ -7,7 +7,7 @@
         <title>Eladio Caritos</title>
         <link href="/static/css/tailwind.css" rel="stylesheet"/>
     </head>
-    <body class="text-gray-600">
+    <body class="text-gray-600 font-body">
     <div>
         <div>
             <nav>
