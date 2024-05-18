@@ -5,10 +5,9 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Eladio Caritos</title>
-        <link href="./static/output.css" rel="stylesheet"/>
+        <link href="/static/css/tailwind.css" rel="stylesheet"/>
     </head>
-    <body>
-
+    <body class="text-red-900">
     <div>
         <div>
             <nav>
@@ -54,7 +53,7 @@
                 <div>
                     <!-- cards go here -->
                     <div>
-                        <img src="img/stew.jpg" alt="stew">
+                        <img src="/static/img/stew.jpg" alt="stew">
                         <div>
                             <span>5 Bean Chili Stew</span>
                             <span>Recipe by Mario</span>
