@@ -39,4 +39,3 @@ out/
 .DS_Store
 
 node_modules/
-src/main/resources/files/output.css
