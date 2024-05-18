@@ -58,7 +58,7 @@
                             <span class="font-bold">5 Bean Chili Stew</span>
                             <span class="block text-gray-500 text-sm">Recipe by Mario</span>
                         </div>
-                        <div class="bg-secondary-100 text-secondary-200 text-xs uppercase font-bold rounded-full p-2i absolute top-0 ml-2 mt-2">
+                        <div class="bg-secondary-100 text-secondary-200 text-xs uppercase font-bold rounded-full p-2 absolute top-0 ml-2 mt-2">
                             <span>25 mins</span>
                         </div>
                     </div>
