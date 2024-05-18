@@ -30,14 +30,14 @@
                             </svg>
                         </a>
                     </li>
-                    <lii class="py-1">
+                    <li class="py-1">
                         <a href="#"  class="px-4 flex justify-end border-r-4 border-white">
                             <span>About</span>
                             <svg class="w-5 ml-2" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"></path>
                             </svg>
                         </a>
-                    </lii>
+                    </li>
                     <li class="py-1">
                         <a href="#"  class="px-4 flex justify-end border-r-4 border-white">
                             <span>Contact</span>
@@ -51,8 +51,8 @@
         </div>
         <main class="md:col-span-2 px-16 py-6 bg-gray-100">
             <div class="flex justify-center md:justify-end">
-                <a href="#" class="text-primary btn border-primary md:border-2">Log in</a>
-                <a href="#" class="text-primary ml-2 btn border-primary md:border-2">Sign up</a>
+                <a href="#" class="btn text-primary border-primary md:border-2 hover:bg-primary hover:text-white transition ease-out duration-500">Log in</a>
+                <a href="#" class="btn text-primary ml-2 border-primary md:border-2 hover:bg-primary hover:text-white transition ease-out duration-500">Sign up</a>
             </div>
 
             <header>
@@ -114,7 +114,7 @@
             </div>
 
             <div class="flex justify-center">
-                <div class="bg-secondary-100 text-secondary-200 btn">Load more</div>
+                <div class="btn bg-secondary-100 text-secondary-200 hover:shadow-inner transform hover:scale-125 hover:bg-opacity-50 transition ease-out duration-300">Load more</div>
             </div>
 
             <#nested>
