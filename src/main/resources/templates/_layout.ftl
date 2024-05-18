@@ -8,8 +8,8 @@
         <link href="/static/css/tailwind.css" rel="stylesheet"/>
     </head>
     <body class="text-gray-600 font-body">
-    <div>
-        <div>
+    <div class="grid md:grid-cols-3">
+        <div class="md:col-span-1">
             <nav>
                 <div>
                     <h1 class="font-bold uppercase p-4 border-b border-gray-100">
@@ -35,8 +35,7 @@
                 </ul>
             </nav>
         </div>
-
-        <main class="px-16 py-6 bg-gray-100">
+        <main class="md:col-span-2 px-16 py-6 bg-gray-100">
             <div class="flex justify-center md:justify-end">
                 <a href="#" class="text-primary">Log in</a>
                 <a href="#" class="text-primary ml-2 ">Sign up</a>
@@ -50,7 +49,7 @@
             <div>
                 <h4 class="font-bold mt-12 pb-2 border-b border-gray-200">Latest Recipes</h4>
 
-                <div class="mt-8">
+                <div class="mt-8 grid lg:grid-cols-3 gap-10">
                     <!-- cards go here -->
                     <div class="card">
                         <img src="/static/img/stew.jpg" alt="stew" class="w-full h-32 sm:h-48 object-cover">
@@ -94,10 +93,11 @@
             <div class="flex justify-center">
                 <div class="bg-secondary-100 text-secondary-200">Load more</div>
             </div>
+
+            <#nested>
+            <a href="/">Back to the main page</a>
         </main>
     </div>
-    <#nested>
-    <a href="/">Back to the main page</a>
     </body>
     </html>
 </#macro>
