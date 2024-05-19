@@ -3,11 +3,13 @@ package com.caritos.plugins
 import com.caritos.dao.dao
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
+import io.ktor.server.html.*
 import io.ktor.server.http.content.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import kotlinx.html.*
 
 fun Application.configureRouting() {
     routing {
@@ -15,6 +17,10 @@ fun Application.configureRouting() {
 
         get("/") {
             call.respondRedirect("articles")
+        }
+
+        get("/login") {
+            call.respond(FreeMarkerContent("login.ftl", model = null))
         }
 
         route("articles") {
