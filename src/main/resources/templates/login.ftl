@@ -1,5 +1,7 @@
 <#import "_layout.ftl" as layout />
 <@layout.header>
+    <form action="/login", encType="application/x-www-form-urlencoded", method=FormMethod.post>
+
     <div class="flex justify-center items-center h-screen bg-indigo-600">
         <div class="w-96 p-6 shadow-lg bg-white rounded-md">
             <h1 class="text-3xl block text-center font-semibold"><i class="fa-solid fa-user"></i> Login</h1>
@@ -26,6 +28,8 @@
             </div>
         </div>
     </div>
+    </form>
+
 <#--  form(action = "/login", encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {-->
 <#--  p {-->
 <#--  +"Username:"-->

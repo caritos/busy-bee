@@ -2,14 +2,18 @@ package com.caritos.plugins
 
 import com.caritos.dao.dao
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.sessions.*
 import io.ktor.server.util.*
 import kotlinx.html.*
+
+data class UserSession(val name: String, val count: Int) : Principal
 
 fun Application.configureRouting() {
     routing {
@@ -21,6 +25,19 @@ fun Application.configureRouting() {
 
         get("/login") {
             call.respond(FreeMarkerContent("login.ftl", model = null))
+        }
+
+
+        get("/hello") {
+            call.respond(FreeMarkerContent("hello.ftl", model = null))
+        }
+
+        authenticate("auth-form"){
+            post("/login") {
+                val userName = call.principal<UserIdPrincipal>()?.name.toString()
+                call.sessions.set(UserSession(name = userName, count = 1))
+                call.respond(FreeMarkerContent("hello.ftl", model = null))
+            }
         }
 
         route("articles") {

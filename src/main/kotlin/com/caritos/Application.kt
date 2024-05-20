@@ -15,7 +15,8 @@ fun main() {
 
 fun Application.module() {
     DatabaseSingleton.init()
-    configureRouting()
     configureTemplating()
+    configureSessions()
     configureAuthentication()
+    configureRouting()
 }
