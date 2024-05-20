@@ -12,10 +12,12 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.util.*
 import kotlinx.html.*
+import org.slf4j.LoggerFactory
 
 data class UserSession(val name: String, val count: Int) : Principal
 
 fun Application.configureRouting() {
+    val log = LoggerFactory.getLogger("Application")
     routing {
         staticResources("/static", "static")
 
@@ -24,17 +26,21 @@ fun Application.configureRouting() {
         }
 
         get("/login") {
+            log.debug("inside get /logic")
             call.respond(FreeMarkerContent("login.ftl", model = null))
         }
 
 
         get("/hello") {
+            log.debug("inside get /hello")
             call.respond(FreeMarkerContent("hello.ftl", model = null))
         }
 
         authenticate("auth-form"){
             post("/login") {
+                log.debug("inside authenticate auth form")
                 val userName = call.principal<UserIdPrincipal>()?.name.toString()
+                log.debug("userName: $userName")
                 call.sessions.set(UserSession(name = userName, count = 1))
                 call.respond(FreeMarkerContent("hello.ftl", model = null))
             }
