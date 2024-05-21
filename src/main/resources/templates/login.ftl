@@ -1,6 +1,6 @@
 <#import "_layout.ftl" as layout />
 <@layout.header>
-    <form action="/login" method="post">
+    <form action="/login" method="POST">
     <div class="flex justify-center items-center h-screen bg-indigo-600">
         <div class="w-96 p-6 shadow-lg bg-white rounded-md">
             <h1 class="text-3xl block text-center font-semibold"><i class="fa-solid fa-user"></i> Login</h1>
