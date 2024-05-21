@@ -46,6 +46,12 @@ fun Application.configureRouting() {
             }
         }
 
+        authenticate("auth-basic") {
+            get("/xyz") {
+                call.respondText("Hello, ${call.principal<UserIdPrincipal>()?.name}!")
+            }
+        }
+
         route("articles") {
             get {
                 call.respond(FreeMarkerContent("index.ftl", mapOf("articles" to dao.allArticles())))

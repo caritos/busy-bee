@@ -30,7 +30,7 @@ fun Application.configureAuthentication() {
             }
         }
         basic("auth-basic") {
-            realm = "Access to the '/admin' path"
+            realm = "Access to the '/' path"
             validate { credentials ->
                 if (credentials.name == "admin" && credentials.password == "password") {
                     UserIdPrincipal(credentials.name)
