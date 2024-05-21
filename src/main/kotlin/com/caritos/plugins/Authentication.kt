@@ -1,42 +1,30 @@
 package com.caritos.plugins
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
+import org.slf4j.LoggerFactory
 
 fun Application.configureAuthentication() {
+    val log = LoggerFactory.getLogger("Application")
     install(Authentication) {
         form("auth-form") {
+            log.info("inside authentication")
             userParamName = "username"
             passwordParamName = "password"
             validate { credentials ->
-                if (credentials.name == "jetbrains" && credentials.password == "foobar") {
+                log.info("credentials.name: ${credentials.name}")
+                log.info("credentials.password: ${credentials.password}")
+                if (credentials.name == "user" && credentials.password == "password") {
                     UserIdPrincipal(credentials.name)
                 } else {
                     null
                 }
             }
-        }
-        session<UserSession>("auth-session") {
-            validate { session ->
-                if(session.name.startsWith("jet")) {
-                    session
-                } else {
-                    null
-                }
-            }
+
             challenge {
-                call.respondRedirect("/login")
-            }
-        }
-        basic("auth-basic") {
-            realm = "Access to the '/' path"
-            validate { credentials ->
-                if (credentials.name == "admin" && credentials.password == "password") {
-                    UserIdPrincipal(credentials.name)
-                } else {
-                    null
-                }
+                call.respond(HttpStatusCode.Unauthorized, "Invalid credentials")
             }
         }
     }

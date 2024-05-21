@@ -1,6 +1,7 @@
 package com.caritos.plugins
 
 import com.caritos.dao.dao
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.freemarker.*
@@ -14,19 +15,46 @@ import io.ktor.server.util.*
 import kotlinx.html.*
 import org.slf4j.LoggerFactory
 
-data class UserSession(val name: String, val count: Int) : Principal
+data class UserSession(val name: String)
 
 fun Application.configureRouting() {
     val log = LoggerFactory.getLogger("Application")
     routing {
-        staticResources("/static", "static")
-
-        get("/") {
-            call.respondRedirect("articles")
+        // Handle the login form submission
+        authenticate("auth-form") {
+            post("/login") {
+                log.info("inside authenticate auth form")
+                val principal = call.principal<UserIdPrincipal>()
+                if (principal != null) {
+                    call.sessions.set(UserSession(principal.name))
+                    call.respondText("Logged in as ${principal.name}")
+                }
+            }
         }
 
+        // Protected route
+        authenticate("auth-form") {
+            get("/protected") {
+                val principal = call.principal<UserIdPrincipal>()
+                call.respondText("Hello, ${principal!!.name}")
+            }
+        }
+
+        get("/logout") {
+            call.sessions.clear<UserSession>()
+            call.respondText("Logged out")
+        }
+
+        get("/protected") {
+            val session = call.sessions.get<UserSession>()
+            if (session == null) {
+                call.respond(HttpStatusCode.Unauthorized, "Unauthorized")
+            } else {
+                call.respondText("Hello, ${session.name}")
+            }
+        }
         get("/login") {
-            log.debug("inside get /logic")
+            log.info("Serving login page")
             call.respond(FreeMarkerContent("login.ftl", model = null))
         }
 
@@ -36,21 +64,11 @@ fun Application.configureRouting() {
             call.respond(FreeMarkerContent("hello.ftl", model = null))
         }
 
-        authenticate("auth-form"){
-            post("/login") {
-                log.debug("inside authenticate auth form")
-                val userName = call.principal<UserIdPrincipal>()?.name.toString()
-                log.debug("userName: $userName")
-                call.sessions.set(UserSession(name = userName, count = 1))
-                call.respond(FreeMarkerContent("hello.ftl", model = null))
-            }
+        get("/") {
+            call.respondRedirect("articles")
         }
 
-        authenticate("auth-basic") {
-            get("/xyz") {
-                call.respondText("Hello, ${call.principal<UserIdPrincipal>()?.name}!")
-            }
-        }
+        staticResources("/static", "static")
 
         route("articles") {
             get {

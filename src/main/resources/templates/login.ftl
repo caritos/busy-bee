@@ -1,7 +1,6 @@
 <#import "_layout.ftl" as layout />
 <@layout.header>
-    <form action="/login", encType="application/x-www-form-urlencoded", method=FormMethod.post>
-
+    <form action="/login" method="post">
     <div class="flex justify-center items-center h-screen bg-indigo-600">
         <div class="w-96 p-6 shadow-lg bg-white rounded-md">
             <h1 class="text-3xl block text-center font-semibold"><i class="fa-solid fa-user"></i> Login</h1>
@@ -24,7 +23,7 @@
                 </div>
             </div>
             <div class="mt-5">
-                <button type="submit" class="border-2 border-indigo-700 bg-indigo-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-indigo-700 font-semibold"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Login</button>
+                <button type="submit" value="Login" class="border-2 border-indigo-700 bg-indigo-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-indigo-700 font-semibold"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Login</button>
             </div>
         </div>
     </div>

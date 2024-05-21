@@ -3,11 +3,8 @@ package com.caritos.plugins
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 
-fun Application.configureSessions() {
+fun Application.configureSession() {
     install(Sessions) {
-        cookie<UserSession>("user_session") {
-            cookie.path = "/"
-            cookie.maxAgeInSeconds = 60
-        }
+        cookie<UserSession>("USER_SESSION")
     }
 }
