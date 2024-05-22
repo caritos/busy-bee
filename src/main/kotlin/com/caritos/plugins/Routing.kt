@@ -15,15 +15,13 @@ import io.ktor.server.util.*
 import kotlinx.html.*
 import org.slf4j.LoggerFactory
 
-data class UserSession(val name: String)
-
 fun Application.configureRouting() {
     val log = LoggerFactory.getLogger("Application")
     routing {
         // Handle the login form submission
         authenticate("auth-form") {
             post("/login") {
-                log.info("inside authenticate auth form")
+                log.info("inside authenticate auth form post login")
                 val principal = call.principal<UserIdPrincipal>()
                 if (principal != null) {
                     call.sessions.set(UserSession(principal.name))
@@ -50,7 +48,7 @@ fun Application.configureRouting() {
             if (session == null) {
                 call.respond(HttpStatusCode.Unauthorized, "Unauthorized")
             } else {
-                call.respondText("Hello, ${session.name}")
+                call.respondText("Hello, ${session.userId}")
             }
         }
         get("/login") {

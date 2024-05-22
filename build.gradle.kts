@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     implementation("io.ktor:ktor-server-auth:$ktor_version")
+    implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("io.ktor:ktor-server-freemarker:$ktor_version")
     implementation("io.ktor:ktor-server-core:$ktor_version") // Replace with your Ktor version
     implementation("io.ktor:ktor-server-netty:$ktor_version") // Replace with your Ktor version
