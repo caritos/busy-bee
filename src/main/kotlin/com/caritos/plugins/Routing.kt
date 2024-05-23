@@ -34,10 +34,6 @@ fun Application.configureRouting() {
                     call.sessions.set(UserSession(name = username, count = 1))
                     call.respondRedirect("/dashboard")
                 }
-//                else {
-//                    log.info("principal is null")
-//                    call.respondText("Authentication failed")
-//                }
             }
         }
 
