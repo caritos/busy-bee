@@ -17,14 +17,28 @@ fun Application.configureAuthentication() {
                 log.info("credentials.name: ${credentials.name}")
                 log.info("credentials.password: ${credentials.password}")
                 if (credentials.name == "user" && credentials.password == "password") {
+                    log.info("credentials pass")
                     UserIdPrincipal(credentials.name)
                 } else {
+                    log.info("credentials fail")
                     null
                 }
             }
-
+        }
+        session<UserSession>("auth-session") {
+            validate { session ->
+                log.debug("validating session")
+                if(session.name.startsWith("use")) {
+                    log.info("session name is correct")
+                    session
+                } else {
+                    log.info("session name incorrect")
+                    null
+                }
+            }
             challenge {
-                call.respond(HttpStatusCode.Unauthorized, "Invalid credentials")
+                log.info("challenge at session<UserSession")
+                call.respondRedirect("/login")
             }
         }
     }

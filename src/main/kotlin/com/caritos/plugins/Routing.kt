@@ -18,55 +18,55 @@ import org.slf4j.LoggerFactory
 fun Application.configureRouting() {
     val log = LoggerFactory.getLogger("Application")
     routing {
-        // Handle the login form submission
-        authenticate("auth-form") {
-            post("/login") {
-                log.info("inside authenticate auth form post login")
-                val principal = call.principal<UserIdPrincipal>()
-                if (principal != null) {
-                    call.sessions.set(UserSession(principal.name))
-                    call.respondText("Logged in as ${principal.name}")
-                }
-            }
-        }
+        staticResources("/static", "static")
 
-        // Protected route
-        authenticate("auth-form") {
-            get("/protected") {
-                val principal = call.principal<UserIdPrincipal>()
-                call.respondText("Hello, ${principal!!.name}")
-            }
-        }
-
-        get("/logout") {
-            call.sessions.clear<UserSession>()
-            call.respondText("Logged out")
-        }
-
-        get("/protected") {
-            val session = call.sessions.get<UserSession>()
-            if (session == null) {
-                call.respond(HttpStatusCode.Unauthorized, "Unauthorized")
-            } else {
-                call.respondText("Hello, ${session.userId}")
-            }
-        }
         get("/login") {
             log.info("Serving login page")
             call.respond(FreeMarkerContent("login.ftl", model = null))
         }
 
-
-        get("/hello") {
-            log.debug("inside get /hello")
-            call.respond(FreeMarkerContent("hello.ftl", model = null))
+        // Handle the login form submission
+        authenticate("auth-form") {
+            post("/login") {
+                val username = call.principal<UserIdPrincipal>()?.name.toString()
+                if (username != null) {
+                    log.info("principal is not null")
+                    call.sessions.set(UserSession(name = username, count = 1))
+                    call.respondRedirect("/dashboard")
+                }
+//                else {
+//                    log.info("principal is null")
+//                    call.respondText("Authentication failed")
+//                }
+            }
         }
+
+        get("/logout") {
+            log.info("logging out")
+            call.sessions.clear<UserSession>()
+            call.respondRedirect("/login")
+        }
+
+        authenticate("auth-session") {
+            get("/dashboard") {
+                log.info("inside dashboard")
+                val userSession = call.principal<UserSession>()
+                if (userSession == null) {
+                    log.info("user session is null")
+                    call.respondRedirect("/login")
+                } else {
+                    log.info("session variable exist, go to dashboard.ftl")
+                    call.sessions.set(userSession?.copy(count = userSession.count + 1))
+                    call.respond(FreeMarkerContent("dashboard.ftl", model = null))
+                }
+            }
+        }
+
 
         get("/") {
             call.respondRedirect("articles")
         }
 
-        staticResources("/static", "static")
 
         route("articles") {
             get {
