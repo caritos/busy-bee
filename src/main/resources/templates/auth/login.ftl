@@ -1,4 +1,4 @@
-<#import "_layout.ftl" as layout />
+<#import "../_layout.ftl" as layout />
 <@layout.header>
     <form action="/login" method="post">
     <div class="flex justify-center items-center h-screen bg-indigo-600">

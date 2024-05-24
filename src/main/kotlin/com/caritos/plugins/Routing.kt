@@ -25,13 +25,13 @@ fun Application.configureRouting() {
 
         get("/login") {
             log.info("Serving login page")
-            call.respond(FreeMarkerContent("login.ftl", model = null))
+            call.respond(FreeMarkerContent("auth/login.ftl", model = null))
         }
 
 
         get("/signup") {
             log.info("serving signup page")
-            call.respond(FreeMarkerContent("signup.ftl", model = null))
+            call.respond(FreeMarkerContent("auth/signup.ftl", model = null))
         }
 
         post("/signup") {
