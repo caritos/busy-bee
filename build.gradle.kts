@@ -25,6 +25,7 @@ repositories {
 }
 
 dependencies {
+    implementation("at.favre.lib:bcrypt:0.9.0") // bcrypt for password hashing
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("io.ktor:ktor-server-freemarker:$ktor_version")

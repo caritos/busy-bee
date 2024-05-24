@@ -12,6 +12,7 @@ object DatabaseSingleton {
         val jdbcURL = "jdbc:h2:file:./build/db"
         val database = Database.connect(jdbcURL, driverClassName)
         transaction(database) {
+            SchemaUtils.create(Users)
             SchemaUtils.create(Articles)
         }
     }

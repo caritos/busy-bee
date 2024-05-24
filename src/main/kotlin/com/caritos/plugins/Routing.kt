@@ -1,6 +1,7 @@
 package com.caritos.plugins
 
 import com.caritos.dao.dao
+import com.caritos.models.Users
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -13,6 +14,8 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.util.*
 import kotlinx.html.*
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
 fun Application.configureRouting() {
@@ -23,6 +26,36 @@ fun Application.configureRouting() {
         get("/login") {
             log.info("Serving login page")
             call.respond(FreeMarkerContent("login.ftl", model = null))
+        }
+
+
+        get("/signup") {
+            log.info("serving signup page")
+            call.respond(FreeMarkerContent("signup.ftl", model = null))
+        }
+
+        post("/signup") {
+            val params = call.receiveParameters()
+            val username = params["username"]
+            val password = params["password"]
+
+            if (username.isNullOrBlank() || password.isNullOrBlank()) {
+                call.respond(HttpStatusCode.BadRequest, "Missing username or password")
+                return@post
+            }
+
+            val salt = generateSalt()
+            val hashedPassword = hashPassword(password, salt)
+
+            transaction {
+                Users.insert {
+                    it[Users.username] = username
+                    it[Users.password] = hashedPassword
+                    it[Users.salt] = salt
+                }
+            }
+
+            call.respond(HttpStatusCode.Created, "User registered successfully")
         }
 
         // Handle the login form submission

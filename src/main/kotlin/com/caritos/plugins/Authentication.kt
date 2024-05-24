@@ -5,7 +5,25 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import org.slf4j.LoggerFactory
+import java.security.SecureRandom
+import java.util.*
+import at.favre.lib.crypto.bcrypt.BCrypt
 
+fun generateSalt(): String {
+    val random = SecureRandom()
+    val salt = ByteArray(16)
+    random.nextBytes(salt)
+    return Base64.getEncoder().encodeToString(salt)
+}
+
+fun hashPassword(password: String, salt: String): String {
+    return BCrypt.withDefaults().hashToString(12, (salt + password).toCharArray())
+}
+
+fun verifyPassword(password: String, salt: String, hashedPassword: String): Boolean {
+    val result = BCrypt.verifyer().verify((salt + password).toCharArray(), hashedPassword)
+    return result.verified
+}
 fun Application.configureAuthentication() {
     val log = LoggerFactory.getLogger("Application")
     install(Authentication) {
