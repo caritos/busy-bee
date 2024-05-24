@@ -80,7 +80,7 @@ fun Application.configureRouting() {
         authenticate("auth-session") {
             get("/dashboard") {
                 log.info("inside dashboard")
-                call.respond(FreeMarkerContent("dashboard.ftl", model = null))
+                call.respond(FreeMarkerContent("dashboard/index.ftl", model = null))
             }
         }
 
