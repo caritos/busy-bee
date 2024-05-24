@@ -7,3 +7,8 @@
 
 - npm run build:tailwind
 - ./gradlew run
+
+# name of the app
+
+- king of the court
+- courtking

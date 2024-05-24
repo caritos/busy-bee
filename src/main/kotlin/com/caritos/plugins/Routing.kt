@@ -61,11 +61,12 @@ fun Application.configureRouting() {
         // Handle the login form submission
         authenticate("auth-form") {
             post("/login") {
-                val username = call.principal<UserIdPrincipal>()?.name.toString()
-                if (username != null) {
-                    log.info("principal is not null")
-                    call.sessions.set(UserSession(name = username, count = 1))
+                val principal = call.principal<UserIdPrincipal>()
+                if (principal != null) {
+                    call.sessions.set(UserSession(principal.name))
                     call.respondRedirect("/dashboard")
+                } else {
+                    call.respondText("Authentication failed")
                 }
             }
         }
@@ -79,18 +80,9 @@ fun Application.configureRouting() {
         authenticate("auth-session") {
             get("/dashboard") {
                 log.info("inside dashboard")
-                val userSession = call.principal<UserSession>()
-                if (userSession == null) {
-                    log.info("user session is null")
-                    call.respondRedirect("/login")
-                } else {
-                    log.info("session variable exist, go to dashboard.ftl")
-                    call.sessions.set(userSession?.copy(count = userSession.count + 1))
-                    call.respond(FreeMarkerContent("dashboard.ftl", model = null))
-                }
+                call.respond(FreeMarkerContent("dashboard.ftl", model = null))
             }
         }
-
 
         get("/") {
             call.respondRedirect("articles")

@@ -4,7 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.sessions.*
 
-data class UserSession(val name: String, val count: Int): Principal
+data class UserSession(val username: String): Principal
 
 fun Application.configureSession() {
     install(Sessions) {

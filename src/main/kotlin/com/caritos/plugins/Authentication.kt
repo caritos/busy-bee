@@ -1,6 +1,5 @@
 package com.caritos.plugins
 
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -8,6 +7,10 @@ import org.slf4j.LoggerFactory
 import java.security.SecureRandom
 import java.util.*
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.caritos.models.User
+import com.caritos.models.Users
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
 
 fun generateSalt(): String {
     val random = SecureRandom()
@@ -28,34 +31,32 @@ fun Application.configureAuthentication() {
     val log = LoggerFactory.getLogger("Application")
     install(Authentication) {
         form("auth-form") {
-            log.info("inside authentication")
             userParamName = "username"
             passwordParamName = "password"
             validate { credentials ->
-                log.info("credentials.name: ${credentials.name}")
-                log.info("credentials.password: ${credentials.password}")
-                if (credentials.name == "user" && credentials.password == "password") {
-                    log.info("credentials pass")
+                val user = transaction {
+                    Users.select { Users.username eq credentials.name }.singleOrNull()?.let {
+                        User(it[Users.id].value, it[Users.username], it[Users.password], it[Users.salt])
+                    }
+                }
+                if (user != null && verifyPassword(credentials.password, user.salt, user.password)) {
                     UserIdPrincipal(credentials.name)
                 } else {
-                    log.info("credentials fail")
                     null
                 }
             }
         }
         session<UserSession>("auth-session") {
             validate { session ->
-                log.debug("validating session")
-                if(session.name.startsWith("use")) {
-                    log.info("session name is correct")
+                log.debug("Validating session for user: ${session.username}")
+                if (session.username.isNotBlank()) {
                     session
                 } else {
-                    log.info("session name incorrect")
                     null
                 }
             }
             challenge {
-                log.info("challenge at session<UserSession")
+                log.info("Redirecting to login due to missing session")
                 call.respondRedirect("/login")
             }
         }
