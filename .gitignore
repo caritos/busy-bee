@@ -39,3 +39,6 @@ out/
 .DS_Store
 
 node_modules/
+
+### api keys are found here ###
+.env
