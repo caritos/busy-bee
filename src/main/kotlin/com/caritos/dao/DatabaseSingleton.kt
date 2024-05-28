@@ -16,6 +16,11 @@ object DatabaseSingleton {
         transaction(database) {
             SchemaUtils.create(Users)
             SchemaUtils.create(Articles)
+            SchemaUtils.create(Courts)
+            SchemaUtils.create(Players)
+            SchemaUtils.create(Matches)
+            SchemaUtils.create(Teams)
+            SchemaUtils.create(TennisSets)
         }
     }
 

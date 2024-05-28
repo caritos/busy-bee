@@ -88,6 +88,30 @@ fun Application.configureRouting() {
             call.respondRedirect("articles")
         }
 
+        get("/courts") {
+            call.respond(dao.getAllCourts())
+        }
+
+        get("/players") {
+            call.respond(dao.getAllPlayers())
+        }
+
+        get("/matches") {
+            call.respond(dao.getAllMatches())
+        }
+
+        get("/teams") {
+            call.respond(dao.getAllTeams())
+        }
+
+        get("/sets") {
+            call.respond(dao.getAllSets())
+        }
+
+        get("/rankings") {
+            val rankings = dao.getRankings()
+            call.respond(rankings)
+        }
 
         route("articles") {
             get {
