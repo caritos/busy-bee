@@ -1,6 +1,7 @@
 package com.caritos.plugins
 
 import com.caritos.dao.dao
+import com.caritos.dao.daoPlayer
 import com.caritos.dao.daoCourt
 import com.caritos.models.Users
 import io.ktor.http.*
@@ -86,12 +87,6 @@ fun Application.configureRouting() {
 
         get("/") {
             call.respondRedirect("articles")
-        }
-
-
-
-        get("/players") {
-            call.respond(dao.getAllPlayers())
         }
 
         get("/matches") {
@@ -196,5 +191,51 @@ fun Application.configureRouting() {
                 }
             }
         }
-    }
+
+
+        route("players") {
+            get {
+                log.info("inside players")
+                call.respond(FreeMarkerContent("players/index.ftl", mapOf("players" to daoPlayer.getAll())))
+            }
+
+            get("new") {
+                call.respond(FreeMarkerContent("players/new.ftl", model = null))
+            }
+
+            post {
+                val formParameters = call.receiveParameters()
+                val name = formParameters.getOrFail("name")
+                val player = daoPlayer.add(name)
+                call.respondRedirect("/players/${player?.id}")
+            }
+
+            get("{id}") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                call.respond(FreeMarkerContent("/players/show.ftl", mapOf("player" to daoPlayer.get(id))))
+            }
+
+            get("{id}/edit") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                call.respond(FreeMarkerContent("/players/edit.ftl", mapOf("player" to daoPlayer.get(id))))
+            }
+
+            post("{id}") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                val formParameters = call.receiveParameters()
+                when (formParameters.getOrFail("_action")) {
+                    "update" -> {
+                        val name = formParameters.getOrFail("name")
+                        daoPlayer.edit(id, name)
+                        call.respondRedirect("/players/$id")
+                    }
+
+                    "delete" -> {
+                        daoPlayer.delete(id)
+                        call.respondRedirect("/players")
+                    }
+                }
+            }
+        }
+        }
 }
