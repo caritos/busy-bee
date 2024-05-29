@@ -28,7 +28,6 @@ fun Application.configureRouting() {
             call.respond(FreeMarkerContent("auth/login.ftl", model = null))
         }
 
-
         get("/signup") {
             log.info("serving signup page")
             call.respond(FreeMarkerContent("auth/signup.ftl", model = null))
@@ -88,10 +87,7 @@ fun Application.configureRouting() {
             call.respondRedirect("articles")
         }
 
-        get("/courts") {
-            log.info("inside courts")
-            call.respond(FreeMarkerContent("courts/index.ftl", mapOf("articles" to dao.getAllCourts())))
-        }
+
 
         get("/players") {
             call.respond(dao.getAllPlayers())
@@ -114,12 +110,58 @@ fun Application.configureRouting() {
             call.respond(rankings)
         }
 
+        route("courts") {
+            get {
+                log.info("inside courts")
+                call.respond(FreeMarkerContent("courts/index.ftl", mapOf("courts" to dao.getAllCourts())))
+            }
+
+            get("new") {
+                call.respond(FreeMarkerContent("courts/new.ftl", model = null))
+            }
+
+            post {
+                val formParameters = call.receiveParameters()
+                val name = formParameters.getOrFail("name")
+                val location = formParameters.getOrFail("location")
+                val court = dao.addCourt(name, location)
+                call.respondRedirect("/courts/${court?.id}")
+            }
+
+            get("{id}") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                call.respond(FreeMarkerContent("/courts/show.ftl", mapOf("court" to dao.court(id))))
+            }
+
+            get("{id}/edit") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                call.respond(FreeMarkerContent("/courts/edit.ftl", mapOf("court" to dao.court(id))))
+            }
+
+            post("{id}") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                val formParameters = call.receiveParameters()
+                when (formParameters.getOrFail("_action")) {
+                    "update" -> {
+                        val name = formParameters.getOrFail("name")
+                        val location = formParameters.getOrFail("location")
+                        dao.editCourt(id, name, location)
+                        call.respondRedirect("/courts/$id")
+                    }
+                    "delete" -> {
+                        dao.deleteCourt(id)
+                        call.respondRedirect("/courts")
+                    }
+                }
+            }
+
+        }
         route("articles") {
             get {
-                call.respond(FreeMarkerContent("index.ftl", mapOf("articles" to dao.allArticles())))
+                call.respond(FreeMarkerContent("articles/index.ftl", mapOf("articles" to dao.allArticles())))
             }
             get("new") {
-                call.respond(FreeMarkerContent("new.ftl", model = null))
+                call.respond(FreeMarkerContent("articles/new.ftl", model = null))
             }
             post {
                 val formParameters = call.receiveParameters()
@@ -130,11 +172,11 @@ fun Application.configureRouting() {
             }
             get("{id}") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
-                call.respond(FreeMarkerContent("show.ftl", mapOf("article" to dao.article(id))))
+                call.respond(FreeMarkerContent("articles/show.ftl", mapOf("article" to dao.article(id))))
             }
             get("{id}/edit") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
-                call.respond(FreeMarkerContent("edit.ftl", mapOf("article" to dao.article(id))))
+                call.respond(FreeMarkerContent("articles/edit.ftl", mapOf("article" to dao.article(id))))
             }
             post("{id}") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()

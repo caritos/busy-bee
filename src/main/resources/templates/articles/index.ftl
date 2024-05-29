@@ -1,5 +1,5 @@
 <#-- @ftlvariable name="articles" type="kotlin.collections.List<com.example.models.Article>" -->
-<#import "_layout.ftl" as layout />
+<#import "../_layout.ftl" as layout />
 <@layout.header>
 
 

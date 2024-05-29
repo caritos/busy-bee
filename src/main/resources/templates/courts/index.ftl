@@ -16,4 +16,8 @@
         <p>No courts available</p>
     </#if>
 
+  <p>
+    <a href="/courts/new">Add a Court</a>
+  </p>
+
 </@layout.header>

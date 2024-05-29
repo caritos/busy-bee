@@ -18,7 +18,7 @@ class DAOFacadeImpl : DAOFacade {
     )
 
     private fun resultRowToCourt(row: ResultRow) = Court(
-        id = row[Courts.id],
+        id = row[Courts.id].value,
         name = row[Courts.name],
         location = row[Courts.location],
     )
@@ -53,14 +53,7 @@ class DAOFacadeImpl : DAOFacade {
         Articles.deleteWhere { Articles.id eq id } > 0
     }
 
-    override suspend fun addCourt(name: String, location: String): Int {
-        return transaction {
-            Courts.insertAndGetId {
-                it[Courts.name] = name
-                it[Courts.location] = location
-            }.value
-        }
-    }
+
 
     override suspend fun addMatch(
         date: LocalDateTime,
@@ -108,16 +101,44 @@ class DAOFacadeImpl : DAOFacade {
         }
     }
 
+
+
     override suspend fun getAllCourts(): List<Court> {
         return transaction {
             Courts.selectAll().map {
                 Court(
-                    id = it[Courts.id],
+                    id = it[Courts.id].value,
                     name = it[Courts.name],
                     location = it[Courts.location]
                 )
             }
         }
+    }
+
+    override suspend fun court(id: Int): Court? = dbQuery {
+       Courts
+            .select { Courts.id eq id }
+            .map(::resultRowToCourt)
+            .singleOrNull()
+    }
+
+    override suspend fun addCourt(name: String, location: String): Court? = dbQuery {
+        val insertStatement = Courts.insert {
+            it[Courts.name] = name
+            it[Courts.location] = location
+        }
+        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToCourt)
+    }
+
+    override suspend fun editCourt(id: Int, name: String, location: String): Boolean = dbQuery {
+        Courts.update({ Courts.id eq id }) {
+            it[Courts.name] = name
+            it[Courts.location] = location
+        } > 0
+    }
+
+    override suspend fun deleteCourt(id: Int): Boolean = dbQuery {
+        Courts.deleteWhere { Courts.id eq id } > 0
     }
 
     override suspend fun getAllPlayers(): List<Player> {
@@ -219,6 +240,10 @@ val dao: DAOFacade = DAOFacadeImpl().apply {
     runBlocking {
         if(allArticles().isEmpty()) {
             addNewArticle("The drive to develop!", "...it's what keeps me going.")
+        }
+
+        if(getAllCourts().isEmpty()) {
+            addCourt("Robert Murphy Junior High School", "Stony Brook")
         }
     }
 }

@@ -1,16 +1,11 @@
 package com.caritos.models
 
-import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.javatime.datetime
 import java.time.LocalDateTime
 
 data class User(val id: Int, val username: String, val password: String, val salt: String)
-data class Court(
-    val id: EntityID<Int>,
-    val name: String,
-    val location: String
-)
+data class Court(val id: Int, val name: String, val location: String)
 
 data class Player(
     val id: Int,

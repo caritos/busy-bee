@@ -1,4 +1,4 @@
-<#import "_layout.ftl" as layout />
+<#import "../_layout.ftl" as layout />
 <@layout.header>
     <div>
         <h3>Create article</h3>
