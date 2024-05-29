@@ -1,6 +1,7 @@
 package com.caritos
 
 import com.caritos.plugins.*
+import com.caritos.routes.configureRouting
 import configureDatabase
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
