@@ -3,9 +3,9 @@
 <@layout.header>
     <div>
         <h3>Edit Teams</h3>
-        <form action="/teams/${player.id}" method="post">
+        <form action="/teams/${team.id}" method="post">
             <p>
-                <input type="text" name="name" value="${player.name}">
+                <input type="text" name="name" value="${team.name}">
             </p>
             <p>
                 <input type="submit" name="_action" value="update">
@@ -13,7 +13,7 @@
         </form>
     </div>
     <div>
-        <form action="/teams/${player.id}" method="post">
+        <form action="/teams/${team.id}" method="post">
             <p>
                 <input type="submit" name="_action" value="delete">
             </p>

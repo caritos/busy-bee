@@ -1,8 +1,8 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
     <div>
-        <h3>Create Player</h3>
-        <form action="/players" method="post">
+        <h3>Create team</h3>
+        <form action="/teams" method="post">
             <p>
                 <input type="text" name="name">
             </p>
