@@ -1,6 +1,7 @@
 package com.caritos.plugins
 
 import com.caritos.dao.dao
+import com.caritos.dao.daoCourt
 import com.caritos.models.Users
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -113,7 +114,7 @@ fun Application.configureRouting() {
         route("courts") {
             get {
                 log.info("inside courts")
-                call.respond(FreeMarkerContent("courts/index.ftl", mapOf("courts" to dao.getAllCourts())))
+                call.respond(FreeMarkerContent("courts/index.ftl", mapOf("courts" to daoCourt.getAllCourts())))
             }
 
             get("new") {
@@ -124,18 +125,18 @@ fun Application.configureRouting() {
                 val formParameters = call.receiveParameters()
                 val name = formParameters.getOrFail("name")
                 val location = formParameters.getOrFail("location")
-                val court = dao.addCourt(name, location)
+                val court = daoCourt.addCourt(name, location)
                 call.respondRedirect("/courts/${court?.id}")
             }
 
             get("{id}") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
-                call.respond(FreeMarkerContent("/courts/show.ftl", mapOf("court" to dao.court(id))))
+                call.respond(FreeMarkerContent("/courts/show.ftl", mapOf("court" to daoCourt.court(id))))
             }
 
             get("{id}/edit") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
-                call.respond(FreeMarkerContent("/courts/edit.ftl", mapOf("court" to dao.court(id))))
+                call.respond(FreeMarkerContent("/courts/edit.ftl", mapOf("court" to daoCourt.court(id))))
             }
 
             post("{id}") {
@@ -145,11 +146,11 @@ fun Application.configureRouting() {
                     "update" -> {
                         val name = formParameters.getOrFail("name")
                         val location = formParameters.getOrFail("location")
-                        dao.editCourt(id, name, location)
+                        daoCourt.editCourt(id, name, location)
                         call.respondRedirect("/courts/$id")
                     }
                     "delete" -> {
-                        dao.deleteCourt(id)
+                        daoCourt.deleteCourt(id)
                         call.respondRedirect("/courts")
                     }
                 }

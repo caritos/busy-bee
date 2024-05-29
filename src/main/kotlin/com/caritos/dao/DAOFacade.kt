@@ -20,10 +20,6 @@ interface DAOFacade {
     suspend fun editArticle(id: Int, title: String, body: String): Boolean
     suspend fun deleteArticle(id: Int): Boolean
 
-    suspend fun getAllCourts(): List<Court>
-    suspend fun court(id: Int): Court?
-    suspend fun addCourt(name: String, location: String): Court?
-    suspend fun editCourt(id: Int, name: String, location: String): Boolean
-    suspend fun deleteCourt(id: Int): Boolean
+
 
 }
