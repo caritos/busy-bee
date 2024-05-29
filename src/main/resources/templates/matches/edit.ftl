@@ -2,10 +2,10 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
     <div>
-        <h3>Edit Player</h3>
-        <form action="/players/${player.id}" method="post">
+        <h3>Edit match</h3>
+        <form action="/matches/${match.id}" method="post">
             <p>
-                <input type="text" name="name" value="${player.name}">
+                <input type="text" name="date" value="${match.date}">
             </p>
             <p>
                 <input type="submit" name="_action" value="update">
@@ -13,7 +13,7 @@
         </form>
     </div>
     <div>
-        <form action="/players/${player.id}" method="post">
+        <form action="/matches/${match.id}" method="post">
             <p>
                 <input type="submit" name="_action" value="delete">
             </p>

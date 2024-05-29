@@ -3,11 +3,11 @@
 <@layout.header>
     <div>
         <h3>
-            ${player.name}
+            ${match.name}
         </h3>
         <hr>
         <p>
-            <a href="/players/${player.id}/edit">Edit Player</a>
+            <a href="/matches/${match.id}/edit">Edit match</a>
         </p>
     </div>
 </@layout.header>

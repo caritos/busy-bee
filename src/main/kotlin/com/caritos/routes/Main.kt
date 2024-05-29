@@ -1,8 +1,6 @@
 package com.caritos.routes
 
 import com.caritos.dao.dao
-import com.caritos.dao.daoPlayer
-import com.caritos.dao.daoCourt
 import com.caritos.models.Users
 import com.caritos.plugins.UserSession
 import com.caritos.plugins.generateSalt
@@ -16,7 +14,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
@@ -90,10 +87,6 @@ fun Application.configureRouting() {
             call.respondRedirect("articles")
         }
 
-        get("/matches") {
-            call.respond(dao.getAllMatches())
-        }
-
         get("/teams") {
             call.respond(dao.getAllTeams())
         }
@@ -107,10 +100,10 @@ fun Application.configureRouting() {
             call.respond(rankings)
         }
 
-
         courtRoutes()
         articleRoutes()
         playerRoutes()
+        matchRoutes()
     }
 
 }

@@ -86,7 +86,7 @@ class DAOMatchImpl : DAOMatch {
 val daoMatch: DAOMatch = DAOMatchImpl().apply {
     runBlocking {
         if(getAll().isEmpty()) {
-            add(LocalDateTime.now(), 1,1,2, false)
+            add(LocalDateTime.now(), 3,2,3, false)
         }
     }
 }

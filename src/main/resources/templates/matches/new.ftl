@@ -1,10 +1,10 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
     <div>
-        <h3>Create Player</h3>
-        <form action="/players" method="post">
+        <h3>Create match</h3>
+        <form action="/matches" method="post">
             <p>
-                <input type="text" name="name">
+                <input type="text" name="date">
             </p>
             <p>
                 <input type="submit">

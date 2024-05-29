@@ -1,19 +1,19 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
-    <#if players?has_content>
-        <#list players?reverse as player>
+    <#if matches?has_content>
+        <#list matches?reverse as match>
             <div>
                 <h3>
-                    <a href="/players/${player.id}">${player.name}</a>
+                    <a href="/matches/${match.id}">${match.date}</a>
                 </h3>
             </div>
         </#list>
     <#else>
-        <p>No players available</p>
+        <p>No matches available</p>
     </#if>
 
     <p>
-        <a href="/players/new">Add a Player</a>
+        <a href="/matches/new">Add a match</a>
     </p>
 
 </@layout.header>
