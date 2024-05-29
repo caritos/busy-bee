@@ -89,7 +89,9 @@ fun Application.configureRouting() {
         }
 
         get("/courts") {
-            call.respond(dao.getAllCourts())
+            log.info("inside courts")
+            val courts = dao.getAllCourts().map { court -> mapOf("name" to court.name, "location" to court.location)}
+            call.respond(FreeMarkerContent("courts/index.ftl", model = courts))
         }
 
         get("/players") {
