@@ -4,7 +4,7 @@
         <#list teams?reverse as team>
             <div>
                 <h3>
-                    <a href="/teams/${team.id}">${team.name}</a>
+                    <a href="/teams/${team.id}">${team.playerId}</a>
                 </h3>
             </div>
         </#list>

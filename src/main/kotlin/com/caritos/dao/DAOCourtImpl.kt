@@ -59,6 +59,8 @@ val daoCourt: DAOCourt = DAOCourtImpl().apply {
     runBlocking {
         if(getAllCourts().isEmpty()) {
             addCourt("Robert Murphy Junior High School", "Stony Brook")
+            addCourt("Stony Brook University", "Stony Brook")
+            addCourt("Rocky Point High School", "Rocky Point")
         }
     }
 }

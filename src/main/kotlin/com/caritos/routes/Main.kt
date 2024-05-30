@@ -87,10 +87,6 @@ fun Application.configureRouting() {
             call.respondRedirect("articles")
         }
 
-        get("/teams") {
-            call.respond(dao.getAllTeams())
-        }
-
         get("/sets") {
             call.respond(dao.getAllSets())
         }
@@ -104,6 +100,7 @@ fun Application.configureRouting() {
         articleRoutes()
         playerRoutes()
         matchRoutes()
+        teamRoutes()
     }
 
 }

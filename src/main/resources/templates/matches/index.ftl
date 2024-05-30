@@ -4,7 +4,7 @@
         <#list matches?reverse as match>
             <div>
                 <h3>
-                    <a href="/matches/${match.id}">${match.date}</a>
+                    <a href="/matches/${match.id}">${match.loserId}</a>
                 </h3>
             </div>
         </#list>

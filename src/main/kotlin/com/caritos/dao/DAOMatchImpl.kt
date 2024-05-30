@@ -9,6 +9,7 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 
 class DAOMatchImpl : DAOMatch {
@@ -22,6 +23,8 @@ class DAOMatchImpl : DAOMatch {
     )
 
     override suspend fun getAll(): List<Match> {
+        val logger = LoggerFactory.getLogger("Application")
+        logger.info("inside getAll")
         return transaction {
             Matches.selectAll().map {
                 Match(
@@ -86,7 +89,7 @@ class DAOMatchImpl : DAOMatch {
 val daoMatch: DAOMatch = DAOMatchImpl().apply {
     runBlocking {
         if(getAll().isEmpty()) {
-            add(LocalDateTime.now(), 3,2,3, false)
+            add(LocalDateTime.now(), 1,1,3, true)
         }
     }
 }

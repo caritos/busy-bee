@@ -58,6 +58,9 @@ val daoPlayer: DAOPlayer = DAOPlayerImpl().apply {
     runBlocking {
         if(getAll().isEmpty()) {
             add("Eladio Caritos")
+            add("Jason Loy")
+            add("Naveen")
+            add("David")
         }
     }
 }
