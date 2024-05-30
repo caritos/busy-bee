@@ -101,6 +101,7 @@ fun Application.configureRouting() {
         playerRoutes()
         matchRoutes()
         teamRoutes()
+        tennisSetRoutes()
     }
 
 }
