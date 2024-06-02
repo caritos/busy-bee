@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 
 class DAOMatchImpl : DAOMatch {
+    val logger = LoggerFactory.getLogger("DAOMatchImpl")
+
     private fun resultRowToMatch(row: ResultRow) = Match(
         id = row[Matches.id].value,
         date = row[Matches.date],
@@ -53,6 +55,7 @@ class DAOMatchImpl : DAOMatch {
         loserId: Int,
         isDoubles: Boolean
     ): Match? = dbQuery {
+        logger.info("adding match")
         val insertStatement = Matches.insert {
             it[Matches.date] = date
             it[Matches.courtId] = courtId
