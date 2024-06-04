@@ -3,7 +3,7 @@
 <@layout.header>
     <div>
         <h3>
-            ${match.name}
+            ${match.id}
         </h3>
         <hr>
         <p>

@@ -84,7 +84,7 @@ fun Application.configureRouting() {
         }
 
         get("/") {
-            call.respondRedirect("articles")
+            call.respondRedirect("matches")
         }
 
         get("/sets") {

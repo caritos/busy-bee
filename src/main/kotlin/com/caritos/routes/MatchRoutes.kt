@@ -52,17 +52,19 @@ fun Route.matchRoutes() {
             val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
             val dateTime = LocalDateTime.parse(dateString, formatter)
             logger.info("dateTime: " + dateTime)
-            val courtId = formParameters.getOrFail("courtId")
+            val courtId = formParameters.getOrFail("court")
             logger.info("courtId:" + courtId)
-            val winnerId = formParameters.getOrFail("winnerId")
+            val winnerId = formParameters.getOrFail("player1")
             logger.info("winnerId:" + winnerId)
-            val loserId = formParameters.getOrFail("loserId")
+            val loserId = formParameters.getOrFail("player2")
             logger.info("loserId: " + loserId)
-            val isDoubles = formParameters.getOrFail("isDoubles")
+            val isDoubles = formParameters.getOrFail("isDoubles").equals("singles")
+            val isDoublesBoolean = if(isDoubles.equals("doubles")) true else false
             logger.info("isDoubles: " + isDoubles)
 
+
             logger.info("will be adding match to database")
-            val match= daoMatch.add(dateTime, courtId.toInt(), winnerId.toInt(), loserId.toInt(), isDoubles.toBoolean())
+            val match= daoMatch.add(dateTime, courtId.toInt(), winnerId.toInt(), loserId.toInt(), isDoublesBoolean)
            logger.info("match created:" + match?.id)
             call.respondRedirect("/matches/${match?.id}")
         }
