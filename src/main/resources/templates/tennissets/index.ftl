@@ -4,7 +4,10 @@
         <#list tennissets?reverse as tennisset>
             <div>
                 <h3>
+                    <a href="/tennissets/${tennisset.id}">${tennisset.id}</a>
                     <a href="/tennissets/${tennisset.id}">${tennisset.setNumber}</a>
+                    <a href="/tennissets/${tennisset.id}">${tennisset.player1Score}</a>
+                    <a href="/tennissets/${tennisset.id}">${tennisset.player2Score}</a>
                 </h3>
             </div>
         </#list>

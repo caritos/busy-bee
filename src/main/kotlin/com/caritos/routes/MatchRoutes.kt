@@ -1,6 +1,7 @@
 package com.caritos.routes
 
 import com.caritos.dao.daoMatch
+import com.caritos.dao.daoTennisSet
 import com.caritos.models.Court
 import com.caritos.models.Courts
 import com.caritos.models.Player
@@ -61,11 +62,24 @@ fun Route.matchRoutes() {
             val isDoubles = formParameters.getOrFail("isDoubles").equals("singles")
             val isDoublesBoolean = if(isDoubles.equals("doubles")) true else false
             logger.info("isDoubles: " + isDoubles)
+            val set1_player1 = formParameters.getOrFail("set1_player1")
+            val set1_player2 = formParameters.getOrFail("set1_player2")
+            val set2_player1 = formParameters.getOrFail("set2_player1")
+            val set2_player2 = formParameters.getOrFail("set2_player2")
+            val set3_player1 = formParameters.getOrFail("set3_player1")
+            val set3_player2 = formParameters.getOrFail("set3_player2")
 
 
             logger.info("will be adding match to database")
             val match= daoMatch.add(dateTime, courtId.toInt(), winnerId.toInt(), loserId.toInt(), isDoublesBoolean)
-           logger.info("match created:" + match?.id)
+            logger.info("will be adding the set scores")
+            if(match != null) {
+                val tennisSet1 = daoTennisSet.add(match.id, 1, set1_player1.toInt(), set1_player2.toInt())
+                val tennisSet2 = daoTennisSet.add(match.id, 2, set2_player1.toInt(), set2_player2.toInt())
+                val tennisSet3 = daoTennisSet.add(match.id, 3, set3_player1.toInt(), set3_player2.toInt())
+            }
+
+            logger.info("match created:" + match?.id)
             call.respondRedirect("/matches/${match?.id}")
         }
 
