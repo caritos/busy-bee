@@ -8,4 +8,5 @@ interface DAOTennisSet {
     suspend fun add(matchId: Int, setNumber: Int, player1Score: Int, player2Score: Int): TennisSet?
     suspend fun edit(id: Int, matchId: Int, setNumber: Int, player1Score: Int, player2Score: Int): Boolean
     suspend fun delete(id: Int): Boolean
+    suspend fun getAllForMatch(id: Int): List<TennisSet>
 }

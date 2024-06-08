@@ -1,6 +1,7 @@
 package com.caritos.dao
 
 import com.caritos.dao.DatabaseSingleton.dbQuery
+import com.caritos.models.Match
 import com.caritos.models.TennisSet
 import com.caritos.models.TennisSets
 import kotlinx.coroutines.runBlocking
@@ -61,6 +62,11 @@ class DAOTennisSetImpl : DAOTennisSet {
             it[TennisSets.player1Score] = player1Score
             it[TennisSets.player2Score] = player2Score
         } > 0
+    }
+
+    override suspend fun getAllForMatch(id: Int): List<TennisSet> = dbQuery {
+        TennisSets.select { TennisSets.matchId eq id }
+            .map(::resultRowToTennisSet)
     }
 
     override suspend fun delete(id: Int): Boolean = dbQuery {
