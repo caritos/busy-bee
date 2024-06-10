@@ -83,15 +83,6 @@ fun Route.matchRoutes() {
 
                     setNumber++
                 }
-//                val set1_player1 = formParameters.getOrFail("set1_player1")
-//                val set1_player2 = formParameters.getOrFail("set1_player2")
-//                val set2_player1 = formParameters.getOrFail("set2_player1")
-//                val set2_player2 = formParameters.getOrFail("set2_player2")
-//                val set3_player1 = formParameters.getOrFail("set3_player1")
-//                val set3_player2 = formParameters.getOrFail("set3_player2")
-//                val tennisSet1 = daoTennisSet.add(match.id, 1, set1_player1.toInt(), set1_player2.toInt())
-//                val tennisSet2 = daoTennisSet.add(match.id, 2, set2_player1.toInt(), set2_player2.toInt())
-//                val tennisSet3 = daoTennisSet.add(match.id, 3, set3_player1.toInt(), set3_player2.toInt())
             }
 
             logger.info("match created:" + match?.id)
