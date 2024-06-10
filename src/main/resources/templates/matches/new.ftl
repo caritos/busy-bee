@@ -50,22 +50,19 @@
             </select>
 
             <h2>Set Scores</h2>
-            <div>
-                <label for="set1_player1">Set 1 - Player 1:</label>
-                <input type="number" id="set1_player1" name="set1_player1" min="0" required>
-                <label for="set1_player2">Set 1 - Player 2:</label>
-                <input type="number" id="set1_player2" name="set1_player2" min="0" required><br>
 
-                <label for="set2_player1">Set 2 - Player 1:</label>
-                <input type="number" id="set2_player1" name="set2_player1" min="0" required>
-                <label for="set2_player2">Set 2 - Player 2:</label>
-                <input type="number" id="set2_player2" name="set2_player2" min="0" required><br>
+<div id="setScoresContainer">
+    <div>
+        <label for="set1_player1">Set 1 - Player 1:</label>
+        <input type="number" id="set4_player1" name="set4_player1" min="0" required="">
+        <label for="set1_player2">Set 1 - Player 2:</label>
+        <input type="number" id="set4_player2" name="set4_player2" min="0" required=""><br>
+    </div>
+    <!-- Existing set score input fields here -->
+</div>
 
-                <label for="set3_player1">Set 3 - Player 1:</label>
-                <input type="number" id="set3_player1" name="set3_player1" min="0" required>
-                <label for="set3_player2">Set 3 - Player 2:</label>
-                <input type="number" id="set3_player2" name="set3_player2" min="0" required><br>
-            </div>
+<button type="button" id="addSetScore">Add Set Score</button>
+<button type="button" id="removeSetScore">Remove Set Score</button>
 
             <button type="submit">Create Match</button>
         </form>
@@ -84,5 +81,6 @@
                 }
             }
         </script>
+        <script src="/static/js/add_set_score.js"></script>
     </div>
 </@layout.header>
