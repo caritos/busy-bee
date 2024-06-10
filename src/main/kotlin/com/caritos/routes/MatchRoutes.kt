@@ -62,21 +62,36 @@ fun Route.matchRoutes() {
             val isDoubles = formParameters.getOrFail("isDoubles").equals("singles")
             val isDoublesBoolean = if(isDoubles.equals("doubles")) true else false
             logger.info("isDoubles: " + isDoubles)
-            val set1_player1 = formParameters.getOrFail("set1_player1")
-            val set1_player2 = formParameters.getOrFail("set1_player2")
-            val set2_player1 = formParameters.getOrFail("set2_player1")
-            val set2_player2 = formParameters.getOrFail("set2_player2")
-            val set3_player1 = formParameters.getOrFail("set3_player1")
-            val set3_player2 = formParameters.getOrFail("set3_player2")
-
-
             logger.info("will be adding match to database")
             val match= daoMatch.add(dateTime, courtId.toInt(), winnerId.toInt(), loserId.toInt(), isDoublesBoolean)
             logger.info("will be adding the set scores")
             if(match != null) {
-                val tennisSet1 = daoTennisSet.add(match.id, 1, set1_player1.toInt(), set1_player2.toInt())
-                val tennisSet2 = daoTennisSet.add(match.id, 2, set2_player1.toInt(), set2_player2.toInt())
-                val tennisSet3 = daoTennisSet.add(match.id, 3, set3_player1.toInt(), set3_player2.toInt())
+                var setNumber = 1
+                while (true) {
+                    val player1ScoreParam = formParameters["set${setNumber}_player1"]
+                    val player2ScoreParam = formParameters["set${setNumber}_player2"]
+
+                    if (player1ScoreParam == null || player2ScoreParam == null) {
+                        break
+                    }
+
+                    val player1Score = player1ScoreParam.toInt()
+                    val player2Score = player2ScoreParam.toInt()
+
+                    logger.info("adding score for match ${match.id}, set $setNumber: $player1Score - $player2Score")
+                    daoTennisSet.add(match.id, setNumber, player1Score, player2Score)
+
+                    setNumber++
+                }
+//                val set1_player1 = formParameters.getOrFail("set1_player1")
+//                val set1_player2 = formParameters.getOrFail("set1_player2")
+//                val set2_player1 = formParameters.getOrFail("set2_player1")
+//                val set2_player2 = formParameters.getOrFail("set2_player2")
+//                val set3_player1 = formParameters.getOrFail("set3_player1")
+//                val set3_player2 = formParameters.getOrFail("set3_player2")
+//                val tennisSet1 = daoTennisSet.add(match.id, 1, set1_player1.toInt(), set1_player2.toInt())
+//                val tennisSet2 = daoTennisSet.add(match.id, 2, set2_player1.toInt(), set2_player2.toInt())
+//                val tennisSet3 = daoTennisSet.add(match.id, 3, set3_player1.toInt(), set3_player2.toInt())
             }
 
             logger.info("match created:" + match?.id)
