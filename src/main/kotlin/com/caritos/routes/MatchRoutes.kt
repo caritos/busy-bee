@@ -68,8 +68,11 @@ fun Route.matchRoutes() {
             if(match != null) {
                 var setNumber = 1
                 while (true) {
+                    logger.info("setNumber value: " + setNumber)
                     val player1ScoreParam = formParameters["set${setNumber}_player1"]
                     val player2ScoreParam = formParameters["set${setNumber}_player2"]
+                    logger.info("player1ScoreParam: " + player1ScoreParam)
+                    logger.info("player2ScoreParam: " + player2ScoreParam)
 
                     if (player1ScoreParam == null || player2ScoreParam == null) {
                         break

@@ -54,9 +54,9 @@
 <div id="setScoresContainer">
     <div>
         <label for="set1_player1">Set 1 - Player 1:</label>
-        <input type="number" id="set4_player1" name="set4_player1" min="0" required="">
+        <input type="number" id="set1_player1" name="set1_player1" min="0" required="">
         <label for="set1_player2">Set 1 - Player 2:</label>
-        <input type="number" id="set4_player2" name="set4_player2" min="0" required=""><br>
+        <input type="number" id="set1_player2" name="set1_player2" min="0" required=""><br>
     </div>
     <!-- Existing set score input fields here -->
 </div>
