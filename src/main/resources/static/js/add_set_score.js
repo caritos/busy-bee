@@ -1,7 +1,7 @@
 var setScoresContainer = document.getElementById('setScoresContainer');
 var addSetScoreButton = document.getElementById('addSetScore');
 var removeSetScoreButton = document.getElementById('removeSetScore');
-var setScoreCount = 1; // Start from 3 if you already have 3 sets of input fields
+var setScoreCount = 2; // Start from 3 if you already have 3 sets of input fields
 
 addSetScoreButton.addEventListener('click', function() {
     var setScoreDiv = document.createElement('div');
