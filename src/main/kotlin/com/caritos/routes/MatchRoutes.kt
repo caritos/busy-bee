@@ -22,9 +22,23 @@ import java.time.LocalDateTime
 fun Route.matchRoutes() {
     val logger = LoggerFactory.getLogger("Routes")
     route("matches") {
+//        get {
+//            call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to daoMatch.getAll())))
+//        }
+//        get {
+//    val matches = daoMatch.getAll()
+//    val matchesWithSets = matches.map { match ->
+//        match to (daoTennisSet.getAllForMatch(match.id) ?: emptyList())
+//    }.toMap()
+//    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches, "matchesWithSets" to matchesWithSets)))
+//}
         get {
-            call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to daoMatch.getAll())))
-        }
+    val matches = daoMatch.getAll()
+    val matchesWithSets = matches.map { match ->
+        match.id to (daoTennisSet.getAllForMatch(match.id) ?: emptyList())
+    }.toMap()
+    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches, "matchesWithSets" to matchesWithSets)))
+}
 
         get("new") {
             val players = transaction {
