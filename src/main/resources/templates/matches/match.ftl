@@ -1,7 +1,6 @@
 <table class="table-auto">
 <thead>
 <tr>
-  <th>Match ID</th>
   <th>Date</th>
   <th>Court ID</th>
   <th>Winner ID</th>
@@ -11,11 +10,10 @@
 </thead>
 <tbody>
 <tr>
-  <td>${match.id}</td>
   <td>${match.date}</td>
-  <td>${match.courtId}</td>
-  <td>${match.winnerId}</td>
-  <td>${match.loserId}</td>
+  <td>${courts[match.courtId?string]}</td>
+  <td>${players[match.winnerId?string]}</td>
+  <td>${players[match.loserId?string]}</td>
   <td>${match.isDoubles()?string("Doubles", "Singles")}</td>
 </tr>
 </tbody>

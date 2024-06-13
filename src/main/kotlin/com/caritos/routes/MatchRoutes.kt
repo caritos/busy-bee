@@ -1,6 +1,8 @@
 package com.caritos.routes
 
+import com.caritos.dao.daoCourt
 import com.caritos.dao.daoMatch
+import com.caritos.dao.daoPlayer
 import com.caritos.dao.daoTennisSet
 import com.caritos.models.Court
 import com.caritos.models.Courts
@@ -33,11 +35,13 @@ fun Route.matchRoutes() {
 //    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches, "matchesWithSets" to matchesWithSets)))
 //}
         get {
+            val players = daoPlayer.getAll().map { it.id.toString() to it.name }.toMap() // Assuming you have a method to get all players
+            val courts = daoCourt.getAllCourts().map { it.id.toString() to it.name }.toMap()
     val matches = daoMatch.getAll()
     val matchesWithSets = matches.map { match ->
         match.id to (daoTennisSet.getAllForMatch(match.id) ?: emptyList())
     }.toMap()
-    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches, "matchesWithSets" to matchesWithSets)))
+    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches, "matchesWithSets" to matchesWithSets, "players" to players, "courts" to courts)))
 }
 
         get("new") {
