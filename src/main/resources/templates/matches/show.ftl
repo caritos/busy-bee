@@ -46,6 +46,7 @@
         <hr>
         <p>
             <a href="/matches/${match.id}/edit">Edit match</a>
+            <a href="/matches">List matches</a>
         </p>
     </div>
 </@layout.header>
