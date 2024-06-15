@@ -1,6 +1,6 @@
 package com.caritos.routes
 
-import com.caritos.dao.dao
+import com.caritos.dao.*
 import com.caritos.models.Users
 import com.caritos.plugins.UserSession
 import com.caritos.plugins.generateSalt
@@ -88,16 +88,10 @@ fun Application.configureRouting() {
         }
 
         get("/sets") {
-            call.respond(dao.getAllSets())
-        }
-
-        get("/rankings") {
-            val rankings = dao.getRankings()
-            call.respond(rankings)
+            call.respond(daoTennisSet.getAll())
         }
 
         courtRoutes()
-        articleRoutes()
         playerRoutes()
         matchRoutes()
         teamRoutes()

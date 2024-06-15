@@ -14,11 +14,12 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.time.format.DateTimeFormatter
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.selectAll
 import org.slf4j.LoggerFactory
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 fun Route.matchRoutes() {
@@ -36,12 +37,13 @@ fun Route.matchRoutes() {
 //}
         get {
             val players = daoPlayer.getAll().map { it.id.toString() to it.name }.toMap() // Assuming you have a method to get all players
+            val playersJson = Json.encodeToString(players)
             val courts = daoCourt.getAllCourts().map { it.id.toString() to it.name }.toMap()
     val matches = daoMatch.getAll()
     val matchesWithSets = matches.map { match ->
         match.id to (daoTennisSet.getAllForMatch(match.id) ?: emptyList())
     }.toMap()
-    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches, "matchesWithSets" to matchesWithSets, "players" to players, "courts" to courts)))
+    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches, "matchesWithSets" to matchesWithSets, "playersJson" to playersJson, "courts" to courts)))
 }
 
         get("new") {
@@ -50,13 +52,17 @@ fun Route.matchRoutes() {
                     Player(it[Players.id].value, it[Players.name])
                 }
             }
+            val playersJson = Json.encodeToString(players)
+            println("begin route matches/new")
+            println(playersJson)
+            println("end route matches/new")
             val courts = transaction {
                 Courts.selectAll().map {
                     Court(it[Courts.id].value, it[Courts.name], it[Courts.location])
                 }
             }
 
-            val dataModel = mapOf("players" to players,
+            val dataModel = mapOf("playersJson" to playersJson, "players" to players,
                 "courts" to courts)
             call.respond(FreeMarkerContent("matches/new.ftl", dataModel))
         }
@@ -73,15 +79,12 @@ fun Route.matchRoutes() {
             logger.info("dateTime: " + dateTime)
             val courtId = formParameters.getOrFail("court")
             logger.info("courtId:" + courtId)
-            val winnerId = formParameters.getOrFail("player1")
-            logger.info("winnerId:" + winnerId)
-            val loserId = formParameters.getOrFail("player2")
-            logger.info("loserId: " + loserId)
-            val isDoubles = formParameters.getOrFail("isDoubles").equals("singles")
-            val isDoublesBoolean = if(isDoubles.equals("doubles")) true else false
-            logger.info("isDoubles: " + isDoubles)
+            val teamAId = formParameters.getOrFail("teamAId")
+            logger.info("winnerId:" + teamAId)
+            val teamBId = formParameters.getOrFail("teamBId")
+            logger.info("loserId: " + teamBId)
             logger.info("will be adding match to database")
-            val match= daoMatch.add(dateTime, courtId.toInt(), winnerId.toInt(), loserId.toInt(), isDoublesBoolean)
+            val match= daoMatch.add(dateTime, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
             logger.info("will be adding the set scores")
             if(match != null) {
                 var setNumber = 1
@@ -131,10 +134,9 @@ fun Route.matchRoutes() {
                     val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
                     val dateTime = LocalDateTime.parse(dateString, formatter)
                     val courtId = formParameters.getOrFail("courtId")
-                    val winnerId = formParameters.getOrFail("winnerId")
-                    val loserId = formParameters.getOrFail("loserId")
-                    val isDoubles = formParameters.getOrFail("isDoubles")
-                    daoMatch.edit(id, dateTime, courtId.toInt(), winnerId.toInt(), loserId.toInt(), isDoubles.toBoolean())
+                    val teamAId = formParameters.getOrFail("teamAId")
+                    val teamBId = formParameters.getOrFail("teamBId")
+                    daoMatch.edit(id, dateTime, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
                     call.respondRedirect("/matches/$id")
                 }
 

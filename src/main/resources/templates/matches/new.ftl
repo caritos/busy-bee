@@ -6,6 +6,35 @@
             <label for="date">Date:</label>
             <input type="datetime-local" id="date" name="date" required><br><br>
 
+            <!-- beginning of teams -->
+
+            <h2>Team A</h2>
+            <div id="teamAContainer">
+                <select id="teamAPlayer1" name="teamAPlayer1" required>
+                    <option value="" disabled selected>Select a player</option>
+                    <#list players as player>
+                        <option value="${player.id}">${player.name}</option>
+                    </#list>
+                </select>
+                <!-- Additional player select elements for Team A will be added here -->
+            </div>
+            <button type="button" id="addPlayerToTeamA">Add Player to Team A</button>
+            <button type="button" id="removePlayerFromTeamA">Remove Player from Team A</button>
+
+            <h2>Team B</h2>
+            <div id="teamBContainer">
+                <select id="teamBPlayer1" name="teamBPlayer1" required>
+                    <option value="" disabled selected>Select a player</option>
+                    <#list players as player>
+                        <option value="${player.id}">${player.name}</option>
+                    </#list>
+                </select>
+                <!-- Additional player select elements for Team B will be added here -->
+            </div>
+            <button type="button" id="addPlayerToTeamB">Add Player to Team B</button>
+            <button type="button" id="removePlayerFromTeamB">Remove Player from Team B</button>
+            <!-- end of teams -->
+
             <label for="matchType">Match Type:</label>
             <select id="matchType" name="isDoubles" onchange="togglePlayerFields()">
                 <option value="singles">Singles</option>
@@ -81,6 +110,13 @@
                 }
             }
         </script>
+        <script>
+            console.log('begin new.ftl')
+            console.log('${playersJson}'); // Print the playersJson variable to the console
+            console.log('end new.ftl')
+            window.playersJson = JSON.parse('${playersJson?no_esc}');
+        </script>
         <script src="/static/js/add_set_score.js"></script>
+        <script src="/static/js/add_player_to_team.js"></script>
     </div>
 </@layout.header>

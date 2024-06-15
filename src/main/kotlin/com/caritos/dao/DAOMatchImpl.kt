@@ -1,10 +1,8 @@
 package com.caritos.dao
 
 import com.caritos.dao.DatabaseSingleton.dbQuery
-import com.caritos.models.Courts
 import com.caritos.models.Match
 import com.caritos.models.Matches
-import com.caritos.models.Players
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -19,9 +17,8 @@ class DAOMatchImpl : DAOMatch {
         id = row[Matches.id].value,
         date = row[Matches.date],
         courtId = row[Matches.courtId],
-        winnerId = row[Matches.winnerId],
-        loserId = row[Matches.loserId],
-        isDoubles = row[Matches.isDoubles]
+        teamAId = row[Matches.teamAId],
+        teamBId = row[Matches.teamBId]
     )
 
     override suspend fun getAll(): List<Match> {
@@ -33,9 +30,8 @@ class DAOMatchImpl : DAOMatch {
                     id = it[Matches.id].value,
                     date = it[Matches.date],
                     courtId = it[Matches.courtId],
-                    winnerId = it[Matches.winnerId],
-                    loserId = it[Matches.loserId],
-                    isDoubles = it[Matches.isDoubles]
+                    teamAId = it[Matches.teamAId],
+                    teamBId = it[Matches.teamBId]
                 )
             }
         }
@@ -51,17 +47,15 @@ class DAOMatchImpl : DAOMatch {
     override suspend fun add(
         date: LocalDateTime,
         courtId: Int,
-        winnerId: Int,
-        loserId: Int,
-        isDoubles: Boolean
+        teamAId: Int,
+        teamBId: Int,
     ): Match? = dbQuery {
         logger.info("adding match")
         val insertStatement = Matches.insert {
             it[Matches.date] = date
             it[Matches.courtId] = courtId
-            it[Matches.winnerId] = winnerId
-            it[Matches.loserId] = loserId
-            it[Matches.isDoubles] = isDoubles
+            it[Matches.teamAId] = teamAId
+            it[Matches.teamBId] = teamBId
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToMatch)
     }
@@ -70,16 +64,14 @@ class DAOMatchImpl : DAOMatch {
         id: Int,
         date: LocalDateTime,
         courtId: Int,
-        winnerId: Int,
-        loserId: Int,
-        isDoubles: Boolean
+        teamAId: Int,
+        teamBId: Int,
     ): Boolean = dbQuery {
         Matches.update({ Matches.id eq id }) {
             it[Matches.date] = date
             it[Matches.courtId] = courtId
-            it[Matches.winnerId] = winnerId
-            it[Matches.loserId] = loserId
-            it[Matches.isDoubles] = isDoubles
+            it[Matches.teamAId] = teamAId
+            it[Matches.teamBId] = teamBId
         } > 0
     }
 
@@ -92,7 +84,7 @@ class DAOMatchImpl : DAOMatch {
 val daoMatch: DAOMatch = DAOMatchImpl().apply {
     runBlocking {
         if(getAll().isEmpty()) {
-            add(LocalDateTime.now(), 1,1,3, true)
+//            add(LocalDateTime.now(), 1,1,3, true)
         }
     }
 }
