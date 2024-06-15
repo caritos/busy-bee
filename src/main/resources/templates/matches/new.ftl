@@ -10,7 +10,7 @@
 
             <h2>Team A</h2>
             <div id="teamAContainer">
-                <select id="teamAPlayer1" name="teamAPlayer1" required>
+                <select id="teamAContainerPlayer1" name="teamAContainerPlayer1" required>
                     <option value="" disabled selected>Select a player</option>
                     <#list players as player>
                         <option value="${player.id}">${player.name}</option>
@@ -23,7 +23,7 @@
 
             <h2>Team B</h2>
             <div id="teamBContainer">
-                <select id="teamBPlayer1" name="teamBPlayer1" required>
+                <select id="teamBContainerPlayer1" name="teamBContainerPlayer1" required>
                     <option value="" disabled selected>Select a player</option>
                     <#list players as player>
                         <option value="${player.id}">${player.name}</option>

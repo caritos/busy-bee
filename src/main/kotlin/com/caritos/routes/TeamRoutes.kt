@@ -21,8 +21,7 @@ fun Route.teamRoutes() {
         post {
             val formParameters = call.receiveParameters()
             val playerId = formParameters.getOrFail("playerId")
-            val matchId = formParameters.getOrFail("matchId")
-            val team = daoTeam.add(playerId.toInt(), matchId.toInt())
+            val team = daoTeam.add(setOf(playerId.toInt()))
             call.respondRedirect("/teams/${team?.id}")
         }
 
@@ -42,8 +41,7 @@ fun Route.teamRoutes() {
             when (formParameters.getOrFail("_action")) {
                 "update" -> {
                     val playerId = formParameters.getOrFail("playerId")
-                    val matchId = formParameters.getOrFail("matchId")
-                    daoTeam.edit(id, playerId.toInt(), matchId.toInt())
+                    daoTeam.edit(id, setOf(playerId.toInt()))
                     call.respondRedirect("/teams/$id")
                 }
 

@@ -4,11 +4,9 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 data class Team(
     val id: Int,
-    val playerId: Int,
-    val matchId: Int
+    val playerIds: Set<Int>,
 )
 
 object Teams : IntIdTable() {
-    val playerId = integer("player_id").references(Players.id)
-    val matchId = integer("match_id").references(Matches.id)
+    val playerIds = varchar("player_ids", 255)
 }

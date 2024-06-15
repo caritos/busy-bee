@@ -2,6 +2,7 @@ package com.caritos.routes
 
 import com.caritos.dao.daoCourt
 import com.caritos.dao.daoMatch
+import com.caritos.dao.daoTeam
 import com.caritos.dao.daoPlayer
 import com.caritos.dao.daoTennisSet
 import com.caritos.models.Court
@@ -60,6 +61,7 @@ fun Route.matchRoutes() {
         post {
             logger.info("inside post")
             val formParameters = call.receiveParameters()
+            val formParametersMap = formParameters.entries().associate { it.key to it.value.toList() }
             logger.info("formParameters: " + formParameters)
             // Convert date string to LocalDateTime
             val dateString = formParameters.getOrFail("date")
@@ -69,10 +71,15 @@ fun Route.matchRoutes() {
             logger.info("dateTime: " + dateTime)
             val courtId = formParameters.getOrFail("court")
             logger.info("courtId:" + courtId)
-            val teamAId = formParameters.getOrFail("teamAId")
-            logger.info("winnerId:" + teamAId)
-            val teamBId = formParameters.getOrFail("teamBId")
-            logger.info("loserId: " + teamBId)
+            val teamAPlayerIds = formParametersMap.filterKeys { it.startsWith("teamAContainerPlayer") }.values.flatten()
+            val teamBPlayerIds = formParametersMap.filterKeys { it.startsWith("teamBContainerPlayer") }.values.flatten()
+            logger.info(teamAPlayerIds.toString())
+            logger.info(teamBPlayerIds.toString())
+            // i need to check if this set of players already exists in the teams table
+            // if it doesn't exist, create it
+            val teamAId = daoTeam.getOrCreateTeam(teamAPlayerIds.map { it.toInt() }.toSet())
+            val teamBId = daoTeam.getOrCreateTeam(teamBPlayerIds.map { it.toInt() }.toSet())
+
             logger.info("will be adding match to database")
             val match= daoMatch.add(dateTime, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
             logger.info("will be adding the set scores")
@@ -80,20 +87,20 @@ fun Route.matchRoutes() {
                 var setNumber = 1
                 while (true) {
                     logger.info("setNumber value: " + setNumber)
-                    val player1ScoreParam = formParameters["set${setNumber}_player1"]
-                    val player2ScoreParam = formParameters["set${setNumber}_player2"]
-                    logger.info("player1ScoreParam: " + player1ScoreParam)
-                    logger.info("player2ScoreParam: " + player2ScoreParam)
+                    val teamAScoreParam = formParameters["set${setNumber}_teamA"]
+                    val teamBScoreParam = formParameters["set${setNumber}_teamB"]
+                    logger.info("teamA: " + teamAScoreParam)
+                    logger.info("teamB: " + teamBScoreParam)
 
-                    if (player1ScoreParam == null || player2ScoreParam == null) {
+                    if (teamAScoreParam == null || teamBScoreParam == null) {
                         break
                     }
 
-                    val player1Score = player1ScoreParam.toInt()
-                    val player2Score = player2ScoreParam.toInt()
+                    val teamAScore = teamAScoreParam.toInt()
+                    val teamBScore = teamBScoreParam.toInt()
 
-                    logger.info("adding score for match ${match.id}, set $setNumber: $player1Score - $player2Score")
-                    daoTennisSet.add(match.id, setNumber, player1Score, player2Score)
+                    logger.info("adding score for match ${match.id}, set $setNumber: $teamAScore - $teamBScore")
+                    daoTennisSet.add(match.id, setNumber, teamAScore, teamBScore)
 
                     setNumber++
                 }

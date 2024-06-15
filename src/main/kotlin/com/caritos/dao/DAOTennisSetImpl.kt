@@ -1,7 +1,6 @@
 package com.caritos.dao
 
 import com.caritos.dao.DatabaseSingleton.dbQuery
-import com.caritos.models.Match
 import com.caritos.models.TennisSet
 import com.caritos.models.TennisSets
 import kotlinx.coroutines.runBlocking
@@ -21,8 +20,8 @@ class DAOTennisSetImpl : DAOTennisSet {
         id = row[TennisSets.id].value,
         matchId = row[TennisSets.matchId],
         setNumber = row[TennisSets.setNumber],
-        player1Score = row[TennisSets.player1Score],
-        player2Score = row[TennisSets.player2Score],
+        teamAScore = row[TennisSets.teamAScore],
+        teamBScore = row[TennisSets.teamBScore],
     )
 
     override suspend fun getAll(): List<TennisSet> {
@@ -32,8 +31,8 @@ class DAOTennisSetImpl : DAOTennisSet {
                     id = it[TennisSets.id].value,
                     matchId = it[TennisSets.matchId],
                     setNumber = it[TennisSets.setNumber],
-                    player1Score = it[TennisSets.player1Score],
-                    player2Score = it[TennisSets.player2Score],
+                    teamAScore = it[TennisSets.teamAScore],
+                    teamBScore = it[TennisSets.teamBScore],
                 )
             }
         }
@@ -49,8 +48,8 @@ class DAOTennisSetImpl : DAOTennisSet {
         val insertStatement = TennisSets.insert {
             it[TennisSets.matchId] = matchId
             it[TennisSets.setNumber] = setNumber
-            it[TennisSets.player1Score] = player1Score
-            it[TennisSets.player2Score] = player2Score
+            it[TennisSets.teamAScore] = player1Score
+            it[TennisSets.teamBScore] = player2Score
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToTennisSet)
     }
@@ -59,8 +58,8 @@ class DAOTennisSetImpl : DAOTennisSet {
         TennisSets.update({ TennisSets.id eq id }) {
             it[TennisSets.matchId] = matchId
             it[TennisSets.setNumber] = setNumber
-            it[TennisSets.player1Score] = player1Score
-            it[TennisSets.player2Score] = player2Score
+            it[TennisSets.teamAScore] = player1Score
+            it[TennisSets.teamBScore] = player2Score
         } > 0
     }
 
@@ -77,9 +76,6 @@ class DAOTennisSetImpl : DAOTennisSet {
 val daoTennisSet : DAOTennisSet = DAOTennisSetImpl().apply {
     runBlocking {
         if(getAll().isEmpty()) {
-            add(3,1,6,4)
-            add(3,2,6,4)
-            add(3,3,0,4)
         }
     }
 }
