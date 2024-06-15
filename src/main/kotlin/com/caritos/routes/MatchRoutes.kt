@@ -113,8 +113,12 @@ fun Route.matchRoutes() {
         get("{id}") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
             val match = daoMatch.get(id)
+            assert(match != null)
+            val teams = daoTeam.getAll().map { it.id.toString() to it.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }.joinToString(", ") }.toMap()
+            logger.info("teams" + teams.toString())
+            val courts = daoCourt.getAllCourts().map { it.id.toString() to it.name }.toMap()
             val tennisSets = daoTennisSet.getAllForMatch(id) // Assuming you have a method to get all TennisSet for a match
-            call.respond(FreeMarkerContent("/matches/show.ftl", mapOf("match" to match, "tennisSets" to tennisSets)))
+            call.respond(FreeMarkerContent("/matches/show.ftl", mapOf("courts" to courts, "match" to match, "tennisSets" to tennisSets, "teams" to teams)))
         }
 
         get("{id}/edit") {

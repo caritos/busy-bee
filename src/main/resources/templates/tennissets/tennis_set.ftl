@@ -3,15 +3,15 @@
     <thead>
         <tr>
             <th>Set Number</th>
-            <th>Player 1 Score</th>
-            <th>Player 2 Score</th>
+            <th>Team A Score</th>
+            <th>Team B Score</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>${tennisSet.setNumber}</td>
-            <td>${tennisSet.player1Score}</td>
-            <td>${tennisSet.player2Score}</td>
+            <td>${tennisSet.teamAScore}</td>
+            <td>${tennisSet.teamBScore}</td>
         </tr>
     </tbody>
 </table>
