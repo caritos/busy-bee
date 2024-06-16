@@ -15,7 +15,6 @@ object DatabaseSingleton {
         val database = Database.connect(jdbcURL, driverClassName, username, password)
         transaction(database) {
             SchemaUtils.create(Users)
-            SchemaUtils.create(Articles)
             SchemaUtils.create(Courts)
             SchemaUtils.create(Players)
             SchemaUtils.create(Matches)
