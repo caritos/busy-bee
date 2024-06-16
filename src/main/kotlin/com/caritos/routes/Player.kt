@@ -8,7 +8,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 
-fun Route.playerRoutes() {
+fun Route.player() {
     route("players") {
         get {
             call.respond(FreeMarkerContent("players/index.ftl", mapOf("players" to daoPlayer.getAll())))

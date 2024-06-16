@@ -23,7 +23,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 
-fun Route.matchRoutes() {
+fun Route.match() {
     val logger = LoggerFactory.getLogger("Routes")
     route("matches") {
         get {

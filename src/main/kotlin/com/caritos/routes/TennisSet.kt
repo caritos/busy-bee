@@ -14,7 +14,7 @@ import io.ktor.server.util.*
  *     val player1Score = integer("player1_score")
  *     val player2Score = integer("player2_score")
  */
-fun Route.tennisSetRoutes() {
+fun Route.tennisSet() {
     route("tennissets") {
         get {
             call.respond(FreeMarkerContent("tennissets/index.ftl", mapOf("tennissets" to daoTennisSet.getAll())))
