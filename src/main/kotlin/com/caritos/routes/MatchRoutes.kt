@@ -27,6 +27,8 @@ fun Route.matchRoutes() {
     val logger = LoggerFactory.getLogger("Routes")
     route("matches") {
         get {
+            val teams = daoTeam.getAll().map { it.id.toString() to it.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }.joinToString(", ") }.toMap()
+            logger.info("teams" + teams.toString())
             val players = daoPlayer.getAll().map { it.id.toString() to it.name }.toMap() // Assuming you have a method to get all players
             val playersJson = Json.encodeToString(players)
             val courts = daoCourt.getAllCourts().map { it.id.toString() to it.name }.toMap()
@@ -34,7 +36,7 @@ fun Route.matchRoutes() {
     val matchesWithSets = matches.map { match ->
         match.id to (daoTennisSet.getAllForMatch(match.id) ?: emptyList())
     }.toMap()
-    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches, "matchesWithSets" to matchesWithSets, "playersJson" to playersJson, "courts" to courts)))
+    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("teams" to teams, "matches" to matches, "matchesWithSets" to matchesWithSets, "playersJson" to playersJson, "courts" to courts)))
 }
 
         get("new") {
