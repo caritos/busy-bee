@@ -51,11 +51,7 @@
         </div>
 
         <main class="md:col-span-2 px-16 py-6 bg-gray-100">
-        <div class="flex justify-center md:justify-end">
-            <a href="/login" class="btn text-primary border-primary md:border-2 hover:bg-primary hover:text-white transition ease-out duration-500">Log in</a>
-            <a href="/signup" class="btn text-primary ml-2 border-primary md:border-2 hover:bg-primary hover:text-white transition ease-out duration-500">Sign up</a>
-        </div>
-        <#nested>
+          <#nested>
         </main>
     </div>
     <script src="/static/js/index.js"></script>
