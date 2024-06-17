@@ -64,6 +64,46 @@ class DAOTeamImpl : DAOTeam {
             }
         }
     }
+
+    override suspend fun getAllSinglePlayerTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
+        Teams.selectAll().mapNotNull { row ->
+            val team = resultRowToTeam(row)
+            val playerCount = team.playerIds.size
+            if (playerCount == 1) {
+                val score = getTeamScore(team.id)
+                team to score
+            } else {
+                null
+            }
+        }
+    }
+
+    override suspend fun getAllDoublePlayerTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
+        Teams.selectAll().mapNotNull { row ->
+            val team = resultRowToTeam(row)
+            val playerCount = team.playerIds.size
+            if (playerCount == 2) {
+                val score = getTeamScore(team.id)
+                team to score
+            } else {
+                null
+            }
+        }
+    }
+
+    override suspend fun getTeamScore(teamId: Int): Int = dbQuery {
+        TennisSets.select { (TennisSets.teamAId eq teamId) or (TennisSets.teamBId eq teamId) }
+            .map { if (it[TennisSets.teamAId] == teamId) it[TennisSets.teamAScore] else it[TennisSets.teamBScore] }
+            .sum()
+    }
+
+    override suspend fun getAllTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
+        Teams.selectAll().map { row ->
+            val team = resultRowToTeam(row)
+            val score = getTeamScore(team.id)
+            team to score
+        }
+    }
 }
 
 
