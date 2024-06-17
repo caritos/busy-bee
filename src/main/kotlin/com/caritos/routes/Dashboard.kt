@@ -17,16 +17,15 @@ fun Route.dashboard() {
         get {
             val singlePlayerTeamsWithScores = daoTeam.getAllSinglePlayerTeamsWithScores()
             val sortedTeamsSingle = singlePlayerTeamsWithScores.sortedByDescending { it.second }
-            val singlePlayerTeamsWithNames = sortedTeamsSingle.map { Pair(it.first.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }.joinToString(", "), it.second) }
+            val singlePlayerTeamsWithNames = sortedTeamsSingle.map { Pair(it.first.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }, it.second) }
             logger.info("singlePlayerTeamsWithNames: $singlePlayerTeamsWithNames")
 
             val doublePlayerTeamsWithScores = daoTeam.getAllDoublePlayerTeamsWithScores()
             val sortedTeamsDoubles = doublePlayerTeamsWithScores.sortedByDescending { it.second }
-            val doublePlayerTeamsWithNames = sortedTeamsDoubles.map { Pair(it.first.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }.joinToString(", "), it.second) }
+            val doublePlayerTeamsWithNames = sortedTeamsDoubles.map { Pair(it.first.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }, it.second) }
             logger.info("doublePlayerTeamsWithNames: $doublePlayerTeamsWithNames")
 
             call.respond(FreeMarkerContent("dashboard/index.ftl", mapOf("singlePlayerTeamsWithNames" to singlePlayerTeamsWithNames, "doublePlayerTeamsWithNames" to doublePlayerTeamsWithNames)))
-}
-
+        }
     }
 }

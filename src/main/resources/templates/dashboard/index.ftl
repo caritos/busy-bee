@@ -6,11 +6,12 @@
 
     <h1 class="text-3xl font-bold text-center mt-8">Singles Leaderboard</h1>
     <#list singlePlayerTeamsWithNames as team>
-<#--      <p>${team[0]?join(", ")}: ${team[1]}</p>-->
+      <p>${team.first?join(",")}: ${team.second}</p>
     </#list>
+<#-- ... -->
 <#-- ... -->
   <h1 class="text-3xl font-bold text-center mt-8">Doubles Leaderboard</h1>
     <#list doublePlayerTeamsWithNames as team>
-<#--      <p>${team[0]?join(", ")}: ${team[1]}</p>-->
+       <p>${team.first?join(",")}: ${team.second}</p>
     </#list>
 </@layout.header>
