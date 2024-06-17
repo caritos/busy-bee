@@ -8,10 +8,14 @@
     <#list singlePlayerTeamsWithNames as team>
       <p>${team.first?join(",")}: ${team.second}</p>
     </#list>
-<#-- ... -->
-<#-- ... -->
+
   <h1 class="text-3xl font-bold text-center mt-8">Doubles Leaderboard</h1>
     <#list doublePlayerTeamsWithNames as team>
        <p>${team.first?join(",")}: ${team.second}</p>
     </#list>
+
+  <h1 class="text-3xl font-bold text-center mt-8">Recent Matches</h1>
+  <#list recentMatches as match>
+    <p>${match.date}: ${match.teamAId} vs ${match.teamBId}</p>
+  </#list>
 </@layout.header>

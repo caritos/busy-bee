@@ -1,6 +1,7 @@
 package com.caritos.routes
 
 import com.caritos.dao.daoCourt
+import com.caritos.dao.daoMatch
 import com.caritos.dao.daoPlayer
 import com.caritos.dao.daoTeam
 import io.ktor.server.application.*
@@ -15,6 +16,7 @@ fun Route.dashboard() {
     val logger = LoggerFactory.getLogger("dashboard")
     route("dashboard") {
         get {
+            val recentMatches = daoMatch.getRecentMatches(10)
             val singlePlayerTeamsWithScores = daoTeam.getAllSinglePlayerTeamsWithScores()
             val sortedTeamsSingle = singlePlayerTeamsWithScores.sortedByDescending { it.second }
             val singlePlayerTeamsWithNames = sortedTeamsSingle.map { Pair(it.first.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }, it.second) }
@@ -25,7 +27,7 @@ fun Route.dashboard() {
             val doublePlayerTeamsWithNames = sortedTeamsDoubles.map { Pair(it.first.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }, it.second) }
             logger.info("doublePlayerTeamsWithNames: $doublePlayerTeamsWithNames")
 
-            call.respond(FreeMarkerContent("dashboard/index.ftl", mapOf("singlePlayerTeamsWithNames" to singlePlayerTeamsWithNames, "doublePlayerTeamsWithNames" to doublePlayerTeamsWithNames)))
+            call.respond(FreeMarkerContent("dashboard/index.ftl", mapOf("recentMatches" to recentMatches, "singlePlayerTeamsWithNames" to singlePlayerTeamsWithNames, "doublePlayerTeamsWithNames" to doublePlayerTeamsWithNames)))
         }
     }
 }

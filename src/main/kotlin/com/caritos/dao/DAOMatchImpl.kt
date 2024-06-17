@@ -78,6 +78,15 @@ class DAOMatchImpl : DAOMatch {
     override suspend fun delete(id: Int): Boolean = dbQuery {
         Matches.deleteWhere { Matches.id eq id } > 0
     }
+
+
+        override suspend fun getRecentMatches(limit: Int): List<Match> = dbQuery {
+            Matches
+                .selectAll()
+                .orderBy(Matches.date to SortOrder.DESC)
+                .limit(limit)
+                .map(::resultRowToMatch)
+        }
 }
 
 
