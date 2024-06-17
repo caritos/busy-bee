@@ -20,6 +20,8 @@ class DAOTennisSetImpl : DAOTennisSet {
         id = row[TennisSets.id].value,
         matchId = row[TennisSets.matchId],
         setNumber = row[TennisSets.setNumber],
+        teamAId = row[TennisSets.teamAId],
+        teamBId = row[TennisSets.teamBId],
         teamAScore = row[TennisSets.teamAScore],
         teamBScore = row[TennisSets.teamBScore],
     )
@@ -31,6 +33,8 @@ class DAOTennisSetImpl : DAOTennisSet {
                     id = it[TennisSets.id].value,
                     matchId = it[TennisSets.matchId],
                     setNumber = it[TennisSets.setNumber],
+                    teamAId = it[TennisSets.teamAId],
+                    teamBId = it[TennisSets.teamBId],
                     teamAScore = it[TennisSets.teamAScore],
                     teamBScore = it[TennisSets.teamBScore],
                 )
@@ -44,20 +48,24 @@ class DAOTennisSetImpl : DAOTennisSet {
             .singleOrNull()
     }
 
-    override suspend fun add(matchId: Int, setNumber: Int, player1Score: Int, player2Score: Int): TennisSet? = dbQuery {
+    override suspend fun add(matchId: Int, setNumber: Int, teamAId: Int, teamBId: Int, player1Score: Int, player2Score: Int): TennisSet? = dbQuery {
         val insertStatement = TennisSets.insert {
             it[TennisSets.matchId] = matchId
             it[TennisSets.setNumber] = setNumber
+            it[TennisSets.teamAId] = teamAId
+            it[TennisSets.teamBId] = teamBId
             it[TennisSets.teamAScore] = player1Score
             it[TennisSets.teamBScore] = player2Score
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToTennisSet)
     }
 
-    override suspend fun edit(id: Int, matchId: Int, setNumber: Int, player1Score: Int, player2Score: Int): Boolean = dbQuery {
+    override suspend fun edit(id: Int, matchId: Int, setNumber: Int, teamAId: Int, teamBId: Int, player1Score: Int, player2Score: Int): Boolean = dbQuery {
         TennisSets.update({ TennisSets.id eq id }) {
             it[TennisSets.matchId] = matchId
             it[TennisSets.setNumber] = setNumber
+            it[TennisSets.teamAId] = teamAId
+            it[TennisSets.teamBId] = teamBId
             it[TennisSets.teamAScore] = player1Score
             it[TennisSets.teamBScore] = player2Score
         } > 0

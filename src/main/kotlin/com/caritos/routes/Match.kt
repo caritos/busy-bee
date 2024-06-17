@@ -102,7 +102,7 @@ fun Route.match() {
                     val teamBScore = teamBScoreParam.toInt()
 
                     logger.info("adding score for match ${match.id}, set $setNumber: $teamAScore - $teamBScore")
-                    daoTennisSet.add(match.id, setNumber, teamAScore, teamBScore)
+                    daoTennisSet.add(match.id, setNumber, teamAId, teamBId, teamAScore, teamBScore)
 
                     setNumber++
                 }

@@ -24,13 +24,21 @@ fun Route.tennisSet() {
             call.respond(FreeMarkerContent("tennissets/new.ftl", model = null))
         }
 
+        /*
+            val teamAId: Int,
+    val teamBId: Int,
+    val teamAScore: Int,
+    val teamBScore: Int
+         */
         post {
             val formParameters = call.receiveParameters()
             val setNumber = formParameters.getOrFail("set_number")
             val matchId = formParameters.getOrFail("match_id")
-            val player1Score = formParameters.getOrFail("player1_score")
-            val player2Score = formParameters.getOrFail("player2_score")
-            val tennisSet = daoTennisSet.add(matchId.toInt(), setNumber.toInt(), player1Score.toInt(), player2Score.toInt())
+            val teamAId = formParameters.getOrFail("team_a_id")
+            val teamBId = formParameters.getOrFail("team_b_id")
+            val teamAScore = formParameters.getOrFail("team_a_score")
+            val teamBScore = formParameters.getOrFail("team_b_score")
+            val tennisSet = daoTennisSet.add(matchId.toInt(), setNumber.toInt(), teamAId.toInt(), teamBId.toInt(), teamAScore.toInt(), teamBScore.toInt())
             call.respondRedirect("/tennissets/${tennisSet?.id}")
         }
 
@@ -51,9 +59,11 @@ fun Route.tennisSet() {
                 "update" -> {
                     val setNumber = formParameters.getOrFail("set_number")
                     val matchId = formParameters.getOrFail("match_id")
-                    val player1Score = formParameters.getOrFail("player1_score")
-                    val player2Score = formParameters.getOrFail("player2_score")
-                    daoTennisSet.edit(id, matchId.toInt(), setNumber.toInt(), player1Score.toInt(), player2Score.toInt())
+                    val teamAId = formParameters.getOrFail("team_a_id")
+                    val teamBId = formParameters.getOrFail("team_b_id")
+                    val teamAScore = formParameters.getOrFail("team_a_score")
+                    val teamBScore = formParameters.getOrFail("team_b_score")
+                    daoTennisSet.edit(id, matchId.toInt(), setNumber.toInt(), teamAId.toInt(), teamBId.toInt(), teamAScore.toInt(), teamBScore.toInt())
                     call.respondRedirect("/tennissets/$id")
                 }
 
