@@ -1,9 +1,7 @@
 package com.caritos.routes
 
-import com.caritos.dao.daoCourt
-import com.caritos.dao.daoMatch
-import com.caritos.dao.daoPlayer
-import com.caritos.dao.daoTeam
+import com.caritos.dao.*
+import com.caritos.models.MatchWithPlayerNames
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
@@ -16,7 +14,22 @@ fun Route.dashboard() {
     val logger = LoggerFactory.getLogger("dashboard")
     route("dashboard") {
         get {
-            val recentMatches = daoMatch.getRecentMatches(10)
+            val recentMatches = daoMatch.getRecentMatches(10).map { match ->
+                val teamANames = daoTeam.get(match.teamAId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
+                val teamBNames = daoTeam.get(match.teamBId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
+                MatchWithPlayerNames(
+                    id = match.id,
+                    date = match.date,
+                    courtId = match.courtId,
+                    courtName = daoCourt.court(match.courtId)?.name ?: "Unknown",
+                    teamAId = match.teamAId.toString(),
+                    teamANames = teamANames ?: "Unknown",
+                    teamBId = match.teamBId.toString(),
+                    teamBNames = teamBNames ?: "Unknown",
+                    score = daoTennisSet.getTennisSetsForMatch(match.id)
+                )
+            }
+
             val singlePlayerTeamsWithScores = daoTeam.getAllSinglePlayerTeamsWithScores()
             val sortedTeamsSingle = singlePlayerTeamsWithScores.sortedByDescending { it.second }
             val singlePlayerTeamsWithNames = sortedTeamsSingle.map { Pair(it.first.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }, it.second) }
@@ -31,3 +44,4 @@ fun Route.dashboard() {
         }
     }
 }
+

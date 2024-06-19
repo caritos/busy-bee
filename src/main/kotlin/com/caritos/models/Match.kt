@@ -12,6 +12,18 @@ data class Match(
     val teamBId: Int,
 )
 
+data class MatchWithPlayerNames(
+    val id: Int,
+    val date: LocalDateTime,
+    val courtId: Int,
+    val courtName: String,
+    val teamAId: String,
+    val teamANames: String,
+    val teamBId: String,
+    val teamBNames: String,
+    val score: List<TennisSet>
+)
+
 object Matches : IntIdTable() {
     val date = datetime("date")
     val courtId = integer("court_id").references(Courts.id)

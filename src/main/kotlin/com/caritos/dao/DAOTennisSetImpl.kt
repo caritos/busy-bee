@@ -76,6 +76,23 @@ class DAOTennisSetImpl : DAOTennisSet {
             .map(::resultRowToTennisSet)
     }
 
+    // provides a list of tennis sets for the match
+    override suspend fun getTennisSetsForMatch(id: Int): List<TennisSet> {
+        return transaction {
+            TennisSets.select { TennisSets.matchId eq id }.map {
+                TennisSet(
+                    id = it[TennisSets.id].value,
+                    matchId = it[TennisSets.matchId],
+                    setNumber = it[TennisSets.setNumber],
+                    teamAId = it[TennisSets.teamAId],
+                    teamBId = it[TennisSets.teamBId],
+                    teamAScore = it[TennisSets.teamAScore],
+                    teamBScore = it[TennisSets.teamBScore],
+                )
+            }
+        }
+    }
+
     override suspend fun delete(id: Int): Boolean = dbQuery {
         TennisSets.deleteWhere { TennisSets.id eq id } > 0
     }
