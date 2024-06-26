@@ -4,7 +4,7 @@
         <h3>Create match</h3>
         <form action="/matches" method="post">
             <label for="date">Date:</label>
-            <input type="datetime-local" id="date" name="date" required><br><br>
+            <input type="date" id="date" name="date" required><br><br>
 
             <!-- beginning of teams -->
 

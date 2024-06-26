@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 class DAOMatchImpl : DAOMatch {
     val logger = LoggerFactory.getLogger("DAOMatchImpl")
@@ -45,7 +45,7 @@ class DAOMatchImpl : DAOMatch {
     }
 
     override suspend fun add(
-        date: LocalDateTime,
+        date: LocalDate,
         courtId: Int,
         teamAId: Int,
         teamBId: Int,
@@ -62,7 +62,7 @@ class DAOMatchImpl : DAOMatch {
 
     override suspend fun edit(
         id: Int,
-        date: LocalDateTime,
+        date: LocalDate,
         courtId: Int,
         teamAId: Int,
         teamBId: Int,

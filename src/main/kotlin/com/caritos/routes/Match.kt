@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.selectAll
 import org.slf4j.LoggerFactory
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 fun Route.match() {
@@ -68,9 +69,9 @@ fun Route.match() {
             // Convert date string to LocalDateTime
             val dateString = formParameters.getOrFail("date")
             logger.info("dateString: " + dateString)
-            val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-            val dateTime = LocalDateTime.parse(dateString, formatter)
-            logger.info("dateTime: " + dateTime)
+            val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+            val date = LocalDate.parse(dateString, formatter)
+            logger.info("dateTime: " + date)
             val courtId = formParameters.getOrFail("court")
             logger.info("courtId:" + courtId)
             val teamAPlayerIds = formParametersMap.filterKeys { it.startsWith("teamAContainerPlayer") }.values.flatten()
@@ -83,7 +84,7 @@ fun Route.match() {
             val teamBId = daoTeam.getOrCreateTeam(teamBPlayerIds.map { it.toInt() }.toSet())
 
             logger.info("will be adding match to database")
-            val match= daoMatch.add(dateTime, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
+            val match= daoMatch.add(date, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
             logger.info("will be adding the set scores")
             if(match != null) {
                 var setNumber = 1
@@ -134,8 +135,8 @@ fun Route.match() {
             when (formParameters.getOrFail("_action")) {
                 "update" -> {
                     val dateString = formParameters.getOrFail("date")
-                    val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-                    val dateTime = LocalDateTime.parse(dateString, formatter)
+                    val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+                    val dateTime = LocalDate.parse(dateString, formatter)
                     val courtId = formParameters.getOrFail("courtId")
                     val teamAId = formParameters.getOrFail("teamAId")
                     val teamBId = formParameters.getOrFail("teamBId")
