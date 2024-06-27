@@ -1,10 +1,10 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
     <#if teams?has_content>
-        <#list teams?reverse as team>
+        <#list teams as id,name>
             <div>
                 <h3>
-                    <a href="/teams/${team.id}">${team.playerIds?join(", ")}</a>
+                    <a href="/teams/${id}">${name}</a>
                 </h3>
             </div>
         </#list>

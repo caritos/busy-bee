@@ -1,17 +1,21 @@
 package com.caritos.routes
 
-import com.caritos.dao.daoTeam
+import com.caritos.dao.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import org.slf4j.LoggerFactory
 
 fun Route.team() {
     route("teams") {
+        val logger = LoggerFactory.getLogger("Teams")
         get {
-            call.respond(FreeMarkerContent("teams/index.ftl", mapOf("teams" to daoTeam.getAll())))
+            val teams = daoTeam.getAll().map { it.id.toString() to it.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }.joinToString(", ") }.toMap()
+            logger.info("teams" + teams.toString())
+            call.respond(FreeMarkerContent("teams/index.ftl", mapOf("teams" to teams )))
         }
 
         get("new") {
