@@ -39,7 +39,7 @@ fun Route.match() {
                     teamBNames = teamBNames ?: "Unknown",
                     score = daoTennisSet.getTennisSetsForMatch(match.id)
                 )
-            }
+            }.sortedByDescending { it.date }
 
             call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches)))
         }
