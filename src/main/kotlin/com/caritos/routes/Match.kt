@@ -44,7 +44,7 @@ fun Route.match() {
             val players = transaction {
                 Players.selectAll().map {
                     Player(it[Players.id].value, it[Players.name])
-                }
+                }.sortedBy { it.name }
             }
             val playersJson = Json.encodeToString(players)
             println("begin route matches/new")
