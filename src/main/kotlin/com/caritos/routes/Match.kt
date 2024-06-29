@@ -121,11 +121,26 @@ fun Route.match() {
             val id = call.parameters.getOrFail<Int>("id").toInt()
             val match = daoMatch.get(id)
             assert(match != null)
-            val teams = daoTeam.getAll().map { it.id.toString() to it.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }.joinToString(", ") }.toMap()
-            logger.info("teams" + teams.toString())
-            val courts = daoCourt.getAllCourts().map { it.id.toString() to it.name }.toMap()
-            val tennisSets = daoTennisSet.getAllForMatch(id) // Assuming you have a method to get all TennisSet for a match
-            call.respond(FreeMarkerContent("/matches/show.ftl", mapOf("courts" to courts, "match" to match, "tennisSets" to tennisSets, "teams" to teams)))
+            if(match != null) {
+                val teamANames = daoTeam.get(match.teamAId)?.playerIds?.map { playerId ->
+                    daoPlayer.get(playerId)?.name ?: "Unknown"
+                }?.joinToString(", ")
+                val teamBNames = daoTeam.get(match.teamBId)?.playerIds?.map { playerId ->
+                    daoPlayer.get(playerId)?.name ?: "Unknown"
+                }?.joinToString(", ")
+                val matchWithPlayerName = MatchWithPlayerNames(
+                    id = match.id,
+                    date = match.date,
+                    courtId = match.courtId,
+                    courtName = daoCourt.court(match.courtId)?.name ?: "Unknown",
+                    teamAId = match.teamAId.toString(),
+                    teamANames = teamANames ?: "Unknown",
+                    teamBId = match.teamBId.toString(),
+                    teamBNames = teamBNames ?: "Unknown",
+                    score = daoTennisSet.getTennisSetsForMatch(match.id)
+                )
+                call.respond(FreeMarkerContent("/matches/show.ftl", mapOf("match" to matchWithPlayerName)))
+            }
         }
 
         get("{id}/edit") {

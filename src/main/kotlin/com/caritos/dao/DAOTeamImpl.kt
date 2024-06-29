@@ -6,8 +6,11 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.slf4j.LoggerFactory
 
 class DAOTeamImpl : DAOTeam {
+    val logger = LoggerFactory.getLogger("DAOTeamImpl")
+
     private fun resultRowToTeam(row: ResultRow) = Team(
         id = row[Teams.id].value,
         playerIds = row[Teams.playerIds].split(",").map { it.toInt() }.toSet(),
@@ -56,9 +59,11 @@ class DAOTeamImpl : DAOTeam {
             val existingTeam = Teams.select { Teams.playerIds eq sortedPlayerIds }.singleOrNull()
 
             if (existingTeam != null) {
+                logger.info("existing team: $existingTeam")
                 // If the team exists, return its ID
                 existingTeam[Teams.id].value
             } else {
+                logger.info("new team: $sortedPlayerIds")
                 // If the team doesn't exist, create a new team and return its ID
                 val newTeam = Teams.insertAndGetId {
                     it[Teams.playerIds] = sortedPlayerIds
@@ -84,6 +89,7 @@ class DAOTeamImpl : DAOTeam {
     override suspend fun getAllDoublePlayerTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
         Teams.selectAll().mapNotNull { row ->
             val team = resultRowToTeam(row)
+            logger.info(team.toString())
             val playerCount = team.playerIds.size
             if (playerCount == 2) {
                 val score = getTeamScore(team.id)
