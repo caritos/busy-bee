@@ -33,12 +33,12 @@ fun Route.match() {
             val players = daoPlayer.getAll().map { it.id.toString() to it.name }.toMap() // Assuming you have a method to get all players
             val playersJson = Json.encodeToString(players)
             val courts = daoCourt.getAllCourts().map { it.id.toString() to it.name }.toMap()
-    val matches = daoMatch.getAll()
-    val matchesWithSets = matches.map { match ->
-        match.id to (daoTennisSet.getAllForMatch(match.id) ?: emptyList())
-    }.toMap()
-    call.respond(FreeMarkerContent("matches/index.ftl", mapOf("teams" to teams, "matches" to matches, "matchesWithSets" to matchesWithSets, "playersJson" to playersJson, "courts" to courts)))
-}
+            val matches = daoMatch.getAll()
+            val matchesWithSets = matches.map { match ->
+                match.id to (daoTennisSet.getAllForMatch(match.id) ?: emptyList())
+            }.toMap()
+            call.respond(FreeMarkerContent("matches/index.ftl", mapOf("teams" to teams, "matches" to matches, "matchesWithSets" to matchesWithSets, "playersJson" to playersJson, "courts" to courts)))
+        }
 
         get("new") {
             val players = transaction {

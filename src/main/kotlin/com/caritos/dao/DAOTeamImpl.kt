@@ -49,8 +49,11 @@ class DAOTeamImpl : DAOTeam {
 
     override suspend fun getOrCreateTeam(playerIds: Set<Int>): Int {
         return dbQuery {
+            // Sort the player IDs before joining them into a string
+            val sortedPlayerIds = playerIds.sorted().joinToString(",")
+
             // Try to find an existing team with the given player IDs
-            val existingTeam = Teams.select { Teams.playerIds eq playerIds.joinToString(",") }.singleOrNull()
+            val existingTeam = Teams.select { Teams.playerIds eq sortedPlayerIds }.singleOrNull()
 
             if (existingTeam != null) {
                 // If the team exists, return its ID
@@ -58,7 +61,7 @@ class DAOTeamImpl : DAOTeam {
             } else {
                 // If the team doesn't exist, create a new team and return its ID
                 val newTeam = Teams.insertAndGetId {
-                    it[Teams.playerIds] = playerIds.joinToString(",") // Assuming the first player ID should be used if the team doesn't exist
+                    it[Teams.playerIds] = sortedPlayerIds
                 }
                 newTeam.value
             }
