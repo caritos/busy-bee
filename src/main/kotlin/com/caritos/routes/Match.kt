@@ -53,7 +53,7 @@ fun Route.match() {
             val courts = transaction {
                 Courts.selectAll().map {
                     Court(it[Courts.id].value, it[Courts.name], it[Courts.location])
-                }
+                }.sortedBy { it.name }
             }
 
             val dataModel = mapOf("playersJson" to playersJson, "players" to players,
