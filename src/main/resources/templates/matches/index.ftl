@@ -8,10 +8,9 @@
 <#--        <p>No matches available</p>-->
 <#--    </#if>-->
 
-
-<#list matches as match>
-    <#include "../matches/match.ftl">
-</#list>
+    <#list matches as match>
+        <#include "../matches/match.ftl">
+    </#list>
     <p>
         <a href="/matches/new">Add a match</a>
     </p>

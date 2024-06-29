@@ -5,10 +5,7 @@ import com.caritos.dao.daoMatch
 import com.caritos.dao.daoTeam
 import com.caritos.dao.daoPlayer
 import com.caritos.dao.daoTennisSet
-import com.caritos.models.Court
-import com.caritos.models.Courts
-import com.caritos.models.Player
-import com.caritos.models.Players
+import com.caritos.models.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
@@ -28,16 +25,23 @@ fun Route.match() {
     val logger = LoggerFactory.getLogger("Routes")
     route("matches") {
         get {
-            val teams = daoTeam.getAll().map { it.id.toString() to it.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }.joinToString(", ") }.toMap()
-            logger.info("teams" + teams.toString())
-            val players = daoPlayer.getAll().map { it.id.toString() to it.name }.toMap() // Assuming you have a method to get all players
-            val playersJson = Json.encodeToString(players)
-            val courts = daoCourt.getAllCourts().map { it.id.toString() to it.name }.toMap()
-            val matches = daoMatch.getAll()
-            val matchesWithSets = matches.map { match ->
-                match.id to (daoTennisSet.getAllForMatch(match.id) ?: emptyList())
-            }.toMap()
-            call.respond(FreeMarkerContent("matches/index.ftl", mapOf("teams" to teams, "matches" to matches, "matchesWithSets" to matchesWithSets, "playersJson" to playersJson, "courts" to courts)))
+            val matches = daoMatch.getAll().map { match ->
+                val teamANames = daoTeam.get(match.teamAId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
+                val teamBNames = daoTeam.get(match.teamBId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
+                MatchWithPlayerNames(
+                    id = match.id,
+                    date = match.date,
+                    courtId = match.courtId,
+                    courtName = daoCourt.court(match.courtId)?.name ?: "Unknown",
+                    teamAId = match.teamAId.toString(),
+                    teamANames = teamANames ?: "Unknown",
+                    teamBId = match.teamBId.toString(),
+                    teamBNames = teamBNames ?: "Unknown",
+                    score = daoTennisSet.getTennisSetsForMatch(match.id)
+                )
+            }
+
+            call.respond(FreeMarkerContent("matches/index.ftl", mapOf("matches" to matches)))
         }
 
         get("new") {

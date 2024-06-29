@@ -16,9 +16,6 @@
 
   <h1 class="text-3xl font-bold text-center mt-8">Recent Matches</h1>
   <#list recentMatches as match>
-    <p>${match.date}: ${match.teamANames} vs ${match.teamBNames}</p>
-    <#list match.score as set>
-      <p>Set ${set.setNumber}: ${set.teamAScore} - ${set.teamBScore}</p>
-    </#list>
+    <#include "../matches/match.ftl">
   </#list>
 </@layout.header>
