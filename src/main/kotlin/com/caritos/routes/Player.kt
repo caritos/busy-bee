@@ -11,7 +11,8 @@ import io.ktor.server.util.*
 fun Route.player() {
     route("players") {
         get {
-            call.respond(FreeMarkerContent("players/index.ftl", mapOf("players" to daoPlayer.getAll())))
+            val players = daoPlayer.getAll().sortedByDescending { it.name }
+            call.respond(FreeMarkerContent("players/index.ftl", mapOf("players" to players)))
         }
 
         get("new") {
