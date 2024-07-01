@@ -9,10 +9,40 @@
       <p>${team.first?join(",")}: ${team.second}</p>
     </#list>
 
-  <h1 class="text-3xl font-bold text-center mt-8">Doubles Leaderboard</h1>
+  <h3 class="text-center text-2xl text-green-700">Doubles Ranking</h3>
+  <table class="table-auto w-full bg-white border border-gray-300">
+    <thead class="bg-pink-500">
+    <tr>
+      <th class="border border-gray-300 px-4 py-2">
+       Rank
+      </th>
+      <th class="border border-gray-300 px-4 py-2">
+        Team
+      </th>
+      <th class="border border-gray-300 px-4 py-2">
+        Points
+      </th>
+    </tr>
+    </thead>
+    <tbody>
     <#list doublePlayerTeamsWithNames as team>
-       <p>${team.first?join(",")}: ${team.second}</p>
+      <tr>
+        <td class="border border-gray-300 px-4 py-2">
+          ${team_index + 1}
+        </td>
+        <td class="border border-gray-300 px-4 py-2">
+          ${team.first?join(",")}
+        </td>
+        <td class="border border-gray-300 px-4 py-2">
+          ${team.second}</p>
+        </td>
+      </tr>
     </#list>
+    <tr>
+
+    </tr>
+    </tbody>
+  </table>
 
   <h1 class="text-3xl font-bold text-center mt-8">Recent Matches</h1>
   <#list recentMatches as match>

@@ -14,3 +14,11 @@
 .btn{
     @apply rounded-full py-2 px-3 uppercase text-xs font-bold cursor-pointer tracking-wider
 }
+
+tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
