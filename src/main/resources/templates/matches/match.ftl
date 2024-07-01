@@ -1,4 +1,13 @@
-<p>${match.date}: ${match.teamANames} vs ${match.teamBNames}</p>
-<#list match.score as set>
-  <p>Set ${set.setNumber}: ${set.teamAScore} - ${set.teamBScore}</p>
-</#list>
+<tr>
+  <td class="border border-gray-300 px-4 py-2">
+    ${match.date}
+  </td>
+  <td class="border border-gray-300 px-4 py-2">
+    ${match.teamANames} vs ${match.teamBNames}
+  </td>
+  <td class="border border-gray-300 px-4 py-2">
+    <#list match.score as set>
+      Set ${set.setNumber}: ${set.teamAScore} - ${set.teamBScore}<#if set_has_next>, </#if>
+    </#list>
+  </td>
+</tr>

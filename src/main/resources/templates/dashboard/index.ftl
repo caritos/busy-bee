@@ -69,9 +69,26 @@
     </#list>
     </tbody>
   </table>
-  
-  <h1 class="text-3xl font-bold text-center mt-8">Recent Matches</h1>
-  <#list recentMatches as match>
-    <#include "../matches/match.ftl">
-  </#list>
+
+  <h3 class="text-center text-2xl text-green-700">Recent Matches</h3>
+  <table class="table-auto w-full bg-white border border-gray-300">
+    <thead class="bg-pink-500">
+    <tr>
+      <th class="border border-gray-300 px-4 py-2">
+       Date
+      </th>
+      <th class="border border-gray-300 px-4 py-2">
+        Team
+      </th>
+      <th class="border border-gray-300 px-4 py-2">
+        Score
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <#list recentMatches as match>
+      <#include "../matches/match.ftl">
+    </#list>
+    </tbody>
+  </table>
 </@layout.header>
