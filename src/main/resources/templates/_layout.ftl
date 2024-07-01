@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Eladio Caritos</title>
+        <title>Tennis</title>
         <link href="/static/css/tailwind.css" rel="stylesheet"/>
     </head>
     <body class="text-gray-600 font-body">
@@ -13,7 +13,7 @@
             <nav class="text-right">
                 <div class="flex justify-between items-center">
                     <h1 class="font-bold uppercase p-4 border-b border-gray-100">
-                        <a href="/">King of the Courts</a>
+                        <a href="/">Tennis</a>
                     </h1>
                     <div class="px-4 cursor-pointer md:hidden" id="burger">
                         <svg class="w-6 " data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
