@@ -1,6 +1,7 @@
 package com.caritos.routes
 
 import com.caritos.dao.daoCourt
+import com.caritos.dao.daoPlayer
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
@@ -11,7 +12,8 @@ import io.ktor.server.util.*
 fun Route.courtRoutes() {
     route("courts") {
         get {
-            call.respond(FreeMarkerContent("courts/index.ftl", mapOf("courts" to daoCourt.getAllCourts())))
+            val courts = daoCourt.getAllCourts().sortedByDescending { it.name }
+            call.respond(FreeMarkerContent("courts/index.ftl", mapOf("courts" to courts)))
         }
 
         get("new") {

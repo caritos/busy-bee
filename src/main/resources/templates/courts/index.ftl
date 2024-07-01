@@ -5,7 +5,7 @@
   </div>
 
     <#if courts?has_content>
-      <h3 class="text-center text-2xl text-green-700">Recent Matches</h3>
+      <h3 class="text-center text-2xl text-green-700">Courts</h3>
       <table class="table-auto w-full bg-white border border-gray-300">
         <thead class="bg-pink-500">
         <tr>
