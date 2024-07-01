@@ -564,6 +564,10 @@ video {
   margin-left: 0.5rem;
 }
 
+.ml-4{
+  margin-left: 1rem;
+}
+
 .mt-3{
   margin-top: 0.75rem;
 }
@@ -574,10 +578,6 @@ video {
 
 .mt-6{
   margin-top: 1.5rem;
-}
-
-.mt-8{
-  margin-top: 2rem;
 }
 
 .block{
@@ -896,6 +896,10 @@ tbody tr:nth-child(odd) {
 
 tbody tr:nth-child(even) {
   background-color: #ffffff;
+}
+
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .hover\:bg-primary:hover{

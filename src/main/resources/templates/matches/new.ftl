@@ -1,14 +1,16 @@
 <#import "../_layout.ftl" as layout />
 <@layout.header>
     <div>
-        <h3>Create match</h3>
+        <h3 class="text-center text-2xl text-green-700">Record a Match</h3>
         <form action="/matches" method="post">
             <label for="date">Date:</label>
-            <input type="date" id="date" name="date" required><br><br>
+            <div id="date">
+                <input type="date" id="date" name="date" required><br><br>
+            </div>
 
             <!-- beginning of teams -->
 
-            <h2>Team A</h2>
+            <label for="teamA">Team A:</label>
             <div id="teamAContainer">
                 <select id="teamAContainerPlayer1" name="teamAContainerPlayer1" required>
                     <option value="" disabled selected>Select a player</option>
@@ -17,11 +19,13 @@
                     </#list>
                 </select>
                 <!-- Additional player select elements for Team A will be added here -->
+                <div>
+                    <button type="button" id="addPlayerToTeamA" class="ml-4">Add Player to Team A</button>
+                    <button type="button" id="removePlayerFromTeamA" class="ml-4">Remove Player from Team A</button>
+                </div>
             </div>
-            <button type="button" id="addPlayerToTeamA">Add Player to Team A</button>
-            <button type="button" id="removePlayerFromTeamA">Remove Player from Team A</button>
 
-            <h2>Team B</h2>
+            <label for="teamB">Team B</label>
             <div id="teamBContainer">
                 <select id="teamBContainerPlayer1" name="teamBContainerPlayer1" required>
                     <option value="" disabled selected>Select a player</option>
@@ -30,19 +34,25 @@
                     </#list>
                 </select>
                 <!-- Additional player select elements for Team B will be added here -->
+                <div>
+                    <button type="button" id="addPlayerToTeamB" class="ml-4">Add Player to Team B</button>
+                    <button type="button" id="removePlayerFromTeamB" class="ml-4">Remove Player from Team B</button>
+                </div>
             </div>
-            <button type="button" id="addPlayerToTeamB">Add Player to Team B</button>
-            <button type="button" id="removePlayerFromTeamB">Remove Player from Team B</button>
             <!-- end of teams -->
 
-            <select id="courtId" name="court" required>
-                <option value="" disabled selected>Select a court </option>
-                <#list courts as court>
-                    <option value="${court.id}">${court.name}</option>
-                </#list>
-            </select>
+            <label for="court">Court</label>
+            <div id="court">
+                <select id="courtId" name="court" required>
+                    <option value="" disabled selected>Select a court </option>
+                    <#list courts as court>
+                        <option value="${court.id}">${court.name}</option>
+                    </#list>
+                </select>
+            </div>
 
-            <h2>Set Scores</h2>
+
+            <label for="setScore">Set Scores</label>
 
 <div id="setScoresContainer">
     <div>
@@ -52,12 +62,13 @@
         <input type="number" id="set1_teamB" name="set1_teamB" min="0" required=""><br>
     </div>
     <!-- Existing set score input fields here -->
+    <div>
+        <button type="button" id="addSetScore" class="ml-4">Add Set Score</button>
+        <button type="button" id="removeSetScore" class="ml-4">Remove Set Score</button>
+    </div>
 </div>
 
-<button type="button" id="addSetScore">Add Set Score</button>
-<button type="button" id="removeSetScore">Remove Set Score</button>
-
-            <button type="submit">Create Match</button>
+            <button type="submit" class="btn text-primary border-primary md:border-2 hover:bg-primary hover:text-white transition ease-out duration-500">Create Match</button>
         </form>
         <script>
             console.log('begin new.ftl')
