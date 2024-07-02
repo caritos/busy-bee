@@ -18,12 +18,12 @@
                         <option value="${player.id}">${player.name}</option>
                     </#list>
                 </select>
+            </div>
                 <!-- Additional player select elements for Team A will be added here -->
                 <div>
                     <button type="button" id="addPlayerToTeamA" class="ml-4">Add Player to Team A</button>
                     <button type="button" id="removePlayerFromTeamA" class="ml-4">Remove Player from Team A</button>
                 </div>
-            </div>
 
             <label for="teamB">Team B</label>
             <div id="teamBContainer">
@@ -33,12 +33,12 @@
                         <option value="${player.id}">${player.name}</option>
                     </#list>
                 </select>
+            </div>
                 <!-- Additional player select elements for Team B will be added here -->
                 <div>
                     <button type="button" id="addPlayerToTeamB" class="ml-4">Add Player to Team B</button>
                     <button type="button" id="removePlayerFromTeamB" class="ml-4">Remove Player from Team B</button>
                 </div>
-            </div>
             <!-- end of teams -->
 
             <label for="court">Court</label>
@@ -54,8 +54,8 @@
 
             <label for="setScore">Set Scores</label>
 
-<div id="setScoresContainer">
-    <div>
+<div>
+    <div id=setScoresContainer>
         <label for="set1_player1">Set 1 - Team A:</label>
         <input type="number" id="set1_teamA" name="set1_teamA" min="0" required="">
         <label for="set1_player2">Set 1 - Team B:</label>
