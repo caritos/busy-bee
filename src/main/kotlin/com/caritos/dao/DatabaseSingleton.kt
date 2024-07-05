@@ -8,11 +8,12 @@ import org.jetbrains.exposed.sql.transactions.experimental.*
 
 object DatabaseSingleton {
     fun init() {
-        val driverClassName = "org.postgresql.Driver"
-        val jdbcURL = "jdbc:postgresql://localhost:5432/tennis"
-        val username = "user_a"
-        val password = "password_a"
+        val driverClassName = System.getenv("DB_DRIVER") ?: "org.postgresql.Driver"
+        val jdbcURL = System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5432/tennis"
+        val username = System.getenv("DB_USER") ?: "user_a"
+        val password = System.getenv("DB_PASSWORD") ?: "password_a"
         val database = Database.connect(jdbcURL, driverClassName, username, password)
+        
         transaction(database) {
             SchemaUtils.create(TeamPlayers)
             SchemaUtils.create(Users)
