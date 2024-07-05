@@ -114,7 +114,7 @@ fun Route.match() {
             }
 
             logger.info("match created:" + match?.id)
-            call.respondRedirect("/matches/${match?.id}")
+            call.respondRedirect("/matches")
         }
 
         get("{id}") {
