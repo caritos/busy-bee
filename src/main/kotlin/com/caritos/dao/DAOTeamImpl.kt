@@ -90,6 +90,7 @@ class DAOTeamImpl : DAOTeam {
         Teams.deleteWhere { Teams.id eq id } > 0
     }
 
+
     override suspend fun getAllSinglePlayerTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
         Teams.selectAll().mapNotNull { row ->
             val team = resultRowToTeam(row)
@@ -142,6 +143,10 @@ class DAOTeamImpl : DAOTeam {
             .sorted() // Sort the names alphabetically
         
         playerNames.joinToString(" ")
+    }
+
+    override suspend fun getTeamPlayerCount(teamId: Int): Int = dbQuery {
+        TeamPlayers.select { TeamPlayers.teamId eq teamId }.count().toInt()
     }
 }
 
