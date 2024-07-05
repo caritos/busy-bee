@@ -28,7 +28,6 @@ data class TeamWithNameAndScore(
 
 object Teams : IntIdTable() {
     val name = varchar("name", 255).default("")
-    val playerIds = varchar("player_ids", 255).default("")
 }
 
 @Serializable

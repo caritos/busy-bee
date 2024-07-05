@@ -28,8 +28,6 @@ class DAOTeamImpl : DAOTeam {
                 // Create the new team
                 val teamId = Teams.insertAndGetId {
                     it[Teams.name] = name
-                    // TODO: in the future, we can remove this column 
-                    it[Teams.playerIds] = playerIds.joinToString(",")
                 }
 
                 // Insert players into TeamPlayers
@@ -72,15 +70,14 @@ class DAOTeamImpl : DAOTeam {
                             .map { it[Players.name] }
                             .joinToString(" ")
         val insertStatement = Teams.insert {
-            it[Teams.playerIds] = playerIds.joinToString(",")
             it[Teams.name] = playerNames
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToTeam)
     }
 
-    override suspend fun edit(id: Int, playerIds: Set<Int>): Boolean = dbQuery {
+    override suspend fun edit(id: Int, name: String): Boolean = dbQuery {
         Teams.update({ Teams.id eq id }) {
-            it[Teams.playerIds] = playerIds.joinToString(",")
+            it[Teams.name] = name
         } > 0
     }
 
