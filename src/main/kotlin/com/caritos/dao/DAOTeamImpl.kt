@@ -47,7 +47,6 @@ class DAOTeamImpl : DAOTeam {
     private fun resultRowToTeam(row: ResultRow) = Team(
         id = row[Teams.id].value,
         name = row[Teams.name],
-        playerIds = row[Teams.playerIds].split(",").map { it.toInt() }.toSet(),
     )
 
     override suspend fun getAll(): List<Team> {
@@ -56,7 +55,6 @@ class DAOTeamImpl : DAOTeam {
                 Team(
                     id = it[Teams.id].value,
                     name = it[Teams.name],
-                    playerIds = it[Teams.playerIds].split(",").map { it.toInt() }.toSet(),
                 )
             }
         }
@@ -88,34 +86,6 @@ class DAOTeamImpl : DAOTeam {
 
     override suspend fun delete(id: Int): Boolean = dbQuery {
         Teams.deleteWhere { Teams.id eq id } > 0
-    }
-
-
-    override suspend fun getAllSinglePlayerTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
-        Teams.selectAll().mapNotNull { row ->
-            val team = resultRowToTeam(row)
-            val playerCount = team.playerIds.size
-            if (playerCount == 1) {
-                val score = getTeamScore(team.id)
-                team to score
-            } else {
-                null
-            }
-        }
-    }
-
-    override suspend fun getAllDoublePlayerTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
-        Teams.selectAll().mapNotNull { row ->
-            val team = resultRowToTeam(row)
-            logger.info(team.toString())
-            val playerCount = team.playerIds.size
-            if (playerCount == 2) {
-                val score = getTeamScore(team.id)
-                team to score
-            } else {
-                null
-            }
-        }
     }
 
     override suspend fun getTeamsWithNameAndScore(): List<TeamWithNameAndScore> = dbQuery {

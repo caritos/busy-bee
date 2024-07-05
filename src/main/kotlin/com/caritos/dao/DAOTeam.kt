@@ -9,8 +9,6 @@ interface DAOTeam {
     suspend fun edit(id: Int, playerIds: Set<Int>): Boolean
     suspend fun delete(id: Int): Boolean
     suspend fun createTeam(name: String, playerIds: Set<Int>): Int 
-    suspend fun getAllSinglePlayerTeamsWithScores(): List<Pair<Team, Int>>
-    suspend fun getAllDoublePlayerTeamsWithScores(): List<Pair<Team, Int>>
     suspend fun getTeamScore(teamId: Int): Int
     suspend fun getAllTeamsWithScores(): List<Pair<Team, Int>>
     suspend fun getTeamName(teamId: Int): String

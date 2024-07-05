@@ -13,7 +13,7 @@ fun Route.team() {
     route("teams") {
         val logger = LoggerFactory.getLogger("Teams")
         get {
-            val teams = daoTeam.getAll().map { it.id.toString() to it.playerIds.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }.joinToString(", ") }.toMap()
+            val teams = daoTeam.getAll()
             logger.info("teams" + teams.toString())
             call.respond(FreeMarkerContent("teams/index.ftl", mapOf("teams" to teams )))
         }

@@ -17,7 +17,6 @@ object Players : IntIdTable() {
 data class Team(
     val id: Int,
     val name: String, 
-    val playerIds: Set<Int>,
 )
 
 data class TeamWithNameAndScore(

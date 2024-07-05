@@ -26,8 +26,8 @@ fun Route.match() {
     route("matches") {
         get {
             val matches = daoMatch.getAll().map { match ->
-                val teamANames = daoTeam.get(match.teamAId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
-                val teamBNames = daoTeam.get(match.teamBId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
+                val teamANames = daoTeam.getTeamName(match.teamAId)
+                val teamBNames = daoTeam.getTeamName(match.teamBId)
                 MatchWithPlayerNames(
                     id = match.id,
                     date = match.date,
@@ -122,12 +122,8 @@ fun Route.match() {
             val match = daoMatch.get(id)
             assert(match != null)
             if(match != null) {
-                val teamANames = daoTeam.get(match.teamAId)?.playerIds?.map { playerId ->
-                    daoPlayer.get(playerId)?.name ?: "Unknown"
-                }?.joinToString(", ")
-                val teamBNames = daoTeam.get(match.teamBId)?.playerIds?.map { playerId ->
-                    daoPlayer.get(playerId)?.name ?: "Unknown"
-                }?.joinToString(", ")
+                val teamANames = daoTeam.getTeamName(match.teamAId)
+                val teamBNames = daoTeam.getTeamName(match.teamBId)
                 val matchWithPlayerName = MatchWithPlayerNames(
                     id = match.id,
                     date = match.date,
