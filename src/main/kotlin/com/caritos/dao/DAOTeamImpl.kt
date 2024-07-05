@@ -13,6 +13,7 @@ class DAOTeamImpl : DAOTeam {
 
     private fun resultRowToTeam(row: ResultRow) = Team(
         id = row[Teams.id].value,
+        name = row[Teams.name],
         playerIds = row[Teams.playerIds].split(",").map { it.toInt() }.toSet(),
     )
 
@@ -21,6 +22,7 @@ class DAOTeamImpl : DAOTeam {
             Teams.selectAll().map {
                 Team(
                     id = it[Teams.id].value,
+                    name = it[Teams.name],
                     playerIds = it[Teams.playerIds].split(",").map { it.toInt() }.toSet(),
                 )
             }
@@ -34,8 +36,13 @@ class DAOTeamImpl : DAOTeam {
     }
 
     override suspend fun add(playerIds: Set<Int>): Team? = dbQuery {
+        // Fetch player names based on playerIds
+        val playerNames = Players.select { Players.id inList playerIds }
+                            .map { it[Players.name] }
+                            .joinToString(" ")
         val insertStatement = Teams.insert {
             it[Teams.playerIds] = playerIds.joinToString(",")
+            it[Teams.name] = playerNames
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToTeam)
     }
@@ -64,9 +71,14 @@ class DAOTeamImpl : DAOTeam {
                 existingTeam[Teams.id].value
             } else {
                 logger.info("new team: $sortedPlayerIds")
+                        // Fetch player names based on playerIds
+                val playerNames = Players.select { Players.id inList playerIds }
+                            .map { it[Players.name] }
+                            .joinToString(" ")
                 // If the team doesn't exist, create a new team and return its ID
                 val newTeam = Teams.insertAndGetId {
                     it[Teams.playerIds] = sortedPlayerIds
+                    it[Teams.name] = playerNames
                 }
                 newTeam.value
             }
