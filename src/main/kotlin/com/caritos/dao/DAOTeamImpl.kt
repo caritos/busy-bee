@@ -130,6 +130,19 @@ class DAOTeamImpl : DAOTeam {
             team to score
         }
     }
+
+    // get the team name from the player's name associated with the team
+    // need iterate through the TeamPlayers table and get the player's name from the Players table
+    override suspend fun getTeamName(teamId: Int): String = dbQuery {
+        val playerNames = TeamPlayers
+            .innerJoin(Players, { TeamPlayers.playerId }, { Players.id })
+            .slice(Players.name)
+            .select { TeamPlayers.teamId eq teamId }
+            .map { it[Players.name] }
+            .sorted() // Sort the names alphabetically
+        
+        playerNames.joinToString(" ")
+    }
 }
 
 

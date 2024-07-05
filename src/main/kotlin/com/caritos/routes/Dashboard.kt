@@ -17,18 +17,22 @@ fun Route.dashboard() {
             val teamsWithScores = daoTennisSet.getTeamsWithScores()
             logger.info("teamsWithScores: $teamsWithScores")
 
+
             val recentMatches = daoMatch.getRecentMatches(10).map { match ->
-                val teamANames = daoTeam.get(match.teamAId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
-                val teamBNames = daoTeam.get(match.teamBId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
+                val teamAName = daoTeam.getTeamName(match.teamAId)
+                val teamBName = daoTeam.getTeamName(match.teamBId)
+                logger.info("teamAName: $teamAName")
+                logger.info("teamBName: $teamBName")
+
                 MatchWithPlayerNames(
                     id = match.id,
                     date = match.date,
                     courtId = match.courtId,
                     courtName = daoCourt.court(match.courtId)?.name ?: "Unknown",
                     teamAId = match.teamAId.toString(),
-                    teamANames = teamANames ?: "Unknown",
+                    teamANames = teamAName ?: "Unknown",
                     teamBId = match.teamBId.toString(),
-                    teamBNames = teamBNames ?: "Unknown",
+                    teamBNames = teamBName ?: "Unknown",
                     score = daoTennisSet.getTennisSetsForMatch(match.id)
                 )
             }

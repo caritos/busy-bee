@@ -13,4 +13,5 @@ interface DAOTeam {
     suspend fun getAllDoublePlayerTeamsWithScores(): List<Pair<Team, Int>>
     suspend fun getTeamScore(teamId: Int): Int
     suspend fun getAllTeamsWithScores(): List<Pair<Team, Int>>
+    suspend fun getTeamName(teamId: Int): String
 }
