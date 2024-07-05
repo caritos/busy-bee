@@ -10,4 +10,5 @@ interface DAOTennisSet {
     suspend fun delete(id: Int): Boolean
     suspend fun getAllForMatch(id: Int): List<TennisSet>
     suspend fun getTennisSetsForMatch(id: Int): List<TennisSet>
+    suspend fun getTeamsWithScores(): List<Pair<Int, Int>> 
 }

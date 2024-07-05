@@ -14,6 +14,9 @@ fun Route.dashboard() {
     val logger = LoggerFactory.getLogger("dashboard")
     route("dashboard") {
         get {
+            val teamsWithScores = daoTennisSet.getTeamsWithScores()
+            logger.info("teamsWithScores: $teamsWithScores")
+
             val recentMatches = daoMatch.getRecentMatches(10).map { match ->
                 val teamANames = daoTeam.get(match.teamAId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")
                 val teamBNames = daoTeam.get(match.teamBId)?.playerIds?.map { playerId -> daoPlayer.get(playerId)?.name ?: "Unknown" }?.joinToString(", ")

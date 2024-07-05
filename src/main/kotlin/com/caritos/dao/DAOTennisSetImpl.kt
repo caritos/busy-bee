@@ -96,6 +96,16 @@ class DAOTennisSetImpl : DAOTennisSet {
     override suspend fun delete(id: Int): Boolean = dbQuery {
         TennisSets.deleteWhere { TennisSets.id eq id } > 0
     }
+
+    override suspend fun getTeamsWithScores(): List<Pair<Int, Int>> = dbQuery {
+        TennisSets
+            .selectAll()
+            .map { it[TennisSets.teamAId] to it[TennisSets.teamAScore] }
+            .groupBy { it.first }
+            .map { (teamId, scores) -> teamId to scores.sumOf { it.second } }
+    }
+
+
 }
 
 val daoTennisSet : DAOTennisSet = DAOTennisSetImpl().apply {
