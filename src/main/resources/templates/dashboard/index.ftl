@@ -39,16 +39,16 @@
     </tr>
     </thead>
     <tbody>
-    <#list doublePlayerTeamsWithNames as team>
+    <#list doublesTeamsWithNameAndScore as team>
       <tr>
         <td class="border border-gray-300 px-4 py-2">
           ${team_index + 1}
         </td>
         <td class="border border-gray-300 px-4 py-2">
-          ${team.first?join(",")}
+          ${team.name}
         </td>
         <td class="border border-gray-300 px-4 py-2">
-          ${team.second}</p>
+          ${team.score}</p>
         </td>
       </tr>
     </#list>
@@ -71,16 +71,16 @@
     </tr>
     </thead>
     <tbody>
-    <#list singlePlayerTeamsWithNames as team>
+    <#list singlesTeamsWithNameAndScore as team>
       <tr>
         <td class="border border-gray-300 px-4 py-2">
           ${team_index + 1}
         </td>
         <td class="border border-gray-300 px-4 py-2">
-          ${team.first?join(",")}
+          ${team.name}
         </td>
         <td class="border border-gray-300 px-4 py-2">
-          ${team.second}</p>
+          ${team.score}</p>
         </td>
       </tr>
     </#list>

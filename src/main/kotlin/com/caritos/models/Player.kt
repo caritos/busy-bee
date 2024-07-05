@@ -20,6 +20,13 @@ data class Team(
     val playerIds: Set<Int>,
 )
 
+data class TeamWithNameAndScore(
+    val id: Int,
+    val name: String,
+    val numberOfPlayers: Int,
+    val score: Int
+)
+
 object Teams : IntIdTable() {
     val name = varchar("name", 255).default("")
     val playerIds = varchar("player_ids", 255).default("")

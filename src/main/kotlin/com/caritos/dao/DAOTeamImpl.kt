@@ -118,6 +118,16 @@ class DAOTeamImpl : DAOTeam {
         }
     }
 
+    override suspend fun getTeamsWithNameAndScore(): List<TeamWithNameAndScore> = dbQuery {
+        Teams.selectAll().map { row ->
+            val teamId = row[Teams.id].value
+            val teamName = getTeamName(teamId)
+            val playerCount = getTeamPlayerCount(teamId)
+            val score = getTeamScore(teamId)
+            TeamWithNameAndScore(teamId, teamName, playerCount, score)
+        }
+    }
+
 
 
     override suspend fun getAllTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
@@ -152,6 +162,8 @@ class DAOTeamImpl : DAOTeam {
                 (it[TennisSets.teamBId] == teamId && it[TennisSets.teamBScore] > it[TennisSets.teamAScore])
             }
     }
+
+
 
 
 
