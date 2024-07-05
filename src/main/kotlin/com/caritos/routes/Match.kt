@@ -84,8 +84,8 @@ fun Route.match() {
             logger.info(teamBPlayerIds.toString())
             // i need to check if this set of players already exists in the teams table
             // if it doesn't exist, create it
-            val teamAId = daoTeam.getOrCreateTeam(teamAPlayerIds.map { it.toInt() }.toSet())
-            val teamBId = daoTeam.getOrCreateTeam(teamBPlayerIds.map { it.toInt() }.toSet())
+            val teamAId = daoTeam.createTeam("", teamAPlayerIds.map { it.toInt() }.toSet())
+            val teamBId = daoTeam.createTeam("", teamBPlayerIds.map { it.toInt() }.toSet())
 
             logger.info("will be adding match to database")
             val match= daoMatch.add(date, courtId.toInt(), teamAId.toInt(), teamBId.toInt())

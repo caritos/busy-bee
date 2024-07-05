@@ -23,7 +23,7 @@ fun Route.player() {
             val formParameters = call.receiveParameters()
             val name = formParameters.getOrFail("name")
             val player = daoPlayer.add(name)
-            call.respondRedirect("/players/${player?.id}")
+            call.respondRedirect("/players")
         }
 
         get("{id}") {

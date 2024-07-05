@@ -21,6 +21,17 @@ data class Team(
 )
 
 object Teams : IntIdTable() {
-    val name = varchar("name", 255)
-    val playerIds = varchar("player_ids", 255)
+    val name = varchar("name", 255).default("")
+    val playerIds = varchar("player_ids", 255).default("")
+}
+
+@Serializable
+data class TeamPlayer(
+    val playerId: Int,
+    val teamId: Int
+)   
+
+object TeamPlayers : IntIdTable() {
+    val playerId = integer("player_id").references(Players.id)
+    val teamId = integer("team_id").references(Teams.id)
 }

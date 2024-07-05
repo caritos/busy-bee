@@ -11,6 +11,39 @@ import org.slf4j.LoggerFactory
 class DAOTeamImpl : DAOTeam {
     val logger = LoggerFactory.getLogger("DAOTeamImpl")
 
+    override suspend fun createTeam(name: String, playerIds: Set<Int>): Int {
+        return transaction {
+            // Fetch all existing teams and their players
+            val existingTeams = TeamPlayers
+                .slice(TeamPlayers.teamId, TeamPlayers.playerId)
+                .selectAll()
+                .groupBy { it[TeamPlayers.teamId] }
+                .mapValues { entry -> entry.value.map { it[TeamPlayers.playerId] }.toSet() }
+
+            // Check if the new set of players already exists
+            val existingTeamId = existingTeams.entries.find { it.value == playerIds }?.key
+            if (existingTeamId != null) {
+                existingTeamId // Return the ID of the existing team
+            } else {
+                // Create the new team
+                val teamId = Teams.insertAndGetId {
+                    it[Teams.name] = name
+                    // TODO: in the future, we can remove this column 
+                    it[Teams.playerIds] = playerIds.joinToString(",")
+                }
+
+                // Insert players into TeamPlayers
+                playerIds.forEach { playerId ->
+                    TeamPlayers.insert {
+                        it[TeamPlayers.playerId] = playerId
+                        it[TeamPlayers.teamId] = teamId.value
+                    }
+                }
+                teamId.value // Return the ID of the newly created team
+            }
+        }
+    }
+
     private fun resultRowToTeam(row: ResultRow) = Team(
         id = row[Teams.id].value,
         name = row[Teams.name],
@@ -55,34 +88,6 @@ class DAOTeamImpl : DAOTeam {
 
     override suspend fun delete(id: Int): Boolean = dbQuery {
         Teams.deleteWhere { Teams.id eq id } > 0
-    }
-
-    override suspend fun getOrCreateTeam(playerIds: Set<Int>): Int {
-        return dbQuery {
-            // Sort the player IDs before joining them into a string
-            val sortedPlayerIds = playerIds.sorted().joinToString(",")
-
-            // Try to find an existing team with the given player IDs
-            val existingTeam = Teams.select { Teams.playerIds eq sortedPlayerIds }.singleOrNull()
-
-            if (existingTeam != null) {
-                logger.info("existing team: $existingTeam")
-                // If the team exists, return its ID
-                existingTeam[Teams.id].value
-            } else {
-                logger.info("new team: $sortedPlayerIds")
-                        // Fetch player names based on playerIds
-                val playerNames = Players.select { Players.id inList playerIds }
-                            .map { it[Players.name] }
-                            .joinToString(" ")
-                // If the team doesn't exist, create a new team and return its ID
-                val newTeam = Teams.insertAndGetId {
-                    it[Teams.playerIds] = sortedPlayerIds
-                    it[Teams.name] = playerNames
-                }
-                newTeam.value
-            }
-        }
     }
 
     override suspend fun getAllSinglePlayerTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
