@@ -20,12 +20,16 @@ fun Route.dashboard() {
             val recentMatches = daoMatch.getRecentMatches(10).map { match ->
                 val teamAName = daoTeam.getTeamName(match.teamAId)
                 val teamAPlayerCount = daoTeam.getTeamPlayerCount(match.teamAId)
+                val teamAScore = daoTeam.getTeamScore(match.teamAId)
                 val teamBName = daoTeam.getTeamName(match.teamBId)
                 val teamBPlayerCount = daoTeam.getTeamPlayerCount(match.teamBId)
+                val teamBScore = daoTeam.getTeamScore(match.teamBId)
                 logger.info("teamAName: $teamAName")
                 logger.info("teamBName: $teamBName")
                 logger.info("teamAPlayerCount: $teamAPlayerCount")
                 logger.info("teamBPlayerCount: $teamBPlayerCount")
+                logger.info("teamAScore: $teamAScore")
+                logger.info("teamBScore: $teamBScore")
 
                 MatchWithPlayerNames(
                     id = match.id,

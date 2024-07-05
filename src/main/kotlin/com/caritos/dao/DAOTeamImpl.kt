@@ -118,11 +118,7 @@ class DAOTeamImpl : DAOTeam {
         }
     }
 
-    override suspend fun getTeamScore(teamId: Int): Int = dbQuery {
-        TennisSets.select { (TennisSets.teamAId eq teamId) or (TennisSets.teamBId eq teamId) }
-            .map { if (it[TennisSets.teamAId] == teamId) it[TennisSets.teamAScore] else it[TennisSets.teamBScore] }
-            .sum()
-    }
+
 
     override suspend fun getAllTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
         Teams.selectAll().map { row ->
@@ -148,6 +144,17 @@ class DAOTeamImpl : DAOTeam {
     override suspend fun getTeamPlayerCount(teamId: Int): Int = dbQuery {
         TeamPlayers.select { TeamPlayers.teamId eq teamId }.count().toInt()
     }
+
+    override suspend fun getTeamScore(teamId: Int): Int = dbQuery {
+        TennisSets.select { (TennisSets.teamAId eq teamId) or (TennisSets.teamBId eq teamId) }
+            .count { 
+                (it[TennisSets.teamAId] == teamId && it[TennisSets.teamAScore] > it[TennisSets.teamBScore]) ||
+                (it[TennisSets.teamBId] == teamId && it[TennisSets.teamBScore] > it[TennisSets.teamAScore])
+            }
+    }
+
+
+
 }
 
 
