@@ -2,7 +2,6 @@ package com.caritos.dao
 
 import com.caritos.dao.DatabaseSingleton.dbQuery
 import com.caritos.models.Court
-import com.caritos.models.Courts
 import com.caritos.models.Player
 import com.caritos.models.Players
 import kotlinx.coroutines.runBlocking
@@ -43,7 +42,7 @@ class DAOPlayerImpl : DAOPlayer {
 
     override suspend fun edit(id: Int, name: String): Boolean = dbQuery {
         Players.update({ Players.id eq id }) {
-            it[Courts.name] = name
+            it[Players.name] = name
         } > 0
     }
 

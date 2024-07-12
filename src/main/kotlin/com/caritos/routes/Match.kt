@@ -1,11 +1,12 @@
 package com.caritos.routes
 
-import com.caritos.dao.daoCourt
 import com.caritos.dao.daoMatch
 import com.caritos.dao.daoTeam
-import com.caritos.dao.daoPlayer
 import com.caritos.dao.daoTennisSet
-import com.caritos.models.*
+import com.caritos.models.MatchWithPlayerNames
+import com.caritos.models.Player
+import com.caritos.models.Players
+import com.caritos.models.courtRepository
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
@@ -14,12 +15,11 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.time.format.DateTimeFormatter
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 fun Route.match() {
     val logger = LoggerFactory.getLogger("Routes")
@@ -32,7 +32,7 @@ fun Route.match() {
                     id = match.id,
                     date = match.date,
                     courtId = match.courtId,
-                    courtName = daoCourt.court(match.courtId)?.name ?: "Unknown",
+                    courtName = courtRepository.courtById(match.courtId)?.name ?: "Unknown",
                     teamAId = match.teamAId.toString(),
                     teamANames = teamANames ?: "Unknown",
                     teamBId = match.teamBId.toString(),
@@ -54,12 +54,7 @@ fun Route.match() {
             println("begin route matches/new")
             println(playersJson)
             println("end route matches/new")
-            val courts = transaction {
-                Courts.selectAll().map {
-                    Court(it[Courts.id].value, it[Courts.name], it[Courts.location])
-                }.sortedBy { it.name }
-            }
-
+            val courts = courtRepository.allCourts().sortedBy { it.name }
             val dataModel = mapOf("playersJson" to playersJson, "players" to players,
                 "courts" to courts)
             call.respond(FreeMarkerContent("matches/new.ftl", dataModel))
@@ -128,7 +123,7 @@ fun Route.match() {
                     id = match.id,
                     date = match.date,
                     courtId = match.courtId,
-                    courtName = daoCourt.court(match.courtId)?.name ?: "Unknown",
+                    courtName = courtRepository.courtById(match.courtId)?.name ?: "Unknown",
                     teamAId = match.teamAId.toString(),
                     teamANames = teamANames ?: "Unknown",
                     teamBId = match.teamBId.toString(),

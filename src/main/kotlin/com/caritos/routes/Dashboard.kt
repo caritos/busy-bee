@@ -2,6 +2,7 @@ package com.caritos.routes
 
 import com.caritos.dao.*
 import com.caritos.models.MatchWithPlayerNames
+import com.caritos.models.courtRepository
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
@@ -32,7 +33,7 @@ fun Route.dashboard() {
                     id = match.id,
                     date = match.date,
                     courtId = match.courtId,
-                    courtName = daoCourt.court(match.courtId)?.name ?: "Unknown",
+                    courtName = courtRepository.courtById(match.courtId)?.name ?: "Unknown",
                     teamAId = match.teamAId.toString(),
                     teamANames = teamAName ?: "Unknown",
                     teamBId = match.teamBId.toString(),
