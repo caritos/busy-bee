@@ -31,12 +31,12 @@ fun Route.team() {
 
         get("{id}") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("/teams/show.ftl", mapOf("team" to teamRepository.get(id))))
+            call.respond(FreeMarkerContent("/teams/show.ftl", mapOf("team" to teamRepository.teamById(id))))
         }
 
         get("{id}/edit") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("/teams/edit.ftl", mapOf("team" to teamRepository.get(id))))
+            call.respond(FreeMarkerContent("/teams/edit.ftl", mapOf("team" to teamRepository.teamById(id))))
         }
 
         post("{id}") {

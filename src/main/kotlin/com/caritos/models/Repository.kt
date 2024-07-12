@@ -76,7 +76,7 @@ data class Team(
 
 interface TeamRepository {
     suspend fun getAll(): List<Team>
-    suspend fun get(id: Int): Team?
+    suspend fun teamById(id: Int): Team?
     suspend fun add(playerIds: Set<Int>): Team?
     suspend fun edit(id: Int, name: String): Boolean
     suspend fun delete(id: Int): Boolean

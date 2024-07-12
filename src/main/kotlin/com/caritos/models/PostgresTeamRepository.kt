@@ -57,10 +57,12 @@ class PostgresTeamRepository: TeamRepository {
         }
     }
 
-    override suspend fun get(id: Int): Team? = dbQuery {
-        TeamTable.select { TeamTable.id eq id }
-            .map(::resultRowToTeam)
-            .singleOrNull()
+    override suspend fun teamById(id: Int): Team? = suspendTransaction{
+        TeamDAO
+            .find { ( TeamTable.id eq id) }
+            .limit(1)
+            .map(::daoToModel)
+            .firstOrNull()
     }
 
     override suspend fun add(playerIds: Set<Int>): Team? = dbQuery {

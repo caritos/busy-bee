@@ -2,6 +2,7 @@ package com.caritos.db
 
 import com.caritos.models.Court
 import com.caritos.models.Player
+import com.caritos.models.Team
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
@@ -35,6 +36,12 @@ object TennisSetTable : IntIdTable("tennissets") {
     val teamAScore = integer("team_a_score")
     val teamBScore = integer("team_b_score")
 }
+
+object TeamPlayersTable : IntIdTable("teamplayers") {
+    val playerId = integer("player_id").references(PlayerTable.id)
+    val teamId = integer("team_id").references(TeamTable.id)
+}
+
 /**
  * Team
  */
@@ -42,10 +49,15 @@ object TeamTable : IntIdTable("teams") {
     val name = varchar("name", 255).default("")
 }
 
-object TeamPlayersTable : IntIdTable("teamplayers") {
-    val playerId = integer("player_id").references(PlayerTable.id)
-    val teamId = integer("team_id").references(TeamTable.id)
+class TeamDAO(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<TeamDAO>(TeamTable)
+    var name by TeamTable.name
 }
+
+fun daoToModel(dao: TeamDAO) = Team(
+    id = dao.id.value,
+    name = dao.name,
+)
 /**
  * Player
  */
