@@ -11,6 +11,12 @@ import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.javatime.date
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
+object UserTable: IntIdTable("users") {
+    val username = varchar("username", 50).uniqueIndex()
+    val password = varchar("password", 60) // bcrypt hashed password
+    val salt = varchar("salt", 32)
+}
+
 object MatchTable : IntIdTable("matches") {
     val date = date("date")
     val courtId = integer("court_id").references(CourtTable.id)

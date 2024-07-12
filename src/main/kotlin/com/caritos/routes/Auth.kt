@@ -1,6 +1,6 @@
 package com.caritos.routes
 
-import com.caritos.models.Users
+import com.caritos.db.UserTable
 import com.caritos.plugins.UserSession
 import com.caritos.plugins.generateSalt
 import com.caritos.plugins.hashPassword
@@ -43,10 +43,10 @@ fun Route.auth() {
         val hashedPassword = hashPassword(password, salt)
 
         transaction {
-            Users.insert {
-                it[Users.username] = username
-                it[Users.password] = hashedPassword
-                it[Users.salt] = salt
+            UserTable.insert {
+                it[UserTable.username] = username
+                it[UserTable.password] = hashedPassword
+                it[UserTable.salt] = salt
             }
         }
 

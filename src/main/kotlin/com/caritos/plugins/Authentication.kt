@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory
 import java.security.SecureRandom
 import java.util.*
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.caritos.db.UserTable
 import com.caritos.models.User
-import com.caritos.models.Users
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -35,8 +35,8 @@ fun Application.configureAuthentication() {
             passwordParamName = "password"
             validate { credentials ->
                 val user = transaction {
-                    Users.select { Users.username eq credentials.name }.singleOrNull()?.let {
-                        User(it[Users.id].value, it[Users.username], it[Users.password], it[Users.salt])
+                    UserTable.select { UserTable.username eq credentials.name }.singleOrNull()?.let {
+                        User(it[UserTable.id].value, it[UserTable.username], it[UserTable.password], it[UserTable.salt])
                     }
                 }
                 if (user != null && verifyPassword(credentials.password, user.salt, user.password)) {

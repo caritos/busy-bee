@@ -1,6 +1,5 @@
 package com.caritos.db
 
-import com.caritos.models.*
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
@@ -16,7 +15,7 @@ object DatabaseSingleton {
         
         transaction(database) {
             SchemaUtils.create(TeamPlayersTable)
-            SchemaUtils.create(Users)
+            SchemaUtils.create(UserTable)
             SchemaUtils.create(CourtTable)
             SchemaUtils.create(PlayerTable)
             SchemaUtils.create(MatchTable)
