@@ -1,6 +1,6 @@
 package com.caritos.routes
 
-import com.caritos.dao.daoPlayer
+import com.caritos.models.playerRepository
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
@@ -11,7 +11,7 @@ import io.ktor.server.util.*
 fun Route.player() {
     route("players") {
         get {
-            val players = daoPlayer.getAll().sortedByDescending { it.name }
+            val players = playerRepository.allPlayers().sortedByDescending { it.name }
             call.respond(FreeMarkerContent("players/index.ftl", mapOf("players" to players)))
         }
 
@@ -22,18 +22,18 @@ fun Route.player() {
         post {
             val formParameters = call.receiveParameters()
             val name = formParameters.getOrFail("name")
-            daoPlayer.add(name)
+            playerRepository.addPlayer(name)
             call.respondRedirect("/players")
         }
 
         get("{id}") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("/players/show.ftl", mapOf("player" to daoPlayer.get(id))))
+            call.respond(FreeMarkerContent("/players/show.ftl", mapOf("player" to playerRepository.playerById(id))))
         }
 
         get("{id}/edit") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("/players/edit.ftl", mapOf("player" to daoPlayer.get(id))))
+            call.respond(FreeMarkerContent("/players/edit.ftl", mapOf("player" to playerRepository.playerById(id))))
         }
 
         post("{id}") {
@@ -42,12 +42,12 @@ fun Route.player() {
             when (formParameters.getOrFail("_action")) {
                 "update" -> {
                     val name = formParameters.getOrFail("name")
-                    daoPlayer.edit(id, name)
+                    playerRepository.updatePlayer(id, name)
                     call.respondRedirect("/players/$id")
                 }
 
                 "delete" -> {
-                    daoPlayer.delete(id)
+                    playerRepository.removePlayer(id)
                     call.respondRedirect("/players")
                 }
             }

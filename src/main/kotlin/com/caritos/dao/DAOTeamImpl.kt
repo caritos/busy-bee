@@ -1,6 +1,7 @@
 package com.caritos.dao
 
 import com.caritos.dao.DatabaseSingleton.dbQuery
+import com.caritos.db.PlayerTable
 import com.caritos.models.*
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
@@ -66,8 +67,8 @@ class DAOTeamImpl : DAOTeam {
 
     override suspend fun add(playerIds: Set<Int>): Team? = dbQuery {
         // Fetch player names based on playerIds
-        val playerNames = Players.select { Players.id inList playerIds }
-                            .map { it[Players.name] }
+        val playerNames = PlayerTable.select { PlayerTable.id inList playerIds }
+                            .map { it[PlayerTable.name] }
                             .joinToString(" ")
         val insertStatement = Teams.insert {
             it[Teams.name] = playerNames
@@ -109,10 +110,10 @@ class DAOTeamImpl : DAOTeam {
     // need iterate through the TeamPlayers table and get the player's name from the Players table
     override suspend fun getTeamName(teamId: Int): String = dbQuery {
         val playerNames = TeamPlayers
-            .innerJoin(Players, { TeamPlayers.playerId }, { Players.id })
-            .slice(Players.name)
+            .innerJoin(PlayerTable, { TeamPlayers.playerId }, { PlayerTable.id })
+            .slice(PlayerTable.name)
             .select { TeamPlayers.teamId eq teamId }
-            .map { it[Players.name] }
+            .map { it[PlayerTable.name] }
             .sorted() // Sort the names alphabetically
         
         playerNames.joinToString(" ")

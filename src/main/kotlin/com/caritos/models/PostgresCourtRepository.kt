@@ -1,7 +1,5 @@
 package com.caritos.models
 
-import com.caritos.dao.DAOMatch
-import com.caritos.dao.DAOMatchImpl
 import com.caritos.db.CourtDAO
 import com.caritos.db.CourtTable
 import com.caritos.db.daoToModel

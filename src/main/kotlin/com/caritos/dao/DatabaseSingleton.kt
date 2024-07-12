@@ -1,6 +1,7 @@
 package com.caritos.dao
 
 import com.caritos.db.CourtTable
+import com.caritos.db.PlayerTable
 import com.caritos.models.*
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.*
@@ -19,7 +20,7 @@ object DatabaseSingleton {
             SchemaUtils.create(TeamPlayers)
             SchemaUtils.create(Users)
             SchemaUtils.create(CourtTable)
-            SchemaUtils.create(Players)
+            SchemaUtils.create(PlayerTable)
             SchemaUtils.create(Matches)
             SchemaUtils.create(Teams)
             SchemaUtils.create(TennisSets)

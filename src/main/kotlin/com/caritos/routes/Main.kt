@@ -1,6 +1,5 @@
 package com.caritos.routes
 
-import com.caritos.dao.daoPlayer
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.http.content.*

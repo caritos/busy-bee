@@ -1,17 +1,8 @@
 package com.caritos.models
 
+import com.caritos.db.PlayerTable
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.id.IntIdTable
-
-@Serializable
-data class Player(
-    val id: Int,
-    val name: String
-)
-
-object Players : IntIdTable() {
-    val name = varchar("name", 50)
-}
 
 @Serializable
 data class Team(
@@ -37,6 +28,6 @@ data class TeamPlayer(
 )   
 
 object TeamPlayers : IntIdTable() {
-    val playerId = integer("player_id").references(Players.id)
+    val playerId = integer("player_id").references(PlayerTable.id)
     val teamId = integer("team_id").references(Teams.id)
 }
