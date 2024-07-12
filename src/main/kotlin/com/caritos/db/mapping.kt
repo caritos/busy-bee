@@ -1,6 +1,7 @@
 package com.caritos.db
 
 import com.caritos.models.Court
+import com.caritos.models.Matches
 import com.caritos.models.Player
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.IntEntity
@@ -10,6 +11,28 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
+/**
+ * TennisSet
+ */
+object TennisSets : IntIdTable("tennissets") {
+    val matchId = integer("match_id").references(Matches.id)
+    val setNumber = integer("set_number")
+    val teamAId = integer("team_a_id").references(TeamTable.id)
+    val teamBId = integer("team_b_id").references(TeamTable.id)
+    val teamAScore = integer("team_a_score")
+    val teamBScore = integer("team_b_score")
+}
+/**
+ * Team
+ */
+object TeamTable : IntIdTable("teams") {
+    val name = varchar("name", 255).default("")
+}
+
+object TeamPlayersTable : IntIdTable("teamplayers") {
+    val playerId = integer("player_id").references(PlayerTable.id)
+    val teamId = integer("team_id").references(TeamTable.id)
+}
 /**
  * Player
  */

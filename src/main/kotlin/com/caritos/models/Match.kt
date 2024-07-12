@@ -1,6 +1,7 @@
 package com.caritos.models
 
 import com.caritos.db.CourtTable
+import com.caritos.db.TeamTable
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.javatime.date
 import java.time.LocalDate
@@ -28,7 +29,7 @@ data class MatchWithPlayerNames(
 object Matches : IntIdTable() {
     val date = date("date")
     val courtId = integer("court_id").references(CourtTable.id)
-    val teamAId = integer("team_a_id").references(Teams.id)
-    val teamBId = integer("team_b_id").references(Teams.id)
+    val teamAId = integer("team_a_id").references(TeamTable.id)
+    val teamBId = integer("team_b_id").references(TeamTable.id)
 }
 

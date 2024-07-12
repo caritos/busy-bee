@@ -1,7 +1,5 @@
-package com.caritos.dao
+package com.caritos.db
 
-import com.caritos.db.CourtTable
-import com.caritos.db.PlayerTable
 import com.caritos.models.*
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.*
@@ -17,12 +15,12 @@ object DatabaseSingleton {
         val database = Database.connect(jdbcURL, driverClassName, username, password)
         
         transaction(database) {
-            SchemaUtils.create(TeamPlayers)
+            SchemaUtils.create(TeamPlayersTable)
             SchemaUtils.create(Users)
             SchemaUtils.create(CourtTable)
             SchemaUtils.create(PlayerTable)
             SchemaUtils.create(Matches)
-            SchemaUtils.create(Teams)
+            SchemaUtils.create(TeamTable)
             SchemaUtils.create(TennisSets)
         }
     }

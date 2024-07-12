@@ -3,6 +3,8 @@ package com.caritos.routes
 import com.caritos.dao.*
 import com.caritos.models.MatchWithPlayerNames
 import com.caritos.models.courtRepository
+import com.caritos.models.daoTeam
+import com.caritos.models.daoTennisSet
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*

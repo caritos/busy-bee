@@ -1,21 +1,12 @@
-package com.caritos.dao
+package com.caritos.models
 
-import com.caritos.dao.DatabaseSingleton.dbQuery
-import com.caritos.models.TennisSet
-import com.caritos.models.TennisSets
-import kotlinx.coroutines.runBlocking
+import com.caritos.db.DatabaseSingleton.dbQuery
+import com.caritos.db.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-/**
- *     val id: Int,
- *     val matchId: Int,
- *     val setNumber: Int,
- *     val player1Score: Int,
- *     val player2Score: Int
- */
-class DAOTennisSetImpl : DAOTennisSet {
+class PostgresTennisSetRepository: DAOTennisSet{
     private fun resultRowToTennisSet(row: ResultRow) = TennisSet(
         id = row[TennisSets.id].value,
         matchId = row[TennisSets.matchId],
@@ -98,9 +89,4 @@ class DAOTennisSetImpl : DAOTennisSet {
     }
 }
 
-val daoTennisSet : DAOTennisSet = DAOTennisSetImpl().apply {
-    runBlocking {
-        if(getAll().isEmpty()) {
-        }
-    }
-}
+val daoTennisSet : DAOTennisSet = PostgresTennisSetRepository()

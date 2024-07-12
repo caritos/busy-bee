@@ -1,6 +1,6 @@
 package com.caritos.dao
 
-import com.caritos.dao.DatabaseSingleton.dbQuery
+import com.caritos.db.DatabaseSingleton.dbQuery
 import com.caritos.models.Match
 import com.caritos.models.Matches
 import kotlinx.coroutines.runBlocking
