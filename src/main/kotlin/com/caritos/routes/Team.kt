@@ -1,7 +1,6 @@
 package com.caritos.routes
 
-import com.caritos.dao.*
-import com.caritos.models.daoTeam
+import com.caritos.models.teamRepository
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
@@ -14,7 +13,7 @@ fun Route.team() {
     route("teams") {
         val logger = LoggerFactory.getLogger("Teams")
         get {
-            val teams = daoTeam.getAll()
+            val teams = teamRepository.getAll()
             logger.info("teams" + teams.toString())
             call.respond(FreeMarkerContent("teams/index.ftl", mapOf("teams" to teams )))
         }
@@ -26,18 +25,18 @@ fun Route.team() {
         post {
             val formParameters = call.receiveParameters()
             val playerId = formParameters.getOrFail("playerId")
-            val team = daoTeam.add(setOf(playerId.toInt()))
+            val team = teamRepository.add(setOf(playerId.toInt()))
             call.respondRedirect("/teams/${team?.id}")
         }
 
         get("{id}") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("/teams/show.ftl", mapOf("team" to daoTeam.get(id))))
+            call.respond(FreeMarkerContent("/teams/show.ftl", mapOf("team" to teamRepository.get(id))))
         }
 
         get("{id}/edit") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("/teams/edit.ftl", mapOf("team" to daoTeam.get(id))))
+            call.respond(FreeMarkerContent("/teams/edit.ftl", mapOf("team" to teamRepository.get(id))))
         }
 
         post("{id}") {
@@ -46,12 +45,12 @@ fun Route.team() {
             when (formParameters.getOrFail("_action")) {
                 "update" -> {
                     val name = formParameters.getOrFail("name")
-                    daoTeam.edit(id, name)
+                    teamRepository.edit(id, name)
                     call.respondRedirect("/teams/$id")
                 }
 
                 "delete" -> {
-                    daoTeam.delete(id)
+                    teamRepository.delete(id)
                     call.respondRedirect("/teams")
                 }
             }

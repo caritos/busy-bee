@@ -19,9 +19,9 @@ object DatabaseSingleton {
             SchemaUtils.create(Users)
             SchemaUtils.create(CourtTable)
             SchemaUtils.create(PlayerTable)
-            SchemaUtils.create(Matches)
+            SchemaUtils.create(MatchTable)
             SchemaUtils.create(TeamTable)
-            SchemaUtils.create(TennisSets)
+            SchemaUtils.create(TennisSetTable)
         }
     }
 

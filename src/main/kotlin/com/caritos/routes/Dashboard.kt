@@ -1,29 +1,23 @@
 package com.caritos.routes
 
-import com.caritos.dao.*
-import com.caritos.models.MatchWithPlayerNames
-import com.caritos.models.courtRepository
-import com.caritos.models.daoTeam
-import com.caritos.models.daoTennisSet
+import com.caritos.models.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.slf4j.LoggerFactory
 
 fun Route.dashboard() {
     val logger = LoggerFactory.getLogger("dashboard")
     route("dashboard") {
         get {
-            val recentMatches = daoMatch.getRecentMatches(10).map { match ->
-                val teamAName = daoTeam.getTeamName(match.teamAId)
-                val teamAPlayerCount = daoTeam.getTeamPlayerCount(match.teamAId)
-                val teamAScore = daoTeam.getTeamScore(match.teamAId)
-                val teamBName = daoTeam.getTeamName(match.teamBId)
-                val teamBPlayerCount = daoTeam.getTeamPlayerCount(match.teamBId)
-                val teamBScore = daoTeam.getTeamScore(match.teamBId)
+            val recentMatches = matchRepository.getRecentMatches(10).map { match ->
+                val teamAName = teamRepository.getTeamName(match.teamAId)
+                val teamAPlayerCount = teamRepository.getTeamPlayerCount(match.teamAId)
+                val teamAScore = teamRepository.getTeamScore(match.teamAId)
+                val teamBName = teamRepository.getTeamName(match.teamBId)
+                val teamBPlayerCount = teamRepository.getTeamPlayerCount(match.teamBId)
+                val teamBScore = teamRepository.getTeamScore(match.teamBId)
                 logger.info("teamAName: $teamAName")
                 logger.info("teamBName: $teamBName")
                 logger.info("teamAPlayerCount: $teamAPlayerCount")
@@ -44,7 +38,7 @@ fun Route.dashboard() {
                 )
             }
 
-            val teamsWithNameAndScore = daoTeam.getTeamsWithNameAndScore()
+            val teamsWithNameAndScore = teamRepository.getTeamsWithNameAndScore()
             val singlesTeamsWithNameAndScore = teamsWithNameAndScore
                 .filter { it.numberOfPlayers == 1 }
                 .sortedByDescending { it.score }

@@ -1,6 +1,5 @@
 package com.caritos.routes
 
-import com.caritos.dao.daoMatch
 import com.caritos.db.PlayerTable
 import com.caritos.models.*
 import io.ktor.server.application.*
@@ -21,9 +20,9 @@ fun Route.match() {
     val logger = LoggerFactory.getLogger("Routes")
     route("matches") {
         get {
-            val matches = daoMatch.getAll().map { match ->
-                val teamANames = daoTeam.getTeamName(match.teamAId)
-                val teamBNames = daoTeam.getTeamName(match.teamBId)
+            val matches = matchRepository.getAll().map { match ->
+                val teamANames = teamRepository.getTeamName(match.teamAId)
+                val teamBNames = teamRepository.getTeamName(match.teamBId)
                 MatchWithPlayerNames(
                     id = match.id,
                     date = match.date,
@@ -75,11 +74,11 @@ fun Route.match() {
             logger.info(teamBPlayerIds.toString())
             // i need to check if this set of players already exists in the teams table
             // if it doesn't exist, create it
-            val teamAId = daoTeam.createTeam("", teamAPlayerIds.map { it.toInt() }.toSet())
-            val teamBId = daoTeam.createTeam("", teamBPlayerIds.map { it.toInt() }.toSet())
+            val teamAId = teamRepository.createTeam("", teamAPlayerIds.map { it.toInt() }.toSet())
+            val teamBId = teamRepository.createTeam("", teamBPlayerIds.map { it.toInt() }.toSet())
 
             logger.info("will be adding match to database")
-            val match= daoMatch.add(date, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
+            val match= matchRepository.add(date, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
             logger.info("will be adding the set scores")
             if(match != null) {
                 var setNumber = 1
@@ -110,11 +109,11 @@ fun Route.match() {
 
         get("{id}") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            val match = daoMatch.get(id)
+            val match = matchRepository.get(id)
             assert(match != null)
             if(match != null) {
-                val teamANames = daoTeam.getTeamName(match.teamAId)
-                val teamBNames = daoTeam.getTeamName(match.teamBId)
+                val teamANames = teamRepository.getTeamName(match.teamAId)
+                val teamBNames = teamRepository.getTeamName(match.teamBId)
                 val matchWithPlayerName = MatchWithPlayerNames(
                     id = match.id,
                     date = match.date,
@@ -132,7 +131,7 @@ fun Route.match() {
 
         get("{id}/edit") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("/matches/edit.ftl", mapOf("match" to daoMatch.get(id))))
+            call.respond(FreeMarkerContent("/matches/edit.ftl", mapOf("match" to matchRepository.get(id))))
         }
 
         post("{id}") {
@@ -146,12 +145,12 @@ fun Route.match() {
                     val courtId = formParameters.getOrFail("courtId")
                     val teamAId = formParameters.getOrFail("teamAId")
                     val teamBId = formParameters.getOrFail("teamBId")
-                    daoMatch.edit(id, dateTime, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
+                    matchRepository.edit(id, dateTime, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
                     call.respondRedirect("/matches/$id")
                 }
 
                 "delete" -> {
-                    daoMatch.delete(id)
+                    matchRepository.delete(id)
                     call.respondRedirect("/matches")
                 }
             }

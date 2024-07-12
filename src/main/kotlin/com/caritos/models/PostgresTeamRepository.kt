@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
-class PostgresTeamRepository: DAOTeam {
+class PostgresTeamRepository: TeamRepository {
     val logger = LoggerFactory.getLogger("DAOTeamImpl")
 
     override suspend fun createTeam(name: String, playerIds: Set<Int>): Int {
@@ -122,14 +122,14 @@ class PostgresTeamRepository: DAOTeam {
     }
 
     override suspend fun getTeamScore(teamId: Int): Int = dbQuery {
-        TennisSets.select { (TennisSets.teamAId eq teamId) or (TennisSets.teamBId eq teamId) }
+        TennisSetTable.select { (TennisSetTable.teamAId eq teamId) or (TennisSetTable.teamBId eq teamId) }
             .count {
-                (it[TennisSets.teamAId] == teamId && it[TennisSets.teamAScore] > it[TennisSets.teamBScore]) ||
-                        (it[TennisSets.teamBId] == teamId && it[TennisSets.teamBScore] > it[TennisSets.teamAScore])
+                (it[TennisSetTable.teamAId] == teamId && it[TennisSetTable.teamAScore] > it[TennisSetTable.teamBScore]) ||
+                        (it[TennisSetTable.teamBId] == teamId && it[TennisSetTable.teamBScore] > it[TennisSetTable.teamAScore])
             }
     }
 
 
 }
 
-val daoTeam: DAOTeam = PostgresTeamRepository()
+val teamRepository: TeamRepository = PostgresTeamRepository()

@@ -1,6 +1,36 @@
 package com.caritos.models
 
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
+
+data class Match(
+    val id: Int,
+    val date: LocalDate,
+    val courtId: Int,
+    val teamAId: Int,
+    val teamBId: Int,
+)
+
+data class MatchWithPlayerNames(
+    val id: Int,
+    val date: LocalDate,
+    val courtId: Int,
+    val courtName: String,
+    val teamAId: String,
+    val teamANames: String,
+    val teamBId: String,
+    val teamBNames: String,
+    val score: List<TennisSet>
+)
+
+interface MatchRepository {
+    suspend fun getAll(): List<Match>
+    suspend fun get(id: Int): Match?
+    suspend fun add(date: LocalDate, courtId: Int, teamAId: Int, teamBId: Int): Match?
+    suspend fun edit(id: Int, date: LocalDate, courtId: Int, teamAId: Int, teamBId: Int): Boolean
+    suspend fun delete(id: Int): Boolean
+    suspend fun getRecentMatches(limit: Int): List<Match>
+}
 
 @Serializable
 data class TennisSet(
@@ -13,7 +43,7 @@ data class TennisSet(
     val teamBScore: Int
 )
 
-interface DAOTennisSet {
+interface TennisSetRepository {
     suspend fun getAll(): List<TennisSet>
     suspend fun get(id: Int): TennisSet?
     suspend fun add(matchId: Int, setNumber: Int, teamAId: Int, teamBId: Int, teamAScore: Int, teamBScore: Int): TennisSet?
@@ -42,7 +72,7 @@ data class Team(
     val name: String,
 )
 
-interface DAOTeam {
+interface TeamRepository {
     suspend fun getAll(): List<Team>
     suspend fun get(id: Int): Team?
     suspend fun add(playerIds: Set<Int>): Team?
