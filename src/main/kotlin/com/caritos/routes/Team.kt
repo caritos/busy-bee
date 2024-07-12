@@ -13,7 +13,7 @@ fun Route.team() {
     route("teams") {
         val logger = LoggerFactory.getLogger("Teams")
         get {
-            val teams = teamRepository.getAll()
+            val teams = teamRepository.allTeams()
             logger.info("teams" + teams.toString())
             call.respond(FreeMarkerContent("teams/index.ftl", mapOf("teams" to teams )))
         }
@@ -25,7 +25,7 @@ fun Route.team() {
         post {
             val formParameters = call.receiveParameters()
             val playerId = formParameters.getOrFail("playerId")
-            val team = teamRepository.add(setOf(playerId.toInt()))
+            val team = teamRepository.addTeam(setOf(playerId.toInt()))
             call.respondRedirect("/teams/${team?.id}")
         }
 
@@ -45,7 +45,7 @@ fun Route.team() {
             when (formParameters.getOrFail("_action")) {
                 "update" -> {
                     val name = formParameters.getOrFail("name")
-                    teamRepository.edit(id, name)
+                    teamRepository.updateTeam(id, name)
                     call.respondRedirect("/teams/$id")
                 }
 

@@ -46,15 +46,8 @@ class PostgresTeamRepository: TeamRepository {
         name = row[TeamTable.name],
     )
 
-    override suspend fun getAll(): List<Team> {
-        return transaction {
-            TeamTable.selectAll().map {
-                Team(
-                    id = it[TeamTable.id].value,
-                    name = it[TeamTable.name],
-                )
-            }
-        }
+    override suspend fun allTeams(): List<Team> = suspendTransaction {
+        TeamDAO.all().map(::daoToModel)
     }
 
     override suspend fun teamById(id: Int): Team? = suspendTransaction{
@@ -65,7 +58,7 @@ class PostgresTeamRepository: TeamRepository {
             .firstOrNull()
     }
 
-    override suspend fun add(playerIds: Set<Int>): Team? = dbQuery {
+    override suspend fun addTeam(playerIds: Set<Int>): Team? = dbQuery {
         // Fetch player names based on playerIds
         val playerNames = PlayerTable.select { PlayerTable.id inList playerIds }
             .map { it[PlayerTable.name] }
@@ -76,7 +69,7 @@ class PostgresTeamRepository: TeamRepository {
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToTeam)
     }
 
-    override suspend fun edit(id: Int, name: String): Boolean = dbQuery {
+    override suspend fun updateTeam(id: Int, name: String): Boolean = dbQuery {
         TeamTable.update({ TeamTable.id eq id }) {
             it[TeamTable.name] = name
         } > 0
