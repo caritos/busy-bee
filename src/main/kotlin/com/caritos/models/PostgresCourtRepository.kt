@@ -59,4 +59,4 @@ class PostgresCourtRepository: CourtRepository {
 
 }
 
-val courtRepository : CourtRepository= PostgresCourtRepository()
+val courtRepository : CourtRepository = PostgresCourtRepository()

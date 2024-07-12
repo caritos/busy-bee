@@ -1,5 +1,14 @@
 package com.caritos.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Court(
+    val id: Int,
+    val name: String,
+    val location: String
+)
+
 interface CourtRepository {
     suspend fun allCourts(): List<Court>
     suspend fun courtById(id: Int): Court?
