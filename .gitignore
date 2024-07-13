@@ -42,3 +42,6 @@ node_modules/
 
 ### api keys are found here ###
 .env
+
+### ignore temporary files created by docker
+tmp/

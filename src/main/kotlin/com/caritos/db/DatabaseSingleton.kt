@@ -1,18 +1,32 @@
 package com.caritos.db
 
+import io.ktor.server.config.*
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
 import org.jetbrains.exposed.sql.transactions.experimental.*
+import org.slf4j.LoggerFactory
 
 object DatabaseSingleton {
-    fun init() {
-        val driverClassName = System.getenv("DB_DRIVER") ?: "org.postgresql.Driver"
-        val jdbcURL = System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5432/tennis"
-        val username = System.getenv("DB_USER") ?: "user_a"
-        val password = System.getenv("DB_PASSWORD") ?: "password_a"
-        val database = Database.connect(jdbcURL, driverClassName, username, password)
-        
+    fun init(config: ApplicationConfig) {
+        val logger = LoggerFactory.getLogger("DatabaseConfig")
+
+        val dbUrl = config.propertyOrNull("ktor.storage.jdbcURL")?.getString()
+        val dbDriver = config.propertyOrNull("ktor.storage.driver")?.getString()
+        val dbUser = config.propertyOrNull("ktor.storage.user")?.getString()
+        val dbPassword = config.propertyOrNull("ktor.storage.password")?.getString()
+
+        if (dbUrl == null || dbDriver == null || dbUser == null || dbPassword == null) {
+            logger.error("Database configuration is missing")
+            throw ApplicationConfigurationException("Database configuration is missing")
+        }
+
+        logger.info("Database URL: $dbUrl")
+        logger.info("Database Driver: $dbDriver")
+        logger.info("Database User: $dbUser")
+
+        val database = Database.connect(url = dbUrl, driver = dbDriver, user = dbUser, password = dbPassword)
+
         transaction(database) {
             SchemaUtils.create(TeamPlayersTable)
             SchemaUtils.create(UserTable)
