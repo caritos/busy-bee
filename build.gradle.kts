@@ -10,6 +10,11 @@ plugins {
     kotlin("jvm") version "1.9.24"
     id("io.ktor.plugin") version "2.3.12"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.23"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
+}
+
+tasks.named("shadowJar").configure {
+    enabled = false
 }
 
 group = "com.caritos"
