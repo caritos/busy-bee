@@ -18,6 +18,7 @@
   - cd /Users/eladio/src/busy-bee/build/libs
   - scp com.caritos.busy-bee-all.jar root@67.205.148.123:/root/busy-bee/build/libs/
 - run docker compose on remote host
+  - cd busy-bee
   - docker-compose build --no-cache
   - docker-compose down
   - docker-compose up -d
