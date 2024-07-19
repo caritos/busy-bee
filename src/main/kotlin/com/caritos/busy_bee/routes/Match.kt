@@ -59,35 +59,35 @@ fun Route.match() {
             logger.info("inside post")
             val formParameters = call.receiveParameters()
             val formParametersMap = formParameters.entries().associate { it.key to it.value.toList() }
-            logger.info("formParameters: " + formParameters)
+            logger.info("formParameters: $formParameters")
             // Convert date string to LocalDateTime
             val dateString = formParameters.getOrFail("date")
-            logger.info("dateString: " + dateString)
+            logger.info("dateString: $dateString")
             val formatter = DateTimeFormatter.ISO_LOCAL_DATE
             val date = LocalDate.parse(dateString, formatter)
-            logger.info("dateTime: " + date)
+            logger.info("dateTime: $date")
             val courtId = formParameters.getOrFail("court")
-            logger.info("courtId:" + courtId)
+            logger.info("courtId:$courtId")
             val teamAPlayerIds = formParametersMap.filterKeys { it.startsWith("teamAContainerPlayer") }.values.flatten()
             val teamBPlayerIds = formParametersMap.filterKeys { it.startsWith("teamBContainerPlayer") }.values.flatten()
             logger.info(teamAPlayerIds.toString())
             logger.info(teamBPlayerIds.toString())
-            // i need to check if this set of players already exists in the teams table
+            // I need to check if this set of players already exists in the teams table
             // if it doesn't exist, create it
             val teamAId = teamRepository.createTeam("", teamAPlayerIds.map { it.toInt() }.toSet())
             val teamBId = teamRepository.createTeam("", teamBPlayerIds.map { it.toInt() }.toSet())
 
             logger.info("will be adding match to database")
-            val match= matchRepository.add(date, courtId.toInt(), teamAId.toInt(), teamBId.toInt())
+            val match= matchRepository.add(date, courtId.toInt(), teamAId, teamBId)
             logger.info("will be adding the set scores")
             if(match != null) {
                 var setNumber = 1
                 while (true) {
-                    logger.info("setNumber value: " + setNumber)
+                    logger.info("setNumber value: $setNumber")
                     val teamAScoreParam = formParameters["set${setNumber}_teamA"]
                     val teamBScoreParam = formParameters["set${setNumber}_teamB"]
-                    logger.info("teamA: " + teamAScoreParam)
-                    logger.info("teamB: " + teamBScoreParam)
+                    logger.info("teamA: $teamAScoreParam")
+                    logger.info("teamB: $teamBScoreParam")
 
                     if (teamAScoreParam == null || teamBScoreParam == null) {
                         break
