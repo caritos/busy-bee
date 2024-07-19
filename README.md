@@ -11,6 +11,9 @@
 - king of the court
 - courtking
 
+## development
+- ./gradlew -t build
+- 
 ## deployment
 - build the jar from localhost
   - ./gradlew build
