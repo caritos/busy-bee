@@ -1,4 +1,4 @@
-package com.caritos.db
+package com.caritos.busy_bee.db
 
 import io.ktor.server.config.*
 import kotlinx.coroutines.*

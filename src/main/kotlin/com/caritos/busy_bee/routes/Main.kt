@@ -1,4 +1,4 @@
-package com.caritos.routes
+package com.caritos.busy_bee.routes
 
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*

@@ -1,9 +1,9 @@
-package com.caritos.routes
+package com.caritos.busy_bee.routes
 
-import com.caritos.db.UserTable
-import com.caritos.plugins.UserSession
-import com.caritos.plugins.generateSalt
-import com.caritos.plugins.hashPassword
+import com.caritos.busy_bee.db.UserTable
+import com.caritos.busy_bee.plugins.UserSession
+import com.caritos.busy_bee.plugins.generateSalt
+import com.caritos.busy_bee.plugins.hashPassword
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

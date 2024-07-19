@@ -13,11 +13,11 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
-group = "com.caritos"
-version = "0.0.1"
+group = "com.caritos.busy_bee"
+version = "0.0.2"
 
 application {
-    mainClass.set("com.caritos.ApplicationKt")
+    mainClass.set("com.caritos.busy_bee.ApplicationKt")
 }
 
 repositories {

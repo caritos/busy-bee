@@ -1,4 +1,4 @@
-package com.caritos.plugins
+package com.caritos.busy_bee.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory
 import java.security.SecureRandom
 import java.util.*
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.caritos.db.UserTable
-import com.caritos.models.User
+import com.caritos.busy_bee.db.UserTable
+import com.caritos.busy_bee.models.User
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 

@@ -1,4 +1,4 @@
-package com.caritos.models
+package com.caritos.busy_bee.models
 
 import kotlinx.serialization.Serializable
 import java.time.LocalDate

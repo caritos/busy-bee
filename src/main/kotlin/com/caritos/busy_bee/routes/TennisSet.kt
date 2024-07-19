@@ -1,6 +1,6 @@
-package com.caritos.routes
+package com.caritos.busy_bee.routes
 
-import com.caritos.models.daoTennisSet
+import com.caritos.busy_bee.models.daoTennisSet
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*

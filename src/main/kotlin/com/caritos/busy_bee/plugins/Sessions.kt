@@ -1,4 +1,4 @@
-package com.caritos.plugins
+package com.caritos.busy_bee.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

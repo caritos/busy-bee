@@ -1,7 +1,7 @@
-package com.caritos.models
+package com.caritos.busy_bee.models
 
-import com.caritos.db.DatabaseSingleton.dbQuery
-import com.caritos.db.*
+import com.caritos.busy_bee.db.DatabaseSingleton.dbQuery
+import com.caritos.busy_bee.db.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction

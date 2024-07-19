@@ -1,9 +1,9 @@
-package com.caritos.models
+package com.caritos.busy_bee.models
 
-import com.caritos.db.CourtDAO
-import com.caritos.db.CourtTable
-import com.caritos.db.daoToModel
-import com.caritos.db.suspendTransaction
+import com.caritos.busy_bee.db.CourtDAO
+import com.caritos.busy_bee.db.CourtTable
+import com.caritos.busy_bee.db.daoToModel
+import com.caritos.busy_bee.db.suspendTransaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.update

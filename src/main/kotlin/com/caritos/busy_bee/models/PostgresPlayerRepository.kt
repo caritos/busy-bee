@@ -1,6 +1,6 @@
-package com.caritos.models
+package com.caritos.busy_bee.models
 
-import com.caritos.db.*
+import com.caritos.busy_bee.db.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.update

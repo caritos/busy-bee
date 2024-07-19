@@ -1,4 +1,4 @@
-package com.caritos.plugins
+package com.caritos.busy_bee.plugins
 
 import freemarker.cache.*
 import freemarker.core.*

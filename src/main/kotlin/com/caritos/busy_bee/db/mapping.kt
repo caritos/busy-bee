@@ -1,8 +1,8 @@
-package com.caritos.db
+package com.caritos.busy_bee.db
 
-import com.caritos.models.Court
-import com.caritos.models.Player
-import com.caritos.models.Team
+import com.caritos.busy_bee.models.Court
+import com.caritos.busy_bee.models.Player
+import com.caritos.busy_bee.models.Team
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
