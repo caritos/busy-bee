@@ -29,9 +29,9 @@ fun Route.match() {
                     courtId = match.courtId,
                     courtName = courtRepository.courtById(match.courtId)?.name ?: "Unknown",
                     teamAId = match.teamAId.toString(),
-                    teamANames = teamANames ?: "Unknown",
+                    teamANames = teamANames,
                     teamBId = match.teamBId.toString(),
-                    teamBNames = teamBNames ?: "Unknown",
+                    teamBNames = teamBNames,
                     score = daoTennisSet.getTennisSetsForMatch(match.id)
                 )
             }.sortedByDescending { it.date }
@@ -120,9 +120,9 @@ fun Route.match() {
                     courtId = match.courtId,
                     courtName = courtRepository.courtById(match.courtId)?.name ?: "Unknown",
                     teamAId = match.teamAId.toString(),
-                    teamANames = teamANames ?: "Unknown",
+                    teamANames = teamANames,
                     teamBId = match.teamBId.toString(),
-                    teamBNames = teamBNames ?: "Unknown",
+                    teamBNames = teamBNames,
                     score = daoTennisSet.getTennisSetsForMatch(match.id)
                 )
                 call.respond(FreeMarkerContent("/matches/show.ftl", mapOf("match" to matchWithPlayerName)))
