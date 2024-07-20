@@ -3,7 +3,12 @@ package com.caritos.busy_bee.models
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
-data class User(val id: Int, val username: String, val password: String, val salt: String)
+data class User(
+    val id: Int,
+    val username: String,
+    val password: String,
+    val salt: String
+)
 
 data class Match(
     val id: Int,
