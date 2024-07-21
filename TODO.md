@@ -1,0 +1,4 @@
+- [ ] need to add database migration feature (liquibase)
+- [ ] need to add email into the users table
+- [ ] remove person class and replace it with the user class
+- [ ] add email address to the class
