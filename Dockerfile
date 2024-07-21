@@ -1,4 +1,4 @@
-FROM openjdk:23-jdk-slim
+FROM amazoncorretto:22-alpine
 EXPOSE 8080:8080
 RUN mkdir /app
 WORKDIR /app
