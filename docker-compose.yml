@@ -1,10 +1,14 @@
 services:
   web:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - sqlite_data:/data/database.db
     environment:
       - KTOR_CONFIG=/app/application.conf
     ports:
       - "80:8080"
-    depends_on:
-      db:
-        condition: service_healthy
+
+volumes: 
+  sqlite_data:

@@ -30,6 +30,9 @@ object DatabaseSingleton {
         Database.connect(dataSource)
 
         transaction {
+            // Enable foreign key support
+            exec("PRAGMA foreign_keys = ON")
+            
             SchemaUtils.createMissingTablesAndColumns(TeamPlayersTable)
             SchemaUtils.createMissingTablesAndColumns(UserTable)
             SchemaUtils.createMissingTablesAndColumns(CourtTable)

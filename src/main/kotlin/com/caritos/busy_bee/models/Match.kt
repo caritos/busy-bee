@@ -35,7 +35,7 @@ interface MatchRepository {
 
 object MatchTable : IntIdTable("matches") {
     val date = date("date")
-    val courtId = integer("court_id").references(CourtTable.id)
-    val teamAId = integer("team_a_id").references(TeamTable.id)
-    val teamBId = integer("team_b_id").references(TeamTable.id)
+    val courtId = integer("court_id").references(CourtTable.id, onDelete = ReferenceOption.CASCADE)
+    val teamAId = integer("team_a_id").references(TeamTable.id, onDelete = ReferenceOption.CASCADE)
+    val teamBId = integer("team_b_id").references(TeamTable.id, onDelete = ReferenceOption.CASCADE)
 }

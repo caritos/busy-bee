@@ -25,10 +25,10 @@ interface TennisSetRepository {
 }
 
 object TennisSetTable : IntIdTable("tennissets") {
-    val matchId = integer("match_id").references(MatchTable.id)
+    val matchId = integer("match_id").references(MatchTable.id, onDelete = ReferenceOption.CASCADE)
     val setNumber = integer("set_number")
-    val teamAId = integer("team_a_id").references(TeamTable.id)
-    val teamBId = integer("team_b_id").references(TeamTable.id)
+    val teamAId = integer("team_a_id").references(TeamTable.id, onDelete = ReferenceOption.CASCADE)
+    val teamBId = integer("team_b_id").references(TeamTable.id, onDelete = ReferenceOption.CASCADE)
     val teamAScore = integer("team_a_score")
     val teamBScore = integer("team_b_score")
 }

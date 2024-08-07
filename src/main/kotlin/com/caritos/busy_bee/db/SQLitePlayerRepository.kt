@@ -51,7 +51,7 @@ class SQLitePlayerRepository: PlayerRepository {
     }
 
     override suspend fun removePlayer(id: Int): Boolean = suspendTransaction {
-        val deletedRows = PlayerTable.deleteWhere { CourtTable.id eq id }
+        val deletedRows = PlayerTable.deleteWhere { PlayerTable.id eq id }
         deletedRows > 0
     }
 
