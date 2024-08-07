@@ -23,8 +23,8 @@ fun Route.courtRoutes() {
             val formParameters = call.receiveParameters()
             val name = formParameters.getOrFail("name")
             val location = formParameters.getOrFail("location")
-            val court = courtRepository.addCourt(name, location)
-            call.respondRedirect("/courts/${court?.id}")
+            courtRepository.addCourt(name, location)
+            call.respondRedirect("/courts")
         }
 
         get("{id}") {

@@ -3,6 +3,7 @@ package com.caritos.busy_bee.models
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.javatime.date
 import java.time.LocalDate
+import org.jetbrains.exposed.sql.ReferenceOption
 
 data class Match(
     val id: Int,

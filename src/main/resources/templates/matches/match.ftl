@@ -3,7 +3,7 @@
     ${match.date}
   </td>
   <td class="border border-gray-300 px-4 py-2">
-    ${match.teamANames} vs ${match.teamBNames}
+    <a href="/matches/${match.id}">${match.teamANames} vs ${match.teamBNames}</a>
   </td>
   <td class="border border-gray-300 px-4 py-2">
     <#list match.score as set>
