@@ -1,14 +1,16 @@
-package com.caritos.busy_bee.models
+package com.caritos.busy_bee.db
 
-import com.caritos.busy_bee.db.*
-import com.caritos.busy_bee.db.DatabaseSingleton.dbQuery
+import com.caritos.busy_bee.plugins.DatabaseSingleton.dbQuery
+import com.caritos.busy_bee.models.Match
+import com.caritos.busy_bee.models.MatchRepository
+import com.caritos.busy_bee.models.MatchTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
-class PostgresMatchRepository: MatchRepository {
+class SQLiteMatchRepository: MatchRepository {
     val logger = LoggerFactory.getLogger("DAOMatchImpl")
 
     private fun resultRowToMatch(row: ResultRow) = Match(
@@ -87,4 +89,4 @@ class PostgresMatchRepository: MatchRepository {
     }
 }
 
-val matchRepository: MatchRepository = PostgresMatchRepository()
+val matchRepository: MatchRepository = SQLiteMatchRepository()

@@ -1,6 +1,6 @@
 package com.caritos.busy_bee.routes
 
-import com.caritos.busy_bee.db.PlayerTable
+import com.caritos.busy_bee.db.*
 import com.caritos.busy_bee.models.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*

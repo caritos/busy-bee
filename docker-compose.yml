@@ -8,19 +8,3 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  db:
-    image: postgres
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: tennis
-      POSTGRES_USER: postgres 
-      POSTGRES_PASSWORD: password_a
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 1s
-
-volumes:
-  db_data:

@@ -1,6 +1,7 @@
 package com.caritos.busy_bee.routes
 
-import com.caritos.busy_bee.db.UserTable
+import com.caritos.busy_bee.db.*
+import com.caritos.busy_bee.models.*
 import com.caritos.busy_bee.plugins.UserSession
 import com.caritos.busy_bee.plugins.generateSalt
 import com.caritos.busy_bee.plugins.hashPassword

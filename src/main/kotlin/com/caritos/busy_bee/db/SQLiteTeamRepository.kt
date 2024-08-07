@@ -1,13 +1,14 @@
-package com.caritos.busy_bee.models
+package com.caritos.busy_bee.db
 
-import com.caritos.busy_bee.db.DatabaseSingleton.dbQuery
-import com.caritos.busy_bee.db.*
+import com.caritos.busy_bee.plugins.DatabaseSingleton.dbQuery
+import com.caritos.busy_bee.plugins.DatabaseSingleton.suspendTransaction
+import com.caritos.busy_bee.models.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
-class PostgresTeamRepository: TeamRepository {
+class SQLiteTeamRepository: TeamRepository {
     val logger = LoggerFactory.getLogger("DAOTeamImpl")
 
     override suspend fun createTeam(name: String, playerIds: Set<Int>): Int {
@@ -64,7 +65,7 @@ class PostgresTeamRepository: TeamRepository {
             .map { it[PlayerTable.name] }
             .joinToString(" ")
         val insertStatement = TeamTable.insert {
-            it[TeamTable.name] = playerNames
+            it[name] = playerNames
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToTeam)
     }
@@ -103,7 +104,7 @@ class PostgresTeamRepository: TeamRepository {
     // need iterate through the TeamPlayers table and get the player's name from the Players table
     override suspend fun getTeamName(teamId: Int): String = dbQuery {
         val playerNames = TeamPlayersTable
-            .innerJoin(PlayerTable, { TeamPlayersTable.playerId }, { PlayerTable.id })
+            .innerJoin(PlayerTable, { playerId }, { PlayerTable.id })
             .slice(PlayerTable.name)
             .select { TeamPlayersTable.teamId eq teamId }
             .map { it[PlayerTable.name] }
@@ -127,4 +128,4 @@ class PostgresTeamRepository: TeamRepository {
 
 }
 
-val teamRepository: TeamRepository = PostgresTeamRepository()
+val teamRepository: TeamRepository = SQLiteTeamRepository()

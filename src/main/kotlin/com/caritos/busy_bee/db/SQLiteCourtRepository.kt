@@ -1,14 +1,21 @@
-package com.caritos.busy_bee.models
+package com.caritos.busy_bee.db
 
-import com.caritos.busy_bee.db.CourtDAO
-import com.caritos.busy_bee.db.CourtTable
-import com.caritos.busy_bee.db.daoToModel
-import com.caritos.busy_bee.db.suspendTransaction
+import com.caritos.busy_bee.models.*
+import com.caritos.busy_bee.plugins.DatabaseSingleton.suspendTransaction
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
 
-class PostgresCourtRepository: CourtRepository {
+class SQLiteCourtRepository: CourtRepository {
+
+    private fun resultRowToCourt(row: ResultRow) = Court(
+        id = row[CourtTable.id].value,
+        name = row[CourtTable.name],
+        location = row[CourtTable.location]
+    )
+
     override suspend fun allCourts(): List<Court> = suspendTransaction {
         CourtDAO.all().map(::daoToModel)
     }
@@ -36,11 +43,11 @@ class PostgresCourtRepository: CourtRepository {
     }
 
     override suspend fun addCourt(court_name: String, court_location: String): Court? = suspendTransaction {
-        val newCourt = CourtDAO.new {
-            name = court_name
-            location = court_location
+        val insertStatement = CourtTable.insert {
+            it[name] = court_name
+            it[location] = court_location
         }
-        daoToModel(newCourt)
+        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToCourt)
     }
 
     override suspend fun updateCourt(id: Int, name: String, location: String): Unit = suspendTransaction {
@@ -57,4 +64,4 @@ class PostgresCourtRepository: CourtRepository {
 
 }
 
-val courtRepository : CourtRepository = PostgresCourtRepository()
+val courtRepository : CourtRepository = SQLiteCourtRepository()

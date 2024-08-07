@@ -1,12 +1,14 @@
-package com.caritos.busy_bee.models
+package com.caritos.busy_bee.db
 
-import com.caritos.busy_bee.db.DatabaseSingleton.dbQuery
-import com.caritos.busy_bee.db.*
+import com.caritos.busy_bee.plugins.DatabaseSingleton.dbQuery
+import com.caritos.busy_bee.models.TennisSet
+import com.caritos.busy_bee.models.TennisSetRepository
+import com.caritos.busy_bee.models.TennisSetTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PostgresTennisSetRepository: TennisSetRepository{
+class SQLiteTennisSetRepository: TennisSetRepository {
     private fun resultRowToTennisSet(row: ResultRow) = TennisSet(
         id = row[TennisSetTable.id].value,
         matchId = row[TennisSetTable.matchId],
@@ -45,8 +47,8 @@ class PostgresTennisSetRepository: TennisSetRepository{
             it[TennisSetTable.setNumber] = setNumber
             it[TennisSetTable.teamAId] = teamAId
             it[TennisSetTable.teamBId] = teamBId
-            it[TennisSetTable.teamAScore] = player1Score
-            it[TennisSetTable.teamBScore] = player2Score
+            it[teamAScore] = player1Score
+            it[teamBScore] = player2Score
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToTennisSet)
     }
@@ -57,8 +59,8 @@ class PostgresTennisSetRepository: TennisSetRepository{
             it[TennisSetTable.setNumber] = setNumber
             it[TennisSetTable.teamAId] = teamAId
             it[TennisSetTable.teamBId] = teamBId
-            it[TennisSetTable.teamAScore] = player1Score
-            it[TennisSetTable.teamBScore] = player2Score
+            it[teamAScore] = player1Score
+            it[teamBScore] = player2Score
         } > 0
     }
 
@@ -89,4 +91,4 @@ class PostgresTennisSetRepository: TennisSetRepository{
     }
 }
 
-val daoTennisSet : TennisSetRepository = PostgresTennisSetRepository()
+val daoTennisSet : TennisSetRepository = SQLiteTennisSetRepository()

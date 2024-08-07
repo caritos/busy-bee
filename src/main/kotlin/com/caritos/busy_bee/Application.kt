@@ -1,6 +1,6 @@
 package com.caritos.busy_bee
 
-import com.caritos.busy_bee.db.DatabaseSingleton
+import com.caritos.busy_bee.plugins.DatabaseSingleton
 import com.caritos.busy_bee.plugins.*
 import com.caritos.busy_bee.routes.configureRouting
 import io.ktor.server.application.*

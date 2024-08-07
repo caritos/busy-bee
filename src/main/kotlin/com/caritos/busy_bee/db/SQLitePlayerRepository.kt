@@ -1,11 +1,22 @@
-package com.caritos.busy_bee.models
+package com.caritos.busy_bee.db
 
-import com.caritos.busy_bee.db.*
+import com.caritos.busy_bee.plugins.DatabaseSingleton.suspendTransaction
+import com.caritos.busy_bee.models.*
+import com.caritos.busy_bee.plugins.DatabaseSingleton.dbQuery
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.update
+import java.time.LocalDate
 
-class PostgresPlayerRepository: PlayerRepository {
+class SQLitePlayerRepository: PlayerRepository {
+
+    private fun resultRowToPlayer(row: ResultRow) = Player(
+        id = row[PlayerTable.id].value,
+        name = row[PlayerTable.name]
+    )
+
     override suspend fun allPlayers(): List<Player> = suspendTransaction {
         PlayerDAO.all().map(::daoToModel)
     }
@@ -26,11 +37,11 @@ class PostgresPlayerRepository: PlayerRepository {
             .firstOrNull()
     }
 
-    override suspend fun addPlayer(player_name: String): Player? = suspendTransaction {
-        val newPlayer = PlayerDAO.new {
-            name = player_name
+    override suspend fun addPlayer(name: String): Player? = suspendTransaction {
+        val insertStatement = PlayerTable.insert {
+            it[PlayerTable.name] = name
         }
-        daoToModel(newPlayer)
+        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToPlayer)
     }
 
     override suspend fun updatePlayer(id: Int, name: String): Unit = suspendTransaction {
@@ -46,4 +57,4 @@ class PostgresPlayerRepository: PlayerRepository {
 
 }
 
-val playerRepository: PlayerRepository = PostgresPlayerRepository()
+val playerRepository: PlayerRepository = SQLitePlayerRepository()

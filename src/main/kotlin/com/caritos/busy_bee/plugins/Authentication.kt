@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory
 import java.security.SecureRandom
 import java.util.*
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.caritos.busy_bee.db.UserTable
-import com.caritos.busy_bee.models.User
+import com.caritos.busy_bee.models.*
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
