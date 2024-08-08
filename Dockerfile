@@ -1,7 +1,14 @@
 FROM amazoncorretto:22-alpine
-EXPOSE 8080:8080
-RUN mkdir /app
+
+# Se the working directory
 WORKDIR /app
-COPY ./build/libs/com.caritos.busy-bee-all.jar /app/app.jar
-COPY ./src/main/resources/application.conf /app/application.conf
+
+# Copy the built JAR file into the container
+COPY src/main/resources/application.conf /app/application.conf
+COPY build/libs/com.caritos.busy-bee-all.jar /app/app.jar
+
+# Expose the port your Ktor application runs on
+EXPOSE 8080
+
+# Command to run the application
 CMD ["java", "-Dconfig.file=/app/application.conf","-jar","/app/app.jar"]

@@ -1,14 +1,11 @@
 services:
-  web:
-    build: 
+  app:
+    build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - sqlite_data:/data/database.db
-    environment:
-      - KTOR_CONFIG=/app/application.conf
+      - ./data:/app/data # Mount the database directory
     ports:
-      - "80:8080"
-
-volumes: 
-  sqlite_data:
+      - "80:8080"  # Map port 8080 of the container to port 8080 on the host
+    environment:
+      - DATABASE_URL=jdbc:sqlite:/app/data/database.db  # Set the database URL
