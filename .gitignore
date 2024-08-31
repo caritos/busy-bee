@@ -48,3 +48,5 @@ node_modules/
 
 ### ignore temporary files created by docker
 tmp/
+
+data/database.db

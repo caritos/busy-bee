@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
 class SQLiteTeamRepository: TeamRepository {
-    val logger = LoggerFactory.getLogger("DAOTeamImpl")
 
     override suspend fun createTeam(name: String, playerIds: Set<Int>): Int {
         return transaction {
@@ -90,8 +89,6 @@ class SQLiteTeamRepository: TeamRepository {
         }
     }
 
-
-
     override suspend fun getAllTeamsWithScores(): List<Pair<Team, Int>> = dbQuery {
         TeamTable.selectAll().map { row ->
             val team = resultRowToTeam(row)
@@ -125,6 +122,29 @@ class SQLiteTeamRepository: TeamRepository {
             }
     }
 
+
+
+    suspend fun getTeamWinningPercentage(teamId: Int): Double = dbQuery {
+        val totalMatches = TennisSetTable.select { 
+            (TennisSetTable.teamAId eq teamId) or (TennisSetTable.teamBId eq teamId) 
+        }.count()
+
+        if (totalMatches.toInt() == 0) return@dbQuery 0.0 // Avoid division by zero
+
+        val wins = getTeamScore(teamId)
+
+        wins.toDouble() / totalMatches * 100 // Return winning percentage
+    }
+
+    override suspend fun getAllTeamsWithWinningPercentages(): List<TeamWithNameAndWinningPercentages> = dbQuery {
+        TeamTable.selectAll().map { row ->
+            val teamId = row[TeamTable.id].value
+            val teamName = getTeamName(teamId)
+            val playerCount = getTeamPlayerCount(teamId)
+            val winningPercentage = getTeamWinningPercentage(teamId)
+            TeamWithNameAndWinningPercentages(teamName, playerCount, winningPercentage)
+        }
+    }
 
 }
 

@@ -51,8 +51,17 @@ fun Route.dashboard() {
                 .filter { it.numberOfPlayers == 2 }
                 .sortedByDescending { it.score }
 
+            val teamsWithWinningPercentages = teamRepository.getAllTeamsWithWinningPercentages()
+            val singlesTeamsWithNameAndWinningPercentages = teamsWithWinningPercentages
+                .filter { it.numberOfPlayers == 1 }
+                .sortedByDescending { it.rate}
+            val doublesTeamsWithNameAndWinningPercentages = teamsWithWinningPercentages
+                .filter { it.numberOfPlayers == 2 }
+                .sortedByDescending { it.rate}
             call.respond(FreeMarkerContent("dashboard/index.ftl", mapOf(
                 "recentMatches" to recentMatches, 
+                "singlesTeamsWithNameAndWinningPercentages" to singlesTeamsWithNameAndWinningPercentages,
+                "doublesTeamsWithNameAndWinningPercentages" to doublesTeamsWithNameAndWinningPercentages,
                 "singlesTeamsWithNameAndScore" to singlesTeamsWithNameAndScore,
                 "doublesTeamsWithNameAndScore" to doublesTeamsWithNameAndScore
             )))

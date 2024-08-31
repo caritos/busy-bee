@@ -24,6 +24,7 @@ interface TeamRepository {
     suspend fun getTeamName(teamId: Int): String
     suspend fun getTeamPlayerCount(teamId: Int): Int
     suspend fun getTeamsWithNameAndScore(): List<TeamWithNameAndScore>
+    suspend fun getAllTeamsWithWinningPercentages(): List<TeamWithNameAndWinningPercentages>
 }
 
 @Serializable
@@ -32,6 +33,13 @@ data class TeamWithNameAndScore(
     val name: String,
     val numberOfPlayers: Int,
     val score: Int
+)
+
+@Serializable
+data class TeamWithNameAndWinningPercentages(
+    val name: String,
+    val numberOfPlayers: Int,
+    val rate: Double
 )
 
 object TeamTable : IntIdTable("teams") {
