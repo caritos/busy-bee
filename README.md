@@ -25,3 +25,7 @@
   - docker-compose build --no-cache
   - docker-compose down
   - docker-compose up -d
+
+## backing up database
+- make sure you copy the old database from digital ocean first before reuploading a new one.  
+- 
